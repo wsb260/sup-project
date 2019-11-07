@@ -1,0 +1,10 @@
+import Vue from "vue";
+import EltForm from "./index.vue";
+
+const eltForm = {
+  install: function(Vue) {
+    Vue.component("eltForm", EltForm);
+  }
+};
+
+export default eltForm;

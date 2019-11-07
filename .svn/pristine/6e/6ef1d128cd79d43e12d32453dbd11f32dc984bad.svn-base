@@ -1,0 +1,84 @@
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changeShowCheck(state, payload) {
+    state.showCheck = payload;
+  },  
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  getData(state, payload) {
+    if (payload.worked == 'table') {
+      state.tableData = payload.data;
+    }
+  },
+  getByIdData(state, payload) {
+    let arr1 = [];
+    let arr2 = [];
+    let arr3 = [];
+    payload.data.cartypelist.forEach((v,i) =>{
+      arr1.push({value:v.id,label:v.name});
+    })
+    payload.data.caroperlist.forEach((v,i) =>{
+      arr2.push({value:v.OPERNAME,label:v.OPERNAME});
+    })
+    payload.data.cardtypelist.forEach((v,i) =>{
+      arr3.push({value:v.id,label:v.name});
+    })
+    state.CARTYPE = arr1;
+    state.CAROWNER_NM = arr2;
+    state.CARDTYPE = arr3;
+    state.byIdData = payload.data;
+  },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  changeTotal(state, payload) {
+    state.total = payload;
+  },
+  changeCurrent(state, payload) {
+    if (payload && payload != state.current) {
+      state.current = payload;
+    }
+  },
+  changePageSize(state, payload) {
+    if (payload && payload != state.page_size) {
+      state.page_size = payload;
+    }
+  },
+  changeSearchType(state, payload) {
+    state.searchType = payload;
+  },
+  clearSearchData(state, payload) {
+    state.searchType = false;
+    state.searchData = {
+      CAROWNER_NM: "",
+      CAROWNER_TEL: "",
+      CAROWNER_CARDNO: "",
+      BLCNAME: "",
+      CARNO: "",
+      CARTYPE:"",
+      CARLENGTH:"",
+      CARBARCODE:"",
+    };
+  },
+  isNewData(state, payload) {
+    state.byIdData = {
+      CAROWNER_NM: "",
+      CARTYPE: "",
+      CARDTYPE: "",
+      CAROWNER_TEL: "",
+      CAROWNER_CARDNO: "",
+      SERVNAME:"",
+      CARNO:"",
+      CARLENGTH:"",
+      TOTALWEIGHT:"",
+      FACTORYDATE:"",
+      WORKDATE:""
+    };
+  }
+};

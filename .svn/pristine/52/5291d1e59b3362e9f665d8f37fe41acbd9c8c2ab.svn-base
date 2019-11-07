@@ -1,0 +1,35 @@
+{
+  "total": 2,
+  "result": [{
+    "ACCOUNTNO": "7",
+    "TRANSTATUS": "完成",
+    "GATEWAYFEE": "33.0",
+    "ORDERNO": "YTS170502173628873",
+    "TRANSTARTDATE": "2017-05-02 17:38:59.0",
+    "TRANCOMPANYID": "10",
+    "ORDERID": "69",
+    "TRANORDERNO": "33333",
+    "ID": "23",
+    "TRANCOMPANYNAME": "邮政",
+    "SETTLEFLAG": "30",
+    "AFFILIATIONSID": "2",
+    "TRAENDDATE": "2017-05-02 17:39:03.0",
+    "SETTLETYPE": ""
+  }, {
+    "ACCOUNTNO": "8",
+    "TRANSTATUS": "完成",
+    "GATEWAYFEE": "1.0",
+    "ORDERNO": "YTS170502154803888",
+    "TRANSTARTDATE": "2017-05-02 16:35:39.0",
+    "TRANCOMPANYID": "10",
+    "ORDERID": "47",
+    "TRANORDERNO": "121212",
+    "ID": "22",
+    "TRANCOMPANYNAME": "邮政",
+    "SETTLEFLAG": "30",
+    "AFFILIATIONSID": "2",
+    "TRAENDDATE": "2017-05-02 16:35:49.0",
+    "SETTLETYPE": ""
+  }],
+  "totalPage": 1
+}

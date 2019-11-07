@@ -1,0 +1,124 @@
+$width: 26px;
+$height: 32px;
+.pageTab {
+  height: $height;
+  position: relative;
+  user-select: none;
+  border-bottom: 1px solid #eee;
+  .leftBox {
+    left: 0;
+    border-right: 1px solid #ddd;
+  }
+  .rightBox {
+    right: $width;
+    border-left: 1px solid #ddd;
+  }
+  .centerBox {
+    position: absolute;
+    top: 0;
+    left: $width;
+    right: $width * 2;
+    margin: auto;
+    height: 100%;
+    overflow: hidden;
+    ul {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      bottom: 3px;
+      margin: auto;
+      white-space: nowrap;
+      transition: 0.5s all ease;
+      li {
+        position: relative;
+        display: inline-block;
+        margin-right: 3px;
+        line-height: 24px;
+        padding: 0 22px 0 26px;
+        border-radius: 3px;
+        background-color: #fff;
+        height: 100%;
+        list-style: none;
+        cursor: pointer;
+        color: #888;
+        &:first-of-type {
+          padding-right: 10px;
+        }
+        &:before {
+          $wh: 8px;
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 10px;
+          bottom: 0;
+          margin: auto;
+          display: inline-block;
+          width: $wh;
+          height: $wh;
+          border-radius: 50%;
+          background-color: #ccc;
+          vertical-align: middle;
+        }
+        &:hover {
+          box-shadow: 0 0 3px #fff;
+          border-color: #ccc;
+          color: #333;
+          &:before {
+            background-color: #f40;
+          }
+          .ivu-icon {
+            color: #888;
+          }
+        }
+        &:last-of-type {
+          margin-right: 0;
+        }
+        .ivu-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          margin: auto;
+          &:hover {
+            font-weight: bold;
+            color: #f40;
+          }
+        }
+        &.cur {
+          border-color: #999;
+          span {
+            color: #333;
+          }
+          &:before {
+            background-color: #f40;
+          }
+        }
+      }
+    }
+  }
+  .closeBox {
+    right: 0;
+    border-left: 1px solid #ddd;
+    .ivu-btn {
+      padding: 0;
+    }
+  }
+  .iconBox {
+    position: absolute;
+    top: 0;
+    width: $width;
+    height: 100%;
+    text-align: center;
+    line-height: $height;
+    cursor: pointer;
+    color: #333;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    &:hover {
+      color: #47aaf9;
+      background-color: #f9f9f9;
+    }
+  }
+}

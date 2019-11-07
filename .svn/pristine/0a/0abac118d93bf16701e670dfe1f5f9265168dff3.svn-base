@@ -1,0 +1,46 @@
+<template>
+  <Dropdown trigger="custom" :transfer="!1" placement="bottom-start" :visible="visible">
+    <FormItem label="匹配机构：" prop="marryName">
+      {{visible}}
+      <i-input v-model="orderData.marryName" @on-click="changeVisible(true)" readonly placeholder="请输入匹配机构"></i-input>
+    </FormItem>
+    <DropdownMenu slot="list">
+      <Tree :data="allOrgs"></Tree>
+    </DropdownMenu>
+  </Dropdown>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+    orderData() {
+      //左边的数据
+      return this.$store.state.orderlogistics.orderData;
+    },
+    allOrgs() {
+      return this.$store.state.selectData.allOrgs;
+    }
+  },
+  deactivated() {
+    this.visible = false;  
+  },
+  methods: {
+    search() {
+      this.$store.dispatch({ type: 'shop/refreshData', searchType: true, current: 1 });
+      this.visible = false;
+    },
+    reset() {
+      this.$store.commit("shop/clearSearchData");
+      this.$store.dispatch({ type: 'shop/refreshData', searchType: false, current: 1 });
+    },
+    changeVisible(type) {
+      console.log(type);
+      this.visible = type;
+    }
+  }
+}
+</script>

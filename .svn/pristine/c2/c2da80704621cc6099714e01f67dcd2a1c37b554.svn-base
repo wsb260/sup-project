@@ -1,0 +1,27 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/orderproductquery/listpage.json"
+  },
+  getByIdData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/orderproductquery/detail.json"
+  },
+  getTrajectoryData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/orderproductquery/orderproductpath.json"
+  },
+  delete: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orderproductquery/delete.json"
+  },
+  filedown: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orderproductquery/delete.json"
+  },
+  fileUpLoad: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orderproductquery/delete.json"
+  },
+};

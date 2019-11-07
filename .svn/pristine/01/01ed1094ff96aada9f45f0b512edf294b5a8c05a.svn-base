@@ -1,0 +1,115 @@
+{
+  "total": 10,
+  "result": [{
+    "DEPLOY": "<a  style='color:#46A3FF'  href='javascript:RoleAndModuleEdit(35,&#39;测试人员&#39;,&#39;测试角色&#39;)'>模块配置</a>",
+    "UPDATE_BY": "1",
+    "DESCRIPTION": "测试角色",
+    "UPDATE_DATE": "2018-12-05",
+    "ROLENAME": "测试人员",
+    "ROLEID": "35",
+    "CREATE_BY": "1",
+    "CREATE_DATE": "2018-12-05",
+    "FLAG": "0",
+    "NOTES": "测试"
+  }, {
+    "DEPLOY": "<a  style='color:#46A3FF'  href='javascript:RoleAndModuleEdit(34,&#39;服务站调度员&#39;,&#39;服务站调度员&#39;)'>模块配置</a>",
+    "UPDATE_BY": "1",
+    "DESCRIPTION": "服务站调度员",
+    "UPDATE_DATE": "2017-02-13",
+    "ROLENAME": "服务站调度员",
+    "ROLEID": "34",
+    "CREATE_BY": "1",
+    "CREATE_DATE": "2017-02-13",
+    "FLAG": "0",
+    "NOTES": "服务站调度员"
+  }, {
+    "DEPLOY": "<a  style='color:#46A3FF'  href='javascript:RoleAndModuleEdit(33,&#39;服务站管理员&#39;,&#39;服务站管理员&#39;)'>模块配置</a>",
+    "UPDATE_BY": "1",
+    "DESCRIPTION": "服务站管理员",
+    "UPDATE_DATE": "2017-02-13",
+    "ROLENAME": "服务站管理员",
+    "ROLEID": "33",
+    "CREATE_BY": "1",
+    "CREATE_DATE": "2017-02-13",
+    "FLAG": "0",
+    "NOTES": "服务站管理员"
+  }, {
+    "DEPLOY": "<a  style='color:#46A3FF'  href='javascript:RoleAndModuleEdit(31,&#39;车辆管理&#39;,&#39;车辆管理&#39;)'>模块配置</a>",
+    "UPDATE_BY": "1",
+    "DESCRIPTION": "车辆管理",
+    "UPDATE_DATE": "2016-08-11",
+    "ROLENAME": "车辆管理",
+    "ROLEID": "31",
+    "CREATE_BY": "1",
+    "CREATE_DATE": "2016-08-11",
+    "FLAG": "0",
+    "NOTES": "车辆管理"
+  }, {
+    "DEPLOY": "<a  style='color:#46A3FF'  href='javascript:RoleAndModuleEdit(30,&#39;集散调度员&#39;,&#39;集散调度员&#39;)'>模块配置</a>",
+    "UPDATE_BY": "1",
+    "DESCRIPTION": "集散调度员",
+    "UPDATE_DATE": "2016-08-02",
+    "ROLENAME": "集散调度员",
+    "ROLEID": "30",
+    "CREATE_BY": "1",
+    "CREATE_DATE": "2016-08-02",
+    "FLAG": "0",
+    "NOTES": "集散调度员"
+  }, {
+    "DEPLOY": "<a  style='color:#46A3FF'  href='javascript:RoleAndModuleEdit(29,&#39;集散中心管理员&#39;,&#39;集散中心管理员&#39;)'>模块配置</a>",
+    "UPDATE_BY": "1",
+    "DESCRIPTION": "集散中心管理员",
+    "UPDATE_DATE": "2016-08-02",
+    "ROLENAME": "集散中心管理员",
+    "ROLEID": "29",
+    "CREATE_BY": "1",
+    "CREATE_DATE": "2016-08-02",
+    "FLAG": "0",
+    "NOTES": "集散中心管理员"
+  }, {
+    "DEPLOY": "<a  style='color:#46A3FF'  href='javascript:RoleAndModuleEdit(28,&#39;转单管理员&#39;,&#39;转单管理员&#39;)'>模块配置</a>",
+    "UPDATE_BY": "1",
+    "DESCRIPTION": "转单管理员",
+    "UPDATE_DATE": "2016-08-02",
+    "ROLENAME": "转单管理员",
+    "ROLEID": "28",
+    "CREATE_BY": "1",
+    "CREATE_DATE": "2016-08-02",
+    "FLAG": "0",
+    "NOTES": "转单管理员"
+  }, {
+    "DEPLOY": "<a  style='color:#46A3FF'  href='javascript:RoleAndModuleEdit(26,&#39;网点调度员&#39;,&#39;网点调度员&#39;)'>模块配置</a>",
+    "UPDATE_BY": "1",
+    "DESCRIPTION": "网点调度员",
+    "UPDATE_DATE": "2016-08-02",
+    "ROLENAME": "网点调度员",
+    "ROLEID": "26",
+    "CREATE_BY": "1",
+    "CREATE_DATE": "2016-08-02",
+    "FLAG": "0",
+    "NOTES": "网点调度员"
+  }, {
+    "DEPLOY": "<a  style='color:#46A3FF'  href='javascript:RoleAndModuleEdit(25,&#39;网点管理员&#39;,&#39;网点管理员&#39;)'>模块配置</a>",
+    "UPDATE_BY": "1",
+    "DESCRIPTION": "网点管理员",
+    "UPDATE_DATE": "2016-08-02",
+    "ROLENAME": "网点管理员",
+    "ROLEID": "25",
+    "CREATE_BY": "1",
+    "CREATE_DATE": "2016-08-02",
+    "FLAG": "0",
+    "NOTES": "网点管理员"
+  }, {
+    "DEPLOY": "<a  style='color:#46A3FF'  href='javascript:RoleAndModuleEdit(1,&#39;超级管理员&#39;,&#39;超级管理员角色&#39;)'>模块配置</a>",
+    "UPDATE_BY": "1",
+    "DESCRIPTION": "超级管理员角色",
+    "UPDATE_DATE": "2015-05-04",
+    "ROLENAME": "超级管理员",
+    "ROLEID": "1",
+    "CREATE_BY": "1",
+    "CREATE_DATE": "2015-05-04",
+    "FLAG": "0",
+    "NOTES": "超级管理员角色"
+  }],
+  "totalPage": 1
+}

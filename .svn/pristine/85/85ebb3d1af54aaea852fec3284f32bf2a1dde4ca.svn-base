@@ -1,0 +1,108 @@
+{
+  "result": [
+    [
+      {
+        "NOTES": "ces3",
+        "CREATE_DATE": "2019-01-04",
+        "DESCRIPTION": "ces2",
+        "UPDATE_DATE": "2019-01-04",
+        "UPDATE_BY": "1",
+        "CREATE_BY": "1",
+        "ROLEID": "46",
+        "ROLENAME": "ces1",
+        "FLAG": "0"
+      },
+      {
+        "NOTES": "服务站调度员",
+        "CREATE_DATE": "2017-02-13",
+        "DESCRIPTION": "服务站调度员",
+        "UPDATE_DATE": "2017-02-13",
+        "UPDATE_BY": "1",
+        "CREATE_BY": "1",
+        "ROLEID": "34",
+        "ROLENAME": "服务站调度员",
+        "FLAG": "0"
+      },
+      {
+        "NOTES": "服务站管理员",
+        "CREATE_DATE": "2017-02-13",
+        "DESCRIPTION": "服务站管理员",
+        "UPDATE_DATE": "2017-02-13",
+        "UPDATE_BY": "1",
+        "CREATE_BY": "1",
+        "ROLEID": "33",
+        "ROLENAME": "服务站管理员",
+        "FLAG": "0"
+      },
+      {
+        "NOTES": "车辆管理",
+        "CREATE_DATE": "2016-08-11",
+        "DESCRIPTION": "车辆管理",
+        "UPDATE_DATE": "2016-08-11",
+        "UPDATE_BY": "1",
+        "CREATE_BY": "1",
+        "ROLEID": "31",
+        "ROLENAME": "车辆管理",
+        "FLAG": "0"
+      },
+      {
+        "NOTES": "集散调度员",
+        "CREATE_DATE": "2016-08-02",
+        "DESCRIPTION": "集散调度员",
+        "UPDATE_DATE": "2016-08-02",
+        "UPDATE_BY": "1",
+        "CREATE_BY": "1",
+        "ROLEID": "30",
+        "ROLENAME": "集散调度员",
+        "FLAG": "0"
+      },
+      {
+        "NOTES": "集散中心管理员",
+        "CREATE_DATE": "2016-08-02",
+        "DESCRIPTION": "集散中心管理员",
+        "UPDATE_DATE": "2016-08-02",
+        "UPDATE_BY": "1",
+        "CREATE_BY": "1",
+        "ROLEID": "29",
+        "ROLENAME": "集散中心管理员",
+        "FLAG": "0"
+      },
+      {
+        "NOTES": "网点调度员",
+        "CREATE_DATE": "2016-08-02",
+        "DESCRIPTION": "网点调度员",
+        "UPDATE_DATE": "2016-08-02",
+        "UPDATE_BY": "1",
+        "CREATE_BY": "1",
+        "ROLEID": "26",
+        "ROLENAME": "网点调度员",
+        "FLAG": "0"
+      },
+      {
+        "NOTES": "网点管理员",
+        "CREATE_DATE": "2016-08-02",
+        "DESCRIPTION": "网点管理员",
+        "UPDATE_DATE": "2016-08-02",
+        "UPDATE_BY": "1",
+        "CREATE_BY": "1",
+        "ROLEID": "25",
+        "ROLENAME": "网点管理员",
+        "FLAG": "0"
+      }
+    ],
+    [
+      {
+        "NOTES": "转单管理员",
+        "CREATE_DATE": "2016-08-02",
+        "DESCRIPTION": "转单管理员",
+        "UPDATE_DATE": "2016-08-02",
+        "UPDATE_BY": "1",
+        "CREATE_BY": "1",
+        "ROLEID": "28",
+        "ROLENAME": "转单管理员",
+        "FLAG": "0"
+      }
+    ]
+  ],
+  "success": true
+}

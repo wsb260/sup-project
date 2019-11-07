@@ -1,0 +1,26 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/org/listpage.json"
+  },
+  getByIdData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/org/edit.json"
+  },
+  //新增
+  saveNew: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/org/save.json"
+  },
+  //编辑
+  saveEdit: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/org/editsave.json"
+  },
+  //删除
+  delete: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/org/delete.json"
+  },
+};

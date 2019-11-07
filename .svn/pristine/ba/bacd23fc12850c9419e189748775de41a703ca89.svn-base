@@ -1,0 +1,7 @@
+import e from "controller/index.js"
+export default {
+    ORGNAME: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/admin/modules/tool/ORGNAME/list.json"
+  },
+}

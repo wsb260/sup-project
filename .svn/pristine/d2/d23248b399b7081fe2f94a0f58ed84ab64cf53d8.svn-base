@@ -1,0 +1,21 @@
+{
+  "oper": {
+    "CLIENTID": "cd55d66e4d5b349b4f35b168832154b0",
+    "CREATE_BY": "83",
+    "CREATE_DATE": "2018-06-14",
+    "FLAG": "0",
+    "LOGINID": "xjsj",
+    "NOTES": "",
+    "OPENID": "",
+    "OPERID": "85",
+    "OPERNAME": "xjsj",
+    "OPERTYPE": "50",
+    "ORGID": "2",
+    "ORGNAME": "小金网点",
+    "PASSWORD": "96e79218965eb72c92a549dd5a330112",
+    "TEL": "13856788765",
+    "UPDATE_BY": "83",
+    "UPDATE_DATE": "2018-06-14"
+  },
+  "success":"true"
+}

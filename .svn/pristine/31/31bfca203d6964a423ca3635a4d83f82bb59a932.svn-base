@@ -1,0 +1,87 @@
+import {
+  makeGetAjaxUrl,
+  makeAjaxUrl,
+  forEachToJson
+} from "tool/tool.js";
+import api from "controller/api/api.js";
+const apiInfo = api.basicInformation.ordercmc;
+export default {
+  getData: (state, getters, rootState, rootGetters) => (option) => {
+    var ajaxData = {
+      "rows": option && option.page_size ? option.page_size : (state.page_size || 50),
+      "page": option && option.current ? option.current : (state.current || 1)
+    };
+    if( state.searchType ){
+      forEachToJson(state.searchData, (key, v) => {
+        if( v != "" || typeof(v) == "number" ){
+          if( key == "BLCSTATUS" ){
+            ajaxData.BLCSTATUS = state.searchType ? rootGetters["selectData/findData"]({ name: "BLCSTATUS", value: state.searchData.blcstatus }) : "";
+          }else if( key == "BLCTYPE" ){
+            ajaxData.BLCTYPE = state.searchType ? rootGetters["selectData/findData"]({ name: "BLCTYPE", value: state.searchData.blctype }) : "";
+          }else if( key == "SETTLEMENT" ){
+            ajaxData.SETTLEMENT = state.searchType ? rootGetters["selectData/findData"]({ name: "SETTLEMENT", value: state.searchData.settlement }) : "";
+          }else{
+            ajaxData[key] = v;
+          }
+        }
+      });
+    }
+    return {
+      method: apiInfo.getData.method,
+      url: apiInfo.getData.url + makeGetAjaxUrl(ajaxData)
+    };
+  },
+  getByIdData: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.getByIdData.method,
+      url: apiInfo.getByIdData.url,
+      data: makeAjaxUrl({
+        id: option.id
+      })
+    };
+  },
+  saveNew: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.saveNew.method,
+      url: apiInfo.saveNew.url,
+      data: makeAjaxUrl( {
+        blcname: state.byIdData.BLCNAME,
+        blcaddress: state.byIdData.BLCADDRESS,
+        blcprincipalnm: state.byIdData.BLCPRINCIPALNM,
+        blcprincipaltel: state.byIdData.BLCPRINCIPALTEL,
+        blccontactsnm: state.byIdData.BLCCONTACTSNM,
+        blccontactstel:state.byIdData.BLCCONTACTSTEL,
+        blcstatus: state.byIdData.BLCSTATUS,
+        blctype: state.byIdData.BLCTYPE,
+        settlement: state.byIdData.SETTLEMENT,
+      })
+    };
+  },
+  saveEdit: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.saveEdit.method,
+      url: apiInfo.saveEdit.url,
+      data: makeAjaxUrl({
+        id: state.byIdData.ID,
+        blcname: state.byIdData.BLCNAME,
+        blcaddress: state.byIdData.BLCADDRESS,
+        blcprincipalnm: state.byIdData.BLCPRINCIPALNM,
+        blcprincipaltel: state.byIdData.BLCPRINCIPALTEL,
+        blccontactsnm: state.byIdData.BLCCONTACTSNM,
+        blccontactstel:state.byIdData.BLCCONTACTSTEL,
+        blcstatus: state.byIdData.BLCSTATUS,
+        blctype: state.byIdData.BLCTYPE,
+        settlement: state.byIdData.SETTLEMENT,
+      })
+    };
+  },
+  delete: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.delete.method,
+      url: apiInfo.delete.url,
+      data: makeAjaxUrl({
+        ids: option.id
+      })
+    };
+  }
+};

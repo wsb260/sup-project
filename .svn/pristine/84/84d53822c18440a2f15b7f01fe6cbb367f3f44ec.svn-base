@@ -1,0 +1,100 @@
+<template>
+  <Modal
+    v-model="showCheck"
+    :mask-closable="!1"
+    draggable
+    :transfer="!1"
+    @on-visible-change="visibleChange"
+    :closable="!popupLoading"
+    :class-name="(popupLoading ? 'blue popupLoading' : 'blue')"
+    width="900"
+  >
+    <p slot="header">
+      <span class="fa fa-file-text-o"></span>
+      <span>详细信息</span>
+    </p>
+     <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      ></Table>
+    <div slot="footer">
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "配送任务单号", key: "ID", align: "center" },
+          { title: "车主名称", key: "CAROWNER_NM", align: "center" },
+          { title: "车主电话", key: "CAROWNER_TEL", align: "center" },
+          { title: "车牌号", key: "CARNO", align: "center" },
+          { title: "制单时间", key: "CREATE_DATE", align: "center" },
+        ]
+      },
+    };
+  },
+  props: {},
+  components: {},
+  computed: {
+  //  byIdData() {
+  //     return this.$store.state.settle.byIdData;
+  //   },
+    tableData() {
+      return this.$store.state.settle.tableData1;
+    },
+    tableLoading() {
+      return this.$store.state.settle.tableLoading;
+    },
+    current() {
+      return this.$store.state.settle.current;
+    },
+    page_size() {
+      return this.$store.state.settle.page_size;
+    },
+    total() {
+      return this.$store.state.settle.total;
+    },
+    pageWait() {
+      return this.$store.state.settle.pageWait;
+    },
+    showCheck: {
+      get: function () {
+        return this.$store.state.settle.showCheck;
+      },
+      set: function (val) {
+        this.$store.commit("settle/changeShowCheck", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.settle.popupLoading;
+    }
+  },
+  created() {},
+  mounted() {},
+  methods: {
+    open(id) {
+      this.$store.commit("settle/changeShowCheck",true);
+      this.id = id || false;
+        this.$store.dispatch({type:"settle/getData", id:this.id});
+        
+    },
+    onCancel() {
+      this.$store.commit("settle/changeShowCheck", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("settle/changePageWait", val);
+    }
+  }
+};
+</script>

@@ -1,0 +1,114 @@
+<template>
+  <Dropdown trigger="custom" :transfer="!1" placement="bottom-start" :visible="visible">
+    <Button type="info" @click="changeVisible(true)">
+      <Icon type="ios-search" /> 精确查询
+    </Button>
+    <DropdownMenu slot="list" class="searchBox">
+      <Form :model="searchData" :label-width="90" ref="editForm" class="forms">
+        <Row >
+          <i-col span="12">
+            <Form-item label="订单号：">
+              <i-input v-model="searchData.TXLOGISTICID"  clearable placeholder="请输入订单号"></i-input>
+            </Form-item>
+          </i-col>
+          <i-col span="12">
+            <Form-item label="寄件人：">
+              <i-input v-model="searchData.SENDER_NAME"  clearable placeholder="请输入寄件人"></i-input>
+            </Form-item>
+          </i-col>
+        </Row>
+        <Row >
+          <i-col span="12">
+            <Form-item label="寄件人电话：">
+              <i-input v-model="searchData.SENDER_MOBILE"  clearable placeholder="请输入寄件人电话"></i-input>
+            </Form-item>
+          </i-col>
+          <i-col span="12">
+            <Form-item label="收件人：">
+              <i-input v-model="searchData.RECEIVER_NAME"  clearable placeholder="请输入收件人"></i-input>
+            </Form-item>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+            <Form-item label="收件人电话：">
+              <i-input v-model="searchData.RECEIVER_MOBILE"  clearable placeholder="请输入收件人电话"></i-input>
+            </Form-item>
+          </i-col>
+           <i-col span="12">
+             <FormItem label="状态：">
+              <Select v-model="searchData.STATUS" clearable placeholder="请选择状态">
+                <Option v-for="(item,i) in STATUS" :value="item.value" :key="i">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+             <FormItem label="订单流向：">
+              <Select v-model="searchData.UPANDDOWNSTATUS" clearable placeholder="请选择订单流向">
+                <Option v-for="(item,i) in CARTYPE" :value="item.value" :key="i">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+        </Row>
+      </Form>
+      <div style="text-align:center;">
+        <Button type="info" @click="search">
+          <Icon type="md-search" /> 查询
+        </Button>
+        <Button type="success" @click="reset">
+          <span class="fa fa-refresh"></span> 重置
+        </Button>
+        <Button type="error" @click="changeVisible(false)">
+          <span class="fa fa-remove"></span> 关闭
+        </Button>
+      </div>
+    </DropdownMenu>
+  </Dropdown>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+   STATUS() {
+      return this.$store.state.selectData.STATUS;
+    },
+    CARTYPE() {
+      return this.$store.state.selectData.CARTYPE;
+    },
+    searchData() {
+      return this.$store.state.orderproductquery.searchData;
+    },
+    searchType() {
+      return this.$store.state.orderproductquery.searchType;
+    }
+  },
+  deactivated() {
+    this.visible = false;  
+  },
+  methods: {
+    search() {
+      this.$store.dispatch({ type: 'orderproductquery/refreshData', searchType: true, current: 1 });
+      this.visible = false;
+    },
+    reset() {
+      this.$store.commit("orderproductquery/clearSearchData");
+      this.$store.dispatch({ type: 'orderproductquery/refreshData', searchType: false, current: 1 });
+    },
+    changeVisible(type) {
+      this.visible = type;
+    }
+  }
+};
+</script>
+<style>
+.forms{
+margin:0 10px 0 0;
+}
+</style>
+

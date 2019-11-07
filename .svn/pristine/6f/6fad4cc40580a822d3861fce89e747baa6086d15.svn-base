@@ -1,0 +1,145 @@
+<template>
+  <Modal
+    v-model="showCheck"
+    :mask-closable="!1"
+    draggable
+    :transfer="!1"
+    @on-visible-change="visibleChange"
+    :closable="!popupLoading"
+    :class-name="(popupLoading ? 'blue popupLoading' : 'blue')"
+    width="900"
+  >
+    <p slot="header">
+      <span class="fa fa-file-text-o"></span>
+      <span>详细信息</span>
+    </p>
+    <Form :model="byIdData" :label-width="100">
+      <Row>
+        <i-col span="6">
+          <FormItem label="派送单号：" prop="ROUTESHEETNO" >
+            <i-input v-model="byIdData.ROUTESHEETNO" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="总件数：" prop="TOTALQTY" >
+            <i-input v-model="byIdData.TOTALQTY" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="总重量：" prop="TOTALWEIGHT" >
+            <i-input v-model="byIdData.TOTALWEIGHT" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="状态：" prop="STATUS" >
+            <i-input v-model="byIdData.STATUS" readonly></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="6">
+          <FormItem label="订单总金额：" prop="TOTALPRICE" >
+            <i-input v-model="byIdData.TOTALPRICE" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="应收金额：" prop="ACCOUNTSPRICE" >
+            <i-input v-model="byIdData.ACCOUNTSPRICE" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="制单人：" prop="EDITORNAME" >
+            <i-input v-model="byIdData.EDITORNAME" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="制单时间：" prop="EDITORDATE" >
+            <i-input v-model="byIdData.EDITORDATE" readonly></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+    </Form>
+     <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      ></Table>
+    <div slot="footer">
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      table: {
+        height: 200,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "订单号", key: "TXLOGISTICID", align: "center" },
+          { title: "件数", key: "QTY", align: "center" },
+          { title: "总金额", key: "TOTALFEE", align: "center" },
+          { title: "应收款额", key: "ITEMSVALUE", align: "center" },
+          { title: "代收款额", key: "GOODSVALUE", align: "center" },
+          { title: "收货地址", key: "RECEIVER_ADDRESS", align: "center" },
+        ]
+      },
+    };
+  },
+  props: {},
+  components: {},
+  computed: {
+   byIdData() {
+      return this.$store.state.orderplan.byIdData;
+    },
+    tableData() {
+      return this.$store.state.orderplan.tableData1;
+    },
+    tableLoading() {
+      return this.$store.state.orderplan.tableLoading;
+    },
+    current() {
+      return this.$store.state.orderplan.current;
+    },
+    page_size() {
+      return this.$store.state.orderplan.page_size;
+    },
+    total() {
+      return this.$store.state.orderplan.total;
+    },
+    pageWait() {
+      return this.$store.state.orderplan.pageWait;
+    },
+    showCheck: {
+      get: function () {
+        return this.$store.state.orderplan.showCheck;
+      },
+      set: function (val) {
+        this.$store.commit("orderplan/changeShowCheck", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.orderplan.popupLoading;
+    }
+  },
+  created() {},
+  mounted() {},
+  methods: {
+    open(id) {
+      this.$store.dispatch({ type: "orderplan/getByIdData", id: id });
+      this.$store.commit("orderplan/changeShowCheck", true);
+    },
+    onCancel() {
+      this.$store.commit("orderplan/changeShowCheck", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("orderplan/changePageWait", val);
+    }
+  }
+};
+</script>

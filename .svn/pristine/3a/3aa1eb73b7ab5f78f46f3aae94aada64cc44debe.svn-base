@@ -1,0 +1,32 @@
+{
+    "result": [{
+        "value": "0",
+        "label": "单车"
+      },
+      {
+        "value": "1",
+        "label": "平板车"
+      },
+      {
+        "value": "2",
+        "label": "牵引车"
+      },
+      {
+        "value": "3",
+        "label": "厢式车"
+      },
+      {
+        "value": "4",
+        "label": "敞篷车"
+      },
+      {
+        "value": "5",
+        "label": "冷藏车"
+      },
+      {
+        "value": "6",
+        "label": "高栏车"
+      }
+    ]
+  }
+  

@@ -1,0 +1,41 @@
+<template>
+  <Modal v-model="show" :mask-closable="!1" className="red delete" width="300">
+      <p slot="header">
+      <Icon type="ios-add-circle-outline" ></Icon>
+      <span>对账单生成</span>
+    </p>
+    <p>您确定进行对账单生成操作吗</p>
+    <div slot="footer">
+      <Button type="success" @click="onOk" >保存</Button>
+      <Button type="error" @click="onCancel" >关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      id: false,
+      show: false,
+      billdata:{}
+    };
+  },
+  mounted() {
+  },
+  methods: {
+    open(id,data) {
+      this.show = true;
+      this.billdata = data
+    },
+    onOk() {
+      this.$store.dispatch({ type: "driveraccount/billGenData",data:this.billdata });
+      this.show = false;
+      
+    },
+    onCancel() {
+     this.show = false;
+    }
+  }
+};
+</script>
+

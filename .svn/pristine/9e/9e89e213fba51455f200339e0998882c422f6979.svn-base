@@ -1,0 +1,22 @@
+import {
+  makeSelectOptions,
+  makeTreeInfo
+} from "tool/tool.js";
+export default {
+  getData(state, payload) {
+    if( payload.province ){
+      state.province = makeSelectOptions(payload.province, "sys_tree_node_nm", "sys_tree_node_id");
+    }
+    if( payload.city ){
+      state.city = makeSelectOptions(payload.city, "sys_tree_node_nm", "sys_tree_node_id");
+    }
+    if( payload.county ){
+      state.county = makeSelectOptions(payload.county, "sys_tree_node_nm", "sys_tree_node_id");
+    }
+  },
+  isNew(state, payload) {
+    state.province = [];
+    state.city = [];
+    state.county = [];
+  }
+};

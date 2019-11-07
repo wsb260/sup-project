@@ -1,0 +1,21 @@
+import axios from 'axios';
+export default {
+  getData({ dispatch, commit, state, rootState }, option) {
+    var _this = this;
+    axios(this.getters['selectData/getData'](option.name))
+    .then((req1) => {
+      if (req1 && req1.data.result) {
+        commit({
+          type: 'getData',
+          data: req1.data.result,
+          name: option.name
+        });
+      } else {
+        _this.commit("notice/dataError", req1.data.mag);
+      }
+    })
+    .catch((error) => {
+      _this.commit("notice/dataError", error);
+    });
+  }
+};

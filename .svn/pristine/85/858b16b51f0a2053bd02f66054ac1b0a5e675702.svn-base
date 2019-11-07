@@ -1,0 +1,182 @@
+<template>
+  <div :class="'pageBody' + (pageWait ? ' wait' : '')" id="servicestatistics">
+    <div class="layout-page-tool">
+      <Button type="warning" @click="upload">
+        <Icon type="md-add" /> 导出报表
+      </Button>
+      <div class="quickSearch" v-if="showQuickSearch">
+        <span class="title">营运统计：</span>
+        <span class="info">
+          <Select v-model="quickSearchData.flag" placeholder="请选择统计方式" @on-change="changeMonth">
+            <Option v-for="item in LEVEL" :value="item.value" :key="item.value">{{item.label}}</Option>
+          </Select>
+        </span>
+        <span class="info">
+          <DatePicker :type="date" v-model="quickSearchData.startdate" placeholder="统计开始时间" @on-clear="reset()" clearable @on-change="dateChange"></DatePicker>
+        </span>
+        <Button type="info" @click="search()">
+          <Icon type="ios-search" /> 快速查询
+        </Button>
+      </div>
+    </div>
+    <div class="layout-page-content">
+      <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      >
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page
+        :total="total"
+        :current="current"
+        :page-size="page_size"
+        :page-size-opts="page.page_sizepts"
+        @on-change="page_change"
+        @on-page-size-change="page_size_change"
+        show-sizer
+        show-elevator
+        show-total
+        size="small"
+      >
+      </Page>
+    </div>
+  </div>
+</template>
+<script>
+import api from "controller/api/api.js";
+import { getTableHeight,timeText } from "tool/tool.js";
+export default {
+  name: "servicestatistics",
+  data() {
+    return {
+      showQuickSearch: false,
+      date:"date",
+      monthDate:"",
+      LEVEL: [
+        {value:"1",label:"日营运统计"},
+        {value:"2",label:"月营运统计"}
+      ],
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "订单号", key: "ORDERNO", align: "center" },
+          { title: "订单流向", key: "UPANDDOWNSTATUS", align: "center" },
+          { title: "代收款金额", key: "COLLECTPRICE", align: "center" },
+          { title: "应收费用", key: "ITEMSVALUE", align: "center" },
+          { title: "运输费用", key: "FREIGHT", align: "center" },
+          { title: "总费用", key: "TOTALFEE", align: "center" },
+          { title: "支付方式", key: "PAYWAY", align: "center" },
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      },
+       option: {
+        upLoadUrl: api.statisticalManagement.servicestatistics.fileUpLoad.url,
+        pageWait: "servicestatistics/changePageWait",
+        text: []
+      }
+    };
+  },
+  components: {
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.servicestatistics.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.servicestatistics.tableLoading;
+    },
+    current() {
+      return this.$store.state.servicestatistics.current;
+    },
+    page_size() {
+      return this.$store.state.servicestatistics.page_size;
+    },
+    total() {
+      return this.$store.state.servicestatistics.total;
+    },
+    pageWait() {
+      return this.$store.state.servicestatistics.pageWait;
+    },
+    quickSearchData() {
+      return this.$store.state.servicestatistics.quickSearchData;
+    },
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("servicestatistics")) {
+      this.$store.dispatch({ type: "servicestatistics/refreshData" });
+    }
+  },
+  mounted() {
+    this.$store.commit("servicestatistics/clearSearchData");
+    this.showQuickSearch = true;
+    this.table.height = getTableHeight();
+  },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "servicestatistics/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "servicestatistics/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    upload() {
+      window.open(this.option.upLoadUrl + "?startdate=" + ( timeText(this.quickSearchData.startdate) || timeText(this.quickSearchData.startdate_month) || this.quickSearchData.flag ));
+    },
+    search() {
+      this.$store.dispatch({
+        type: 'servicestatistics/refreshData',
+        searchType: this.quickSearchData.startdate || this.quickSearchData.flag || this.quickSearchData.startdate_month,
+        current: 1
+      });
+    },
+    refreshTable() {
+      this.$store.dispatch({ type: "servicestatistics/refreshData" });
+    },
+    changeMonth(value){
+     this.date = (value == "1" ? "date" : "month");
+     if(value == "1"){
+       this.quickSearchData.startdate = this.monthDate;
+     }
+    },
+    dateChange(value,date){
+      if(date == "month"){
+      this.monthDate = value;
+      delete this.quickSearchData.startdate;
+      this.quickSearchData.startdate_month = this.monthDate;
+      }else{
+      delete this.quickSearchData.startdate_month;
+      }
+    },
+    reset() {
+      this.$store.commit("servicestatistics/clearSearchData");
+      this.$store.dispatch({
+        type: "servicestatistics/refreshData",
+        searchType: false,
+        current: 1
+      });
+    }
+  }
+};
+</script>
+
+<style>
+</style>

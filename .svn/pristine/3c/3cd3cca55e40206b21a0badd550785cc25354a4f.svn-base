@@ -1,0 +1,150 @@
+<template>
+  <div :class="'pageBody' + (pageWait ? ' wait' : '')" id="driveraccount">
+    <div class="layout-page-tool">
+      <Button type="success" @click="add">
+        <Icon type="md-add" /> 对账单查询
+      </Button>
+      <search-box ref="searchBox"></search-box>
+    </div>
+    <div class="layout-page-content">
+      <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      ></Table>
+    </div>
+    <div class="layout-page-page">
+      <Page
+        :total="total"
+        :current="current"
+        :page-size="page_size"
+        :page-size-opts="page.page_sizepts"
+        @on-change="page_change"
+        @on-page-size-change="page_size_change"
+        show-sizer
+        show-elevator
+        show-total
+        size="small">
+      </Page>
+    </div>
+    <popup-add ref="popupAdd"></popup-add>
+  </div>
+</template>
+<script>
+import popupAdd from "components/situation/popup-add";
+import searchBox from "./components/searchBox"
+import { getTableHeight } from "tool/tool.js";
+export default {
+  name: "driveraccount",
+  data() {
+    return {
+      delModel: {},
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "派送单号", key: "ID", align: "center" },
+          { title: "车主名称", key: "CAROWNER_NM", align: "center" },
+          { title: "车主电话", key: "CAROWNER_TEL", align: "center" },
+          { title: "车牌号", key: "CARNO", align: "center" },
+          { title: "隶属承运商", key: "BLCNAME", align: "center" },
+          { title: "隶属承运商类型", key: "BLCTYPE", align: "center",
+            render: (h,params) => {
+              return h("div",
+                [h("span",params.row.BLCTYPE == "10" ? "社会车辆隶属" : "普通车辆隶属")])
+            }
+          },
+          { title: "制单时间", key: "CREATE_DATE", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "对账单生成" },
+                  class: "tableBtn fa success fa-edit",
+                  on: {
+                    click: () => {
+                      // this.$refs.popupAdd.open(
+                      //   params.row.ID,
+                      //   "driveraccount/delete",
+                      //   params.row
+                      // );
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+  components: {
+    popupAdd,
+    searchBox
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.driveraccount.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.driveraccount.tableLoading;
+    },
+    current() {
+      return this.$store.state.driveraccount.current;
+    },
+    page_size() {
+      return this.$store.state.driveraccount.page_size;
+    },
+    total() {
+      return this.$store.state.driveraccount.total;
+    },
+    pageWait() {
+      return this.$store.state.driveraccount.pageWait;
+    }
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("driveraccount")) {
+      this.$store.dispatch({ type: "driveraccount/refreshData" });
+    }
+  },
+  mounted() {
+    this.table.height = getTableHeight();
+  },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "driveraccount/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "driveraccount/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    add() {
+      this.$router.push('/settle');
+    }
+  }
+};
+</script>
+
+<style>
+</style>

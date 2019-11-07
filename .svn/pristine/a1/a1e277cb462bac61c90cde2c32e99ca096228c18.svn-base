@@ -1,0 +1,21 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/deliverymanage/listpage.json"
+  },
+  getByIdData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/deliverymanage/findByDeliveryWayId.json"
+  },
+  //新增
+  saveNew: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/deliverymanage/addDeliveryMsg.json"
+  },
+  //编辑
+  saveEdit: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/deliverymanage/modDeliveryMsg.json"
+  },
+};

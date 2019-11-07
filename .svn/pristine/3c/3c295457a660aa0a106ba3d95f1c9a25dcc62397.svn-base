@@ -1,0 +1,72 @@
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changeShowCheck(state, payload) {
+    state.showCheck = payload;
+  },
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  getData(state, payload) {
+    if (payload.worked == 'table') {
+      state.tableData = payload.data;
+    }
+  },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  changeTotal(state, payload) {
+    state.total = payload;
+  },
+  changeCurrent(state, payload) {
+    if (payload && payload != state.current) {
+      state.current = payload;
+    }
+  },
+  changePageSize(state, payload) {
+    if (payload && payload != state.page_size) {
+      state.page_size = payload;
+    }
+  },
+  transportTime(state,payload){
+    var date = new Date();
+      var Year = date.getFullYear();
+      var Month = date.getMonth();
+      var Day = date.getDate();
+      var Hour = date.getHours();
+      var Minute = date.getMinutes();
+      var Seconds = date.getSeconds();
+      if(Month < 10){
+        Month = "0" + (Month + 1);
+      }else if(Hour < 10){
+        Hour = "0" + Hour;
+      }else if(Minute < 10){
+        Minute = "0" + Minute;
+      }else if(Hour < 10){
+        Seconds = "0" + Seconds;
+      }
+      var newTime = Year + "-" + Month + "-" + Day + " " + Hour + ":" + Minute + ":" + Seconds;
+      console.log(state.tableData.filter(item => item.ID == payload.id)[0].TRANSTARTDATE)
+      state.tableData.filter(item => item.ID == payload.id)[0].TRANSTARTDATE = newTime;
+  },
+  changeSearchType(state, payload) {
+    state.searchType = payload;
+  },
+  clearSearchData(state, payload) {
+    state.searchType = false;
+    state.searchData = {
+      tranorderno: "",
+      trancompanyid: "",
+      starttrandate: "",
+      endtrandate: "",
+      transtatus: ""
+    };
+    state.quickSearchData = {
+      orderno:""
+    }
+  },
+};

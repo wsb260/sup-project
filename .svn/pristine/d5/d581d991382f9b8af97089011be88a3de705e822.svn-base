@@ -1,0 +1,160 @@
+$borderColor: #ccc;
+$borderHoverColor: #333;
+$successColor: #19be6b;
+$warningColor: #f90;
+$errorColor: #ed4014;
+$noBtnColor: #ccc;
+.eltTree-ul{
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  transition: all .2s ease-in-out;
+  padding-left: 18px;
+  .eltTree-li{
+    // padding: 1px 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 20px;
+    &.hasChildren{
+      position: relative;
+      &.open{
+        &:before,&:after{
+          content: "";
+          transition: all .2s ease-in-out;
+          position: absolute;
+          display: block;
+          margin: auto;
+          z-index: 0;
+        }
+        &:before{
+          left: 7px;
+          bottom: 8px;
+          width: 12px;
+          height: 1px;
+          border-bottom: 1px dashed $borderColor;
+        }
+        &:after{
+          top: 21px;
+          left: 7px;
+          bottom: 10px;
+          width: 1px;
+          border-right: 1px dashed $borderColor;
+        }
+        &:hover:before,
+        &:hover:after{
+          border-color: $borderHoverColor;
+        }
+      }
+      &.close .arrow .ivu-icon{
+        transform: rotate(-90deg);
+      }
+    }
+    & span{
+      vertical-align: middle;
+      height: 20px;
+      line-height: 18px;
+      display: inline-block;
+      position: relative;
+      z-index: 2;
+    }
+    & > div.ulBox{
+      width: 100%;
+      height: auto;
+      transition: all .2s ease-in-out;
+    }
+    .arrow{
+      min-width: 12px;
+      .ivu-icon{
+        transition: all .2s ease-in-out;
+      }
+    }
+    .check{
+
+    }
+    .icon{
+
+    }
+    .name{
+      font-size: 12px;
+      &.hasActions{
+        cursor: pointer;
+        z-index: 3;
+        &:before{
+          content: "";
+          cursor: default;
+          position: absolute;
+          top: 1px;
+          left: 100%;
+          right: -330px;
+          bottom: 0;
+          display: block;
+          margin: auto;
+          width: 300px;
+          height: 20px;
+          z-index: 1;
+        }
+        &:after{
+          content: "";
+          cursor: default;
+          position: absolute;
+          top: 1px;
+          left: calc(100% + 20px);
+          bottom: 0;
+          display: block;
+          margin: auto;
+          width: 300px;
+          height: 1px;
+          border-top: 1px dashed $borderColor;
+          z-index: 2;
+        }
+        &:hover:after{
+          border-color: $borderHoverColor;
+        }
+      }
+    }
+    .actionBtnBox{
+      background-color: #fff;
+      padding-left: 10px;
+      float: right;
+      z-index: 3;
+      user-select: none;
+      .actionBtn{
+        line-height: 16px;
+        width: 22px;
+        border-radius: 3px;
+        text-align: center;
+        box-sizing: border-box;
+        cursor: pointer;
+        i{
+          font-weight: bold;
+        }
+        &.success{
+          color: $successColor;
+        }
+        &.warning{
+          color: $warningColor;
+        }
+        &.error{
+          color: $errorColor;
+        }
+        &.noBtn{
+          color: $noBtnColor;
+        }
+        &:hover{
+          &.success{
+            border: 1px solid $successColor;
+            box-shadow: 0 0 2px $successColor;
+          }
+          &.warning{
+            border: 1px solid $warningColor;
+            box-shadow: 0 0 2px $warningColor;
+          }
+          &.error{
+            border: 1px solid $errorColor;
+            box-shadow: 0 0 2px $errorColor;
+          }
+        }
+      }
+    }
+  }
+}

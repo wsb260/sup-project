@@ -1,0 +1,15 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/statisticsorder/listpage.json"
+  },
+  searchData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/statisticsorder/listpage.json"
+  },
+  fileDown: {
+    method: e.type == 1 ? "GET" : "POST",
+    url:"/statisticsorder/exportAll.json"
+  }
+};

@@ -1,0 +1,14 @@
+import api from "controller/api/api.js";
+const apiInfo = api.selectData;
+export default {
+  getData: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo[option].method,
+      url: apiInfo[option].url
+    };
+  },
+  findData: (state, getters, rootState, rootGetters) => (option) => {
+    let vl = state[option.name].filter(item => item[ option.label ? "label" : "value" ] == option[ option.label ? "label" : "value" ]);
+    return vl.length > 0 ? vl[0][ option.label ? "value" : "label" ] : "";
+  }
+};

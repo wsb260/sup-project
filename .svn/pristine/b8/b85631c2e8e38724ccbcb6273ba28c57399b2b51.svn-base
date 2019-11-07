@@ -1,0 +1,133 @@
+<template>
+  <Modal v-model="showEdit" :mask-closable="!1" draggable :transfer="!1" @on-visible-change="visibleChange" :closable="!popupLoading" :class-name="(id ? 'yellow' : 'green') + (popupLoading ? ' popupLoading' : '')" width="740">
+    <p slot="header">
+      <span class="fa fa-edit" v-if="id"></span>
+      <Icon type="ios-add-circle-outline" v-else></Icon>
+      <span>{{'人员信息' + (id ? '修改' : '新增')}}</span>
+    </p>
+    <Form :model="byIdData" :label-width="100" :rules="ruleValidate" ref="editForm">
+      <Row>
+        <i-col span="12">
+          <FormItem label="人员名称：" prop="OPERNAME">
+            <i-input v-model="byIdData.OPERNAME" placeholder="请输入人员名称"></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="所属机构：" prop="ORGNAME">
+            <Select v-model="byIdData.ORGNAME" placeholder="请选择所属机构">
+              <Option v-for="item in ORGNAME" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="12">
+          <FormItem label="人员类型：" prop="OPERTYPE">
+            <Select v-model="byIdData.OPERTYPE" placeholder="请选择人员类型">
+              <Option v-for="item in OPERTYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="电话号码：" prop="TEL">
+            <i-input v-model="byIdData.TEL" placeholder="请输入电话号码"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="12">
+          <FormItem label="登录账号：" prop="LOGINID">
+            <i-input v-model="byIdData.LOGINID" placeholder="请输入登录账号"></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="登录密码：" prop="PASSWORD">
+            <i-input v-model="byIdData.PASSWORD" placeholder="请输入登录密码"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+    </Form>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+import { eltValidators } from "tool/eltValidators.js";
+export default {
+  data() {
+    return {
+      id: false,
+      citys: true,
+      countys: true,
+      ruleValidate: {
+        OPERNAME: [{ required: true, message: "请输入人员名称！" }],
+        ORGNAME: [{ required: true, message: "请选择所属机构！" }],
+        OPERTYPE: [{ required: true, message: "请选择人员类型！" }],
+        TEL: [{ required: true, message: "请输入电话号码！" }, {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "mobilephone", message: "请输入正确格式的11位手机号码！", info: "" },
+              ]
+          }],
+        LOGINID: [{ required: true, message: "请输入登录账号！" }],
+        PASSWORD: [{ required: true, message: "请输入登录密码！" }],
+      }
+    };
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.oper.byIdData;
+    },
+    ORGNAME() {
+      return this.$store.state.selectData.uporgname;
+    },
+    OPERTYPE() {
+      return this.$store.state.selectData.opertype;
+    },
+    showEdit: {
+      get: function() {
+        return this.$store.state.oper.showEdit;
+      },
+      set: function(val) {
+        this.$store.commit("oper/changeShowEdit", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.oper.popupLoading;
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    open(id) {
+      this.id = id || false;
+      this.result();
+      if (this.id) {
+        this.$store.dispatch({ type: "oper/getByIdData", id: this.id });
+      } else {
+        this.$store.commit({ type: "oper/isNewData" });
+      }
+      this.$store.commit("oper/changeShowEdit", true);
+    },
+    result() {
+      this.$refs["editForm"].resetFields();
+    },
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch({ type: "oper/saveData", id: this.id });
+        }
+      });
+    },
+    onCancel() {
+      this.$store.commit("oper/changeShowEdit", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("oper/changePageWait", val);
+    }
+  }
+};
+</script>

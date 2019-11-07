@@ -1,0 +1,9 @@
+import operandrole from "./operandrole/index.js"
+import roleConfiguration from "./roleConfiguration/index.js"
+export default {
+  namespaced: true,
+  modules: {
+    operandrole: operandrole,
+    roleConfiguration: roleConfiguration
+  }
+};

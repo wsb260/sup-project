@@ -1,0 +1,68 @@
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changeShowCheck(state, payload) {
+    state.showCheck = payload;
+  },
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  getData(state, payload) {
+    if (payload.worked == 'table') {
+      state.tableData = payload.data;
+    }
+  },
+  gettableById( state, payload){
+    state.tableByIdData = state.tableData.filter(item => item.ID == payload)[0];
+  },
+  getByIdData(state, payload) {
+    state.byIdData = payload.data;
+    this.commit('roleandmodule/gettableById',payload.id);
+  },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  changeTotal(state, payload) {
+    state.total = payload;
+  },
+  changeCurrent(state, payload) {
+    if (payload && payload != state.current) {
+      state.current = payload;
+    }
+  },
+  changePageSize(state, payload) {
+    if (payload && payload != state.page_size) {
+      state.page_size = payload;
+    }
+  },
+  changeSearchType(state, payload) {
+    state.searchType = payload;
+  },
+  clearSearchData(state, payload) {
+    state.searchType = false;
+    state.searchData = {
+      orderno:"",
+      receiver_name:"",
+      blcname:"",
+      carno:"",
+      editordate:"",
+      senddate:""
+    };
+  },
+  getDate() {
+    let date = new Date();
+    let year = date.getFullYear()
+    let month = date.getMonth()
+    let day = date.getDate()
+    let minute = date.getMinutes()
+    let second = date.getSeconds()
+    let hour = date.getHours()
+    let time = year + "-" + (month+1) + "-" + day + " " + hour + ":" + minute + ":" + second
+      state.tableData.CREATE_DATE= time;
+
+  }
+};

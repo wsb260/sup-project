@@ -1,0 +1,185 @@
+<template>
+  <div :class="'pageBody' + (pageWait ? ' wait' : '')" id="orderplan">
+    <div class="layout-page-tool">
+      <Button type="warning" @click="jumpPage">
+        <i class="fa fa-newspaper-o" ></i> 配送计划
+      </Button>
+      <div class="quickSearch" v-if="showQuickSearch">
+        <span class="title">派送单号：</span>
+        <span class="info">
+          <i-input v-model="searchData.routesheetno" placeholder="派送单号" clearable></i-input>
+        </span>
+        <span class="title">派送单类型：</span>
+        <span class="info">
+          <Select v-model="searchData.routeType" placeholder="派送单类型" clearable>
+            <Option value="10">直配</Option>
+            <Option value="20">二次分派</Option>
+          </Select>
+        </span>
+        <Button type="info" @click="search()">
+          <Icon type="ios-search" /> 快速查询
+        </Button>
+      </div>
+    </div>
+    <div class="layout-page-content">
+      <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      ></Table>
+    </div>
+    <div class="layout-page-page">
+      <Page
+        :total="total"
+        :current="current"
+        :page-size="page_size"
+        :page-size-opts="page.page_sizepts"
+        @on-change="page_change"
+        @on-page-size-change="page_size_change"
+        show-sizer
+        show-elevator
+        show-total
+        size="small">
+      </Page>
+    </div>
+    <popup-delete ref="popupDelete"></popup-delete>
+    <popup-check ref="popupCheck"></popup-check>
+  </div>
+</template>
+<script>
+import popupDelete from "components/situation/popup-delete";
+import popupCheck from "./components/popup-check"
+import { getTableHeight } from "tool/tool.js";
+export default {
+  name: "orderplan",
+  data() {
+    return {
+      showQuickSearch: false,
+      delModel: {},
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "派送单号", key: "ID", align: "center" },
+          { title: "类型", key: "TYPE", align: "center" },
+          { title: "车主姓名", key: "CAROWNER_NM", align: "center" },
+          { title: "车主电话", key: "CAROWNER_TEL", align: "center" },
+          { title: "总件数", key: "TOTALQTY", align: "center" },
+          { title: "总金额", key: "TOTALPRICE", align: "center" },
+          { title: "应收金额", key: "ACCOUNTSPRICE", align: "center" },
+          { title: "代收金额", key: "CARBARCODE", align: "center" },
+          { title: "制单时间", key: "EDITORDATE", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "详细" },
+                  class: "tableBtn fa info fa-file-text-o",
+                  on: {
+                    click: () => {
+                      this.$refs.popupCheck.open(
+                        params.row.ID,
+                      );
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "删除" },
+                  class: "tableBtn fa error fa-remove",
+                  on: {
+                    click: () => {
+                      this.$refs.popupDelete.open(
+                        params.row.ID,
+                        "orderplan/delete"
+                      );
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+  components: {
+    popupDelete,
+    popupCheck
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.orderplan.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.orderplan.tableLoading;
+    },
+    current() {
+      return this.$store.state.orderplan.current;
+    },
+    page_size() {
+      return this.$store.state.orderplan.page_size;
+    },
+    total() {
+      return this.$store.state.orderplan.total;
+    },
+    pageWait() {
+      return this.$store.state.orderplan.pageWait;
+    },
+    searchData() {
+      return this.$store.state.orderplan.searchData;
+    }
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("orderplan")) {
+      this.$store.dispatch({ type: "orderplan/refreshData" });
+    }
+  },
+  mounted() {
+    this.$store.commit("orderplan/clearSearchData");
+    this.showQuickSearch = true;
+    this.$nextTick(() => {
+      this.table.height = getTableHeight();
+    });
+  },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "orderplan/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "orderplan/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    search() {
+      this.$store.dispatch({
+        type: 'orderplan/refreshData',
+        searchType: this.searchData.routesheetno || this.searchData.routeType,
+        current: 1
+      });
+    },
+    jumpPage() {
+      this.$router.push('/delStock');
+    }
+  }
+};
+</script>

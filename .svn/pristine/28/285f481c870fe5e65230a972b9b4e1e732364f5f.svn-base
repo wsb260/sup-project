@@ -1,0 +1,129 @@
+<template>
+  <div :class="'pageBody' + (pageWait ? ' wait' : '')" id="deliverymanage">
+    <div class="layout-page-tool">
+      <Button type="success" @click="add">
+        <Icon type="md-add" /> 新增
+      </Button>
+    </div>
+    <div class="layout-page-content">
+      <Table border stripe :loading="tableLoading" :height="table.height" :columns="table.columns" :data="tableData" :highlight-row="true">
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page :total="total" :current="current" :page-size="page_size" :page-size-opts="page.page_sizepts" @on-change="page_change" @on-page-size-change="page_size_change" show-sizer show-elevator show-total size="small">
+      </Page>
+    </div>
+    <popup-edit ref="popupEdit" @p2_open="p2_open"></popup-edit>
+    <popup-edit2 ref="popupEdit2"></popup-edit2>
+  </div>
+</template>
+<script>
+import popupEdit from "./components/popup-edit";
+import popupEdit2 from "./components/popup-edit2";
+import { getTableHeight } from "tool/tool.js";
+export default {
+  name: "deliverymanage",
+  data() {
+    return {
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center"},
+          { title: "排序", key: "POSITION", align: "center" },
+          { title: "物流公司", key: "DELIVERY_LOGISTICS_COMPANY_ID", align: "center"},
+          { title: "名称", key: "RULE_NM", align: "center" },
+          { title: "启用", key: "IS_ENABLE", align: "center",
+            render: (h,params) => {
+              return h("div",
+                [h("span",params.row.IS_ENABLE == "Y" ? "是": "否"
+              )])
+            }
+          },
+          { title: "描述", key: "DESCR", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "编辑内容" },
+                  class: "tableBtn fa warning fa-edit",
+                  on: {
+                    click: () => {
+                      // console.log(params.row)
+                      this.$refs.popupEdit.open(params.row.DELIVERY_WAY_ID);
+                    }
+                  }
+                }),
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+  components: {
+    popupEdit,
+    popupEdit2,
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.deliverymanage.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.deliverymanage.tableLoading;
+    },
+    current() {
+      return this.$store.state.deliverymanage.current;
+    },
+    page_size() {
+      return this.$store.state.deliverymanage.page_size;
+    },
+    total() {
+      return this.$store.state.deliverymanage.total;
+    },
+    pageWait() {
+      return this.$store.state.deliverymanage.pageWait;
+    }
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("deliverymanage")) {
+      this.$store.dispatch({ type: "deliverymanage/refreshData" });
+      this.$store.dispatch({ type: "selectData/getData", name: "treeloader" });
+    }
+  },
+  mounted() {
+    this.table.height = getTableHeight();
+  },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "deliverymanage/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "deliverymanage/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    add() {
+      this.$refs.popupEdit.open();
+    },
+    p2_open() {
+      this.$refs.popupEdit2.open();
+    }
+  }
+};
+</script>

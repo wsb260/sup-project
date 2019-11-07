@@ -1,0 +1,21 @@
+{
+  "result": [{
+    "DELIVERNUM": 0,
+    "STARTORGID": 1,
+    "STARTORGNAME": "易同送总部"
+  }, {
+    "DELIVERNUM": 0,
+    "STARTORGID": 2,
+    "STARTORGNAME": "小金网点"
+  }, {
+    "DELIVERNUM": 0,
+    "STARTORGID": 3,
+    "STARTORGNAME": "老营乡网点"
+  }, {
+    "DELIVERNUM": 0,
+    "STARTORGID": 4,
+    "STARTORGNAME": "成都网点"
+  }],
+  "total": 4,
+  "totalPage": 1
+}

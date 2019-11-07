@@ -1,0 +1,24 @@
+function adjustMenu(menu,pid) {
+  //处理菜单地址
+  var adjusted = [];
+  if (menu && menu.length > 0) {
+    menu = Object.assign([], menu);
+    menu.forEach((v, i) => {
+      if( v.modulename && v.moduleid > 0 ){
+        adjusted.push({
+          name: v.url,
+          title: v.modulename,
+          id: v.moduleid,
+          cur: false,
+          parent: pid ? pid : 0,
+          describe: "/" + v.url,
+          icon: v.icon,
+          children: (v.seconds && v.seconds.length > 0) ? adjustMenu(v.seconds,v.moduleid) : []
+        });
+      }
+    });
+  }
+  return adjusted;
+}
+
+export { adjustMenu };

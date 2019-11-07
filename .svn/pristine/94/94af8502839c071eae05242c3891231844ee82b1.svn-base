@@ -1,0 +1,113 @@
+import axios from 'axios';
+export default {
+  getByIdData({ dispatch, commit, state }, option) {
+    var _this = this;
+    commit('isNewData');
+    commit('changePageWait', true);
+    axios(this.getters['orderlogistics/getByIdData'](option))
+    .then((req1) => {
+      _this.dispatch("login/errorLogin", req1.data ).then((type) => {
+        if( req1 && req1.data.result && req1.data.result!="false" ){
+          option.data = req1.data;
+          commit("getByIdData",option);
+        }else {
+          _this.commit("notice/dataError", req1.data.msg);
+        }
+        commit('changePageWait', false);
+      }).catch((error) => {});
+    })
+    .catch((error) => {
+      _this.commit("notice/dataError", error);
+      commit('changePageWait', false);
+    });
+  },
+  saveData({ dispatch, commit, state }, option) {
+    var _this = this;
+    commit('changePageWait', true);
+    axios(this.getters['orderlogistics/saveNew']())
+    .then((req1) => {
+      _this.dispatch("login/errorLogin", req1.data ).then((type) => {
+        if (req1.data.success && req1.data.success!="false") {
+          _this.commit("notice/saveSuccess");
+          _this.commit('orderlogistics/clearAll')
+          commit('changeShowEdit', false);
+        } else {
+          _this.commit("notice/saveError", req1.data.msg);
+        }
+        commit('changePageWait', false);
+      }).catch((error) => {});
+    })
+    .catch(function (error) {
+      _this.commit("notice/saveError", error);
+      commit('changePageWait', false);
+    });
+  },
+  saveData2({ dispatch, commit, state }, option) {
+    commit('changeShowEdit', false);
+    commit("add");
+  },
+  getWares({ dispatch, commit, state }, option) {
+    var _this = this;
+    commit('changePageWait', true);
+    axios(this.getters['orderlogistics/wares']())
+    .then((req1) => {
+      _this.dispatch("login/errorLogin", req1.data ).then((type) => {
+        if (req1.data.success && req1.data.success!="false") {
+          _this.commit("notice/saveSuccess");
+          commit('getWares', req1.data);
+        } else {
+          _this.commit("notice/saveError", req1.data.msg);
+        }
+        commit('changePageWait', false);
+      }).catch((error) => {});
+    })
+    .catch(function (error) {
+      _this.commit("notice/saveError", error);
+      commit('changePageWait', false);
+    });
+  },
+  commitAddress({ dispatch, commit, state }, option) {
+    var _this = this;
+    commit('changePageWait', true);
+    axios(this.getters['orderlogistics/address']())
+    .then((req1) => {
+      _this.dispatch("login/errorLogin", req1.data ).then((type) => {
+        if (req1.data.success && req1.data.success!="false") {
+          // opiton.data = req1.data;
+          _this.commit("notice/changeAddressSuccess");
+          commit('commitAddress', req1.data);
+          // 修改 orderData.marryName
+        } else {
+          _this.commit("notice/changeAddressError", req1.data.msg);
+        }
+        commit('changePageWait', false);
+      }).catch((error) => {});
+    })
+    .catch(function (error) {
+      _this.commit("notice/changeAddressError", error);
+      commit('changePageWait', false);
+    });
+  },
+  deleteData({ dispatch, commit, state }, option) {
+    commit('deleteData', option.id);
+  },
+  getDefault({ dispatch, commit, state }, option) {
+    var _this = this;
+    commit('changePageWait', true);
+    axios(this.getters['orderlogistics/getDefault']())
+    .then((req1) => {
+      _this.dispatch("login/errorLogin", req1.data ).then((type) => {
+        if (req1.data.success && req1.data.success!="false") {
+          commit('changeDefaultAddress', req1.data.result);
+        } else {
+          _this.commit("notice/dataError", req1.data.msg);
+        }
+        commit('changePageWait', false);
+      }).catch((error) => {});
+    })
+    .catch(function (error) {
+      _this.commit("notice/dataError", error);
+      commit('changePageWait', false);
+    });
+  }
+};

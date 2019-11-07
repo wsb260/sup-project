@@ -1,0 +1,75 @@
+<template>
+  <Dropdown trigger="custom" :transfer="!1" placement="bottom-start" :visible="visible">
+    <Button type="info" @click="changeVisible(true)">
+      <Icon type="ios-search" /> 精确查询
+    </Button>
+    <DropdownMenu slot="list" class="searchBox">
+      <Form :model="searchData" :label-width="90" ref="editForm" class="forms">
+        <Row>
+          <i-col span="12">
+            <FormItem label="角色名称：">
+              <i-input v-model="searchData.ROLENAME" clearable placeholder="请填写角色名称"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="角色描述：">
+              <i-input v-model="searchData.DESCRIPTION" clearable placeholder="请填写角色描述"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+      </Form>
+      <div style="text-align:center;">
+        <Button type="info" @click="search">
+          <Icon type="md-search" /> 查询
+        </Button>
+        <Button type="success" @click="reset">
+          <span class="fa fa-refresh"></span> 重置
+        </Button>
+        <Button type="error" @click="changeVisible(false)">
+          <span class="fa fa-remove"></span> 关闭
+        </Button>
+      </div>
+    </DropdownMenu>
+  </Dropdown>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.roleandmodule.byIdData;
+    },
+    searchData() {
+      return this.$store.state.roleandmodule.searchData;
+    },
+    searchType() {
+      return this.$store.state.roleandmodule.searchType;
+    }
+  },
+  deactivated() {
+    this.visible = false;
+  },
+  methods: {
+    search() {
+      this.$store.dispatch({ type: 'roleandmodule/refreshData', searchType: true, current: 1 });
+      this.visible = false;
+    },
+    reset() {
+      this.$store.commit("roleandmodule/clearSearchData");
+      this.$store.dispatch({ type: 'roleandmodule/refreshData', searchType: false, current: 1 });
+    },
+    changeVisible(type) {
+      this.visible = type;
+    }
+  }
+};
+</script>
+<style>
+.forms{
+margin:0 10px 0 0;
+}
+</style>

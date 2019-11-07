@@ -1,0 +1,67 @@
+<template>
+  <div :class="'pageBody ordermenu' + (pageWait ? ' wait' : '' )">
+    <Card class="h100" style="width: 500px; margin: auto;">
+      <eltTree
+      :treeData="treeData"
+      :onChange="selectTree"
+      :onAdd="add"
+      :onEdit="edit"
+      :onDel="del"
+      ></eltTree>
+    </Card>
+    <popup-edit ref="popupEdit"></popup-edit>
+    <popup-delete ref="popupDelete"></popup-delete>
+  </div>
+</template>
+
+<script>
+import { arrangeTreeInfo } from "tool/tool.js";
+import popupEdit from "./components/popup-edit";
+import popupDelete from "components/situation/popup-delete";
+import eltTree from "components/situation/eltTree/index.vue";
+
+export default {
+  name: "ordermenu",
+  data() {
+    return {
+    };
+  },
+  components: {
+    popupEdit,
+    popupDelete,
+    eltTree
+  },
+  computed: {
+    treeData() {
+      return this.$store.state.ordermenu.treeData
+    },
+    pageWait() {
+      return this.$store.state.ordermenu.pageWait;
+    }
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("ordermenu")) {
+      this.$store.dispatch({ type: "ordermenu/getData" });
+    }
+  },
+  methods: {
+    selectTree() {},
+    add(nodeInfo) {
+      this.$refs.popupEdit.open(nodeInfo, true);
+    },
+    edit(nodeInfo) {
+      this.$refs.popupEdit.open(nodeInfo, false);
+    },
+    del(nodeInfo) {
+      this.$refs.popupDelete.open( nodeInfo.MODULEID, "ordermenu/delete" );
+    }
+  }
+};
+</script>
+
+<style>
+.ordermenu .ivu-card-body{
+  height: 100%;
+  overflow: auto;
+}
+</style>

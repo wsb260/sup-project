@@ -1,0 +1,47 @@
+{
+  "total": 3,
+  "result": [{
+    "BLCSTATUS": "正常",
+    "BLCTYPE": "10",
+    "BLCPRINCIPALNM": "负责人",
+    "UPDATE_DATE": "2018-12-12 09:44:49.0",
+    "BLCCONTACTSNM": "联系人",
+    "BLCNAME": "承运商1",
+    "ID": "9",
+    "BLCCONTACTSTEL": "13111111111",
+    "BLCADDRESS": "地址",
+    "CREATE_DATE": "2018-12-12 09:42:12.0",
+    "SETTLEMENT": "10",
+    "FLAG": "0",
+    "BLCPRINCIPALTEL": "13000000000"
+  }, {
+    "BLCSTATUS": "正常",
+    "BLCTYPE": "10",
+    "BLCPRINCIPALNM": "孙洪权",
+    "UPDATE_DATE": "",
+    "BLCCONTACTSNM": "孙洪权",
+    "BLCNAME": "普通承运商",
+    "ID": "8",
+    "BLCCONTACTSTEL": "18989000098",
+    "BLCADDRESS": "哈尔滨市三大动力路副路",
+    "CREATE_DATE": "2017-04-24 15:01:19.0",
+    "SETTLEMENT": "",
+    "FLAG": "0",
+    "BLCPRINCIPALTEL": "13878900987"
+  }, {
+    "BLCSTATUS": "正常",
+    "BLCTYPE": "20",
+    "BLCPRINCIPALNM": "",
+    "UPDATE_DATE": "",
+    "BLCCONTACTSNM": "孙洪权",
+    "BLCNAME": "社会承运商",
+    "ID": "7",
+    "BLCCONTACTSTEL": "13867899876",
+    "BLCADDRESS": "哈尔滨市南岗区西大直街133号",
+    "CREATE_DATE": "2017-04-24 15:00:13.0",
+    "SETTLEMENT": "",
+    "FLAG": "0",
+    "BLCPRINCIPALTEL": ""
+  }],
+  "totalPage": 1
+}

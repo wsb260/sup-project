@@ -1,0 +1,292 @@
+<template>
+  <Modal v-model="showEdit" :mask-closable="!1" draggable :transfer="!1" @on-visible-change="visibleChange" :closable="!popupLoading" :class-name="(id ? 'yellow' : 'green') + (popupLoading ? ' popupLoading' : '')" width="850">
+    <p slot="header">
+      <span class="fa fa-edit" v-if="id"></span>
+      <Icon type="ios-add-circle-outline" v-else></Icon>
+      <span>{{(id ? '添加' : '编辑') + '配送信息'}}</span>
+    </p>
+    <Scroll height="400">
+    <span class="fa warning fa-edit">基础配置</span>
+    <Form :model="byIdData" :label-width="100" :rules="ruleValidate" ref="editForm" >
+      <Row>
+        <i-col span="12">
+          <FormItem label="名称：" prop="RULE_NM">
+            <i-input v-model="byIdData.RULE_NM" placeholder="请填写名称"></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="物流公司：" prop="DELIVERY_LOGISTICS_COMPANY_ID">
+            <Select v-model="byIdData.DELIVERY_LOGISTICS_COMPANY_ID" placeholder="请选择物流公司">
+              <Option v-for="item in DELIVERY_LOGISTICS_COMPANY_ID" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="12">
+          <FormItem label="排序：" prop="POSITION">
+            <i-input v-model="byIdData.POSITION" placeholder="请填写排序"></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <Form-item label="是否启用：" prop="IS_ENABLE">
+            <RadioGroup v-model="byIdData.IS_ENABLE">
+              <Radio label="Y">
+                <span>是</span>
+              </Radio>
+              <Radio label="N">
+                <span>否</span>
+              </Radio>
+            </RadioGroup>
+          </Form-item>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="24">
+          <FormItem label="描述：" prop="DESCR">
+            <i-input  v-model="byIdData.DESCR" type="textarea" :rows="2" placeholder="请填写描述"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <span class="fa fa-edit">费用规则设置</span>
+      <Row>
+        <i-col span="18">
+          <FormItem label="默认运费：">
+            <input type="text" v-model="byIdData.FIRST_WEIGHT" />kg以内，
+            <input type="text" v-model="byIdData.FIRST_WEIGHT_PRICE"  />元，每增加
+            <input type="text" v-model="byIdData.CONTINUE_WEIGHT" />kg，增加运费
+            <input type="text" v-model="byIdData.CONTINUE_WEIGHT_PRICE" />元
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <Form-item label="支持货到付款：" prop="IS_SUPPORT_COD">
+            <RadioGroup v-model="byIdData.IS_SUPPORT_COD">
+              <Radio label="Y">
+                <span>是</span>
+              </Radio>
+              <Radio label="N">
+                <span>否</span>
+              </Radio>
+            </RadioGroup>
+          </Form-item>
+        </i-col>
+      </Row>
+    </Form>
+    <div class="layout-page-tool">
+      <Button type="success" @click="add">
+        <Icon type="md-add" />指定地区设置运费
+      </Button>
+    </div>
+    <Form  :label-width="100" ref="editForm">
+      <Table border stripe :loading="tableLoading" :columns="table.columns" :data="tableData" :highlight-row="true">
+      </Table>
+    </Form>
+    <div class="layout-page-page">
+      <Page :total="total" :current="current" :page-size="page_size" :page-size-opts="page.page_sizepts" @on-change="page_change" @on-page-size-change="page_size_change" show-sizer show-elevator show-total size="small">
+      </Page>
+    </div>
+    </Scroll>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+    <popup-delete ref="popupDelete"></popup-delete>
+    <popup-designatedArea ref="popupDesignatedArea"></popup-designatedArea>
+  </Modal>
+</template>
+<script>
+import popupDelete from "components/situation/popup-delete";
+import popupDesignatedArea from "./popup-designatedArea";
+import { eltValidators } from "tool/eltValidators.js";
+export default {
+  data() {
+    return {
+      id: false,
+      table: {
+        height: 300,
+        columns: [
+          { type: "index", width: 50, align: "center"},
+          { title: "运送到", key: "ZONENMS", align: "center" },
+          { title: "首重(kg)", key: "FIRST_WEIGHT", align: "center" },
+          { title: "首费(元)", key: "FIRST_WEIGHT_PRICE", align: "center" },
+          { title: "续重(kg)", key: "CONTINUE_WEIGHT", align: "center" },
+          { title: "续费(元)", key: "CONTINUE_WEIGHT_PRICE", align: "center" },
+          { title: "支持货到付款", key: "IS_SUPPORT_COD", align: "center",
+            render: (h,params) => {
+              return h("div",
+                [h("span",params.row.IS_SUPPORT_COD == "Y" ? "是": "否"
+                )])
+            }
+          },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "编辑内容" },
+                  class: "tableBtn fa warning fa-edit",
+                  on: {
+                    click: () => {
+                      console.log(params.row)
+                      this.$refs.popupDesignatedArea.open(params.row.DELIVERY_WAY_ID);
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "删除" },
+                  class: "tableBtn fa error fa-remove",
+                  on: {
+                    click: () => {
+                      this.$refs.popupDelete.open(params.row, "deliverymanage/delete");
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      },
+      ruleValidate: {
+        RULE_NM: [
+          { required: true, message: "请填写名称！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "maxLength", message: "输入内容最大20位", info: "20" }
+            ]
+          }
+        ],
+        POSITION: [
+          { required: true, message: "请填写排序！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "number", message: "", info: "" }
+            ]
+          }
+        ],
+        DELIVERY_LOGISTICS_COMPANY_ID:[{ required: true, message: "请选择物流公司！" }],
+        DESCR: [
+          { required: true, message: "请填写描述！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "maxLength", message: "输入内容最大50位", info: "50" }
+            ]
+          }
+        ],
+      }
+    }
+  },
+  components: {
+    popupDelete,
+    popupDesignatedArea
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.deliverymanage.byIdData;
+    },
+    DELIVERY_LOGISTICS_COMPANY_ID() {
+      return this.$store.state.selectData.DELIVERY_LOGISTICS_COMPANY_ID;
+    },
+    tableLoading() {
+      return this.$store.state.deliverymanage.tableLoading;
+    },
+    tableData() {
+      return this.$store.state.deliverymanage.tableData;
+    },
+    current() {
+      return this.$store.state.deliverymanage.current;
+    },
+    page_size() {
+      return this.$store.state.deliverymanage.page_size;
+    },
+    total() {
+      return this.$store.state.deliverymanage.total;
+    },
+    pageWait() {
+      return this.$store.state.deliverymanage.pageWait;
+    },
+    showEdit: {
+      get: function() {
+        return this.$store.state.deliverymanage.showEdit;
+      },
+      set: function(val) {
+        this.$store.commit("deliverymanage/changeShowEdit", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.deliverymanage.popupLoading;
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    open(id) {
+      this.id = id || false;
+      this.result();
+      if (this.id) {
+        this.$store.dispatch({ type: "deliverymanage/getByIdData", id: this.id });
+      } else {
+        this.$store.commit({ type: "deliverymanage/isNewData"});
+      }
+      this.$store.commit("deliverymanage/changeShowEdit", true);
+    },
+    result() {
+      this.$refs["editForm"].resetFields();
+    },
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch({ type: "deliverymanage/saveData", id: this.id });
+        }
+      });
+    },
+    onCancel() {
+      this.$store.commit("deliverymanage/changeShowEdit", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("deliverymanage/changePageWait", val);
+    },
+    add() {
+      this.$refs.popupDesignatedArea.open();
+    },
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "deliverymanage/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "deliverymanage/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+  }
+};
+</script>
+<style scoped>
+
+input {
+  border:1px solid #ccc;
+  width:60px;
+  height: 30px;
+  border-radius:5px;
+  outline: none;
+}
+</style>

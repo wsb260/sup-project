@@ -1,0 +1,80 @@
+import axios from 'axios';
+export default {
+  refreshData({ dispatch, commit, state }, option) {
+    if (option) {
+      option = {
+        current: (option.current ? option.current : state.current),
+        page_size: (option.page_size ? option.page_size : state.page_size),
+      };
+      commit("changeCurrent", option.current);
+      commit("changePageSize", option.page_size);
+    }
+    dispatch({
+      type: "getData",
+      worked: "table"
+    });
+  },
+  getData({ dispatch, commit, state }, option) {
+    var _this = this;
+    commit('changeTableLoading', true);
+    axios(this.getters['deliverymanage/getData']())
+    .then((req1) => {
+      _this.dispatch("login/errorLogin", req1.data ).then((type) => {
+        if (req1 && req1.data.result && req1.data.result!="false") {
+          option.data = req1.data.result;
+          commit('getData', option);
+          commit('changeTotal', parseInt(req1.data.total, 10) || 0);
+        } else {
+          _this.commit("notice/dataError", req1.data.mag);
+        }
+        commit('changeTableLoading', false);
+      }).catch((error) => {});
+    })
+    .catch((error) => {
+      _this.commit("notice/dataError", error);
+      commit('changeTableLoading', false);
+    });
+  },
+  getByIdData({ dispatch, commit, state }, option) {
+    var _this = this;
+    commit('isNewData');
+    commit('changePopupLoading', true);
+    axios(this.getters['deliverymanage/getByIdData'](option))
+    .then((req1) => {
+      _this.dispatch("login/errorLogin", req1.data ).then((type) => {
+        if( req1 && req1.data.deliverymanage && req1.data.deliverymanage!="false" ){
+          option.data = req1.data.deliverymanage;
+          commit('getByIdData', option);
+        }else {
+          _this.commit("notice/dataError", req1.data.mag);
+        }
+        commit('changePopupLoading', false);
+      }).catch((error) => {});
+    })
+    .catch((error) => {
+      _this.commit("notice/dataError", error);
+      commit('changePopupLoading', false);
+    });
+  },
+  saveData({ dispatch, commit, state }, option) {
+    var _this = this;
+    commit('changePopupLoading', true);
+    axios(this.getters[option.id ? 'deliverymanage/saveEdit' : 'deliverymanage/saveNew']())
+    .then((req1) => {
+      _this.dispatch("login/errorLogin", req1.data ).then((type) => {
+        if (req1.data.success && req1.data.success!="false") {
+          _this.commit("notice/saveSuccess");
+          dispatch({ type: "refreshData" });
+          commit('changeShowEdit', false);
+        } else {
+          _this.commit("notice/saveError", req1.data.mag);
+        }
+        commit('changePopupLoading', false);
+      }).catch((error) => {});
+    })
+    .catch(function (error) {
+      _this.commit("notice/saveError", error);
+      commit('changePopupLoading', false);
+    });
+  }
+};

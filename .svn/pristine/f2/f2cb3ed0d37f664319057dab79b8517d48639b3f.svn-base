@@ -1,0 +1,91 @@
+<template>
+  <Dropdown trigger="custom" :transfer="!1" placement="bottom-start" :visible="visible">
+    <Button type="info" @click="changeVisible(true)">
+      <Icon type="ios-search" /> 精确查询
+    </Button>
+    <DropdownMenu slot="list" class="searchBox">
+      <Form :model="searchData" :label-width="90" ref="editForm" class="forms">
+        <Row >
+          <i-col span="12">
+            <Form-item label="订单号：">
+              <i-input v-model="searchData.txlogisticid"  clearable placeholder="请填写订单号"></i-input>
+            </Form-item>
+          </i-col>
+          <i-col span="12">
+            <Form-item label="寄件人：">
+              <i-input v-model="searchData.sender_name"  clearable placeholder="请填写寄件人"></i-input>
+            </Form-item>
+          </i-col>
+        </Row>
+       <Row >
+          <i-col span="12">
+            <Form-item label="寄件人电话：">
+              <i-input v-model="searchData.sender_mobile"  clearable placeholder="请填写寄件人电话"></i-input>
+            </Form-item>
+          </i-col>
+          <i-col span="12">
+            <Form-item label="收件人：">
+              <i-input v-model="searchData.receiver_name"  clearable placeholder="请填写收件人"></i-input>
+            </Form-item>
+          </i-col>
+        </Row>
+        <Row >
+          <i-col span="12">
+            <Form-item label="收件人电话：">
+              <i-input v-model="searchData.receiver_mobile"  clearable placeholder="请填写收件人电话"></i-input>
+            </Form-item>
+          </i-col>
+        </Row>
+      </Form>
+      <div style="text-align:center;">
+        <Button type="info" @click="search">
+          <Icon type="md-search" /> 查询
+        </Button>
+        <Button type="success" @click="reset">
+          <span class="fa fa-refresh"></span> 重置
+        </Button>
+        <Button type="error" @click="changeVisible(false)">
+          <span class="fa fa-remove"></span> 关闭
+        </Button>
+      </div>
+    </DropdownMenu>
+  </Dropdown>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+    searchData() {
+      return this.$store.state.transhipment.searchData;
+    },
+    searchType() {
+      return this.$store.state.transhipment.searchType;
+    }
+  },
+  deactivated() {
+    this.visible = false;
+  },
+  methods: {
+    search() {
+      this.$store.dispatch({ type: 'transhipment/refreshData', searchType: true, current: 1 });
+      this.visible = false;
+    },
+    reset() {
+      this.$store.commit("transhipment/clearSearchData");
+      this.$store.dispatch({ type: 'transhipment/refreshData', searchType: false, current: 1 });
+    },
+    changeVisible(type) {
+      this.visible = type;
+    }
+  }
+};
+</script>
+<style>
+.forms{
+margin:0 10px 0 0;
+}
+</style>

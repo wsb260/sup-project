@@ -1,0 +1,16 @@
+{
+  "total": 1,
+  "success":"true",
+  "result": [{
+    "TXLOGISTICID": "1",
+    "SENDER_NAME": "2",
+    "SENDER_MOBILE": "3",
+    "RECEIVER_NAME": "4",
+    "RECEIVER_MOBILE": "5",
+    "RECEIVER_ADDRESS": "6",
+    "STARTORGNAME": "7",
+    "PAYWAY": "8",
+    "ITEMS": "9"
+  }],
+  "totalPage": 1
+}

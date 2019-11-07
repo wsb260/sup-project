@@ -1,0 +1,188 @@
+<template>
+ <Modal
+    v-model="showEdit"
+    :mask-closable="!1"
+    draggable
+    :transfer="!1"
+    @on-visible-change="visibleChange"
+    :closable="!popupLoading"
+    :class-name="(!isNew ? 'yellow' : 'green') + (popupLoading ? ' popupLoading' : '')"
+    width="450"
+  >
+    <p slot="header">
+      <span class="fa fa-edit" v-if="!isNew"></span>
+      <Icon type="ios-add-circle-outline" v-else></Icon>
+      <span>{{'菜单' + (!isNew ? '修改' : '新增')}}</span>
+    </p>
+    <Form :model="byIdData" :label-width="100" :rules="ruleValidate" ref="editForm">
+      <Form-item label="父级名称：" prop="UPMODULENAME">
+        <i-input v-model="byIdData.UPMODULENAME" placeholder="请输入父级名称" readonly></i-input>
+      </Form-item>
+      <Form-item label="菜单名称：" prop="MODULENAME">
+        <i-input v-model="byIdData.MODULENAME" placeholder="请输入菜单名称"></i-input>
+      </Form-item>
+      <Form-item label="模块路径：" prop="URL">
+        <i-input v-model="byIdData.URL" placeholder="请输入模块路径"></i-input>
+      </Form-item>
+      <Form-item label="菜单排序：" prop="SYS_TREE_NODE_POSITION">
+        <i-input v-model="byIdData.SYS_TREE_NODE_POSITION" placeholder="请输入菜单排序"></i-input>
+      </Form-item>
+      <Form-item label="图片样式：" prop="ICON_FILE_ID">
+        <div class="square" @click="setting" >
+          <i :class="byIdData.ICON_FILE_ID"   style="cursor:pointer;font-size:30px"></i>
+        </div>
+      </Form-item>
+      <Form-item label="是否展示：" prop="FLAG">
+        <RadioGroup v-model="byIdData.FLAG">
+          <Radio label="0">
+            <span>是</span>
+          </Radio>
+          <Radio label="1">
+            <span>否</span>
+          </Radio>
+        </RadioGroup>
+      </Form-item>
+    </Form>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">取消</Button>
+    </div>
+    <popup-set ref="popupSet" :selected="byIdData.ICON_FILE_ID" @checked="checked"></popup-set>
+  </Modal>
+</template>
+<script>
+import { eltValidators } from "tool/eltValidators.js";
+import popupSet from "./popup-set";
+export default {
+  data() {
+    return {
+      isNew: false,
+      ruleValidate: {
+        UPMODULENAME: [
+          { required: true, message: "请输入父级名称！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [{ name: "maxLength", message: "输入内容最大20位", info: 20 }]
+          }
+        ],
+        MODULENAME: [
+          { required: true, message: "请输入菜单名称！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [{ name: "maxLength", message: "输入内容最大20位", info: 20 }]
+          }
+        ],
+        URL: [
+          { required: true, message: "请选择模块路径！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [{ name: "maxLength", message: "输入内容最大100位", info: 100 }]
+          }
+        ],
+        ICON_FILE_ID: [
+          { required: true, message: "请选择图片样式！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [{ name: "maxLength", message: "", info: 50 }]
+          }
+        ],
+        SYS_TREE_NODE_POSITION: [
+          { required: true, message: "请输入菜单排序！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "integer_p", message: "", info: "" },
+              { name: "maxLength", message: "", info: 2 }
+            ]
+          }
+        ],
+        FLAG:[{ required: true, message: "请输入..." }]
+      }
+    };
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.ordermenu.byIdData;
+    },
+    showEdit: {
+      get: function () {
+        return this.$store.state.ordermenu.showEdit;
+      },
+      set: function (val) {
+        this.$store.commit("ordermenu/changeShowEdit", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.ordermenu.popupLoading;
+    }
+  },
+  components: {
+    popupSet
+  },
+  mounted() {},
+  methods: {
+    open(nodeInfo, isNew) {
+      this.id = nodeInfo.MODULEID;
+      this.isNew = isNew;
+      if (this.isNew) {
+        this.$store.commit({ type: "ordermenu/isNewData", id: nodeInfo.MODULEID, UPMODULENAME: nodeInfo.name });
+      } else {
+        this.$store.dispatch({ type: "ordermenu/getByIdData", id: this.id });
+      }
+      this.result();
+      this.$store.commit("ordermenu/changeShowEdit", true);
+    },
+    checked(iconName) {
+      this.byIdData.ICON_FILE_ID=iconName
+    },
+    setting() {
+      this.$refs.popupSet.open();
+    },
+    result() {
+      this.$refs["editForm"].resetFields();
+    },
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          if(this.isNew){
+            this.$store.dispatch({ type: "ordermenu/saveNew", id: this.id });
+          }else{
+            this.$store.dispatch({ type: "ordermenu/saveEdit", id: this.id });
+          }
+
+        }
+      });
+    },
+    onCancel() {
+      this.$store.commit("ordermenu/changeShowEdit", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("ordermenu/changePageWait", val);
+    }
+  }
+};
+</script>
+<style lang="scss">
+.square{
+  cursor: pointer;
+  border: 1px solid #dcdee2;
+  border-radius: 4px;
+  padding: 7px;
+  width: 50px;
+  height: 50px;
+  position: relative;
+  i{
+    cursor: pointer;
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+</style>

@@ -1,0 +1,95 @@
+<template>
+  <Dropdown trigger="custom" :transfer="!1" placement="bottom-start" :visible="visible">
+    <Button type="info" @click="changeVisible(true)">
+      <Icon type="ios-search" /> 精确查询
+    </Button>
+    <DropdownMenu slot="list" class="searchBox">
+      <Form :model="searchData" :label-width="90" ref="editForm" class="forms">
+         <Row >
+          <i-col span="12">
+             <FormItem label="制单始日期：">
+            <DatePicker type="date" v-model="searchData.CREATE_DATE"  clearable placeholder="请输入制单始日期" ></DatePicker>
+          </FormItem>
+          </i-col>
+          <i-col span="12">
+             <FormItem label="制单末日期：">
+            <DatePicker type="date" v-model="searchData.UPDATE_DATE"  clearable placeholder="请输入制单末日期" ></DatePicker>
+          </FormItem>
+          </i-col>
+        </Row>
+        <Row >
+          <i-col span="12">
+             <FormItem label="状态：">
+              <Select v-model="searchData.STATUS" clearable placeholder="请选择派送单状态">
+                <Option v-for="(item,i) in STATUS" :value="item.value" :key="i">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+             <FormItem label="类型：">
+              <Select v-model="searchData.TYPE" clearable placeholder="请选择派送单类型">
+                <Option v-for="(item,i) in TYPE" :value="item.value" :key="i">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+        </Row>
+      </Form>
+      <div style="text-align:center;">
+        <Button type="info" @click="search">
+          <Icon type="md-search" /> 查询
+        </Button>
+        <Button type="success" @click="reset">
+          <span class="fa fa-refresh"></span> 重置
+        </Button>
+        <Button type="error" @click="changeVisible(false)">
+          <span class="fa fa-remove"></span> 关闭
+        </Button>
+      </div>
+    </DropdownMenu>
+  </Dropdown>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+   STATUS() {
+      return this.$store.state.selectData.STATUS;
+    },
+    TYPE() {
+      return this.$store.state.selectData.TYPE;
+    },
+    searchData() {
+      return this.$store.state.orderassign.searchData;
+    },
+    searchType() {
+      return this.$store.state.orderassign.searchType;
+    }
+  },
+  deactivated() {
+    this.visible = false;  
+  },
+  methods: {
+    search() {
+      this.$store.dispatch({ type: 'orderassign/refreshData', searchType: true, current: 1 });
+      this.visible = false;
+    },
+    reset() {
+      this.$store.commit("orderassign/clearSearchData");
+      this.$store.dispatch({ type: 'orderassign/refreshData', searchType: false, current: 1 });
+    },
+    changeVisible(type) {
+      this.visible = type;
+    }
+  }
+};
+</script>
+<style>
+.forms{
+margin:0 10px 0 0;
+}
+</style>
+

@@ -1,0 +1,112 @@
+{
+  "result": [
+    {
+      "MODULENAME": "异常货物审批",
+      "UPMODULEID": "537",
+      "UPDATE_DATE": "2017-05-24",
+      "MODULEID": "539",
+      "UPDATE_BY": "",
+      "FLAG": "0",
+      "URL": "abnormalcargoexamine",
+      "NOTES": "",
+      "CREATE_DATE": "2017-05-24",
+      "MODULELEVEL": "1",
+      "DESCRIPTION": "",
+      "CREATE_BY": "",
+      "UPMODULENAME": "异常管理",
+      "uplist": [
+        {
+          "MODULENAME": "异常管理",
+          "UPMODULEID": "-1",
+          "UPDATE_DATE": "2017-05-24",
+          "MODULEID": "537",
+          "UPDATE_BY": "",
+          "FLAG": "0",
+          "URL": "",
+          "NOTES": "",
+          "CREATE_DATE": "2017-05-24",
+          "MODULELEVEL": "0",
+          "DESCRIPTION": "",
+          "CREATE_BY": "",
+          "UPMODULENAME": ""
+        },
+        {
+          "MODULENAME": "统计管理",
+          "UPMODULEID": "-1",
+          "UPDATE_DATE": "2017-02-23",
+          "MODULEID": "30",
+          "UPDATE_BY": "",
+          "FLAG": "0",
+          "URL": "",
+          "NOTES": "",
+          "CREATE_DATE": "2017-02-23",
+          "MODULELEVEL": "0",
+          "DESCRIPTION": "",
+          "CREATE_BY": "1",
+          "UPMODULENAME": ""
+        },
+        {
+          "MODULENAME": "订单管理",
+          "UPMODULEID": "-1",
+          "UPDATE_DATE": "2015-04-28",
+          "MODULEID": "15",
+          "UPDATE_BY": "",
+          "FLAG": "0",
+          "URL": "",
+          "NOTES": "",
+          "CREATE_DATE": "2015-04-28",
+          "MODULELEVEL": "0",
+          "DESCRIPTION": "",
+          "CREATE_BY": "1",
+          "UPMODULENAME": ""
+        },
+        {
+          "MODULENAME": "调度管理",
+          "UPMODULEID": "-1",
+          "UPDATE_DATE": "2015-04-28",
+          "MODULEID": "10",
+          "UPDATE_BY": "",
+          "FLAG": "0",
+          "URL": "",
+          "NOTES": "",
+          "CREATE_DATE": "2015-04-28",
+          "MODULELEVEL": "0",
+          "DESCRIPTION": "",
+          "CREATE_BY": "1",
+          "UPMODULENAME": ""
+        },
+        {
+          "MODULENAME": "基础信息",
+          "UPMODULEID": "-1",
+          "UPDATE_DATE": "2015-04-28",
+          "MODULEID": "5",
+          "UPDATE_BY": "",
+          "FLAG": "0",
+          "URL": "",
+          "NOTES": "",
+          "CREATE_DATE": "2015-04-28",
+          "MODULELEVEL": "0",
+          "DESCRIPTION": "",
+          "CREATE_BY": "1",
+          "UPMODULENAME": ""
+        },
+        {
+          "MODULENAME": "系统管理",
+          "UPMODULEID": "-1",
+          "UPDATE_DATE": "2015-04-28",
+          "MODULEID": "1",
+          "UPDATE_BY": "",
+          "FLAG": "0",
+          "URL": "",
+          "NOTES": "",
+          "CREATE_DATE": "2015-04-28",
+          "MODULELEVEL": "0",
+          "DESCRIPTION": "",
+          "CREATE_BY": "1",
+          "UPMODULENAME": ""
+        }
+      ]
+    }
+  ],
+  "success": true
+}

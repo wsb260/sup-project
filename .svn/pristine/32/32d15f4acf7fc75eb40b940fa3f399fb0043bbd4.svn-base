@@ -1,0 +1,43 @@
+import {
+  makeSelectOptions,
+  makeTreeInfo
+} from "tool/tool.js";
+const vl = {
+  DIRSIR_VASSALAGE: {
+    value: "SYS_TREE_NODE_ID",
+    label: "SYS_TREE_NODE_NM"
+  },
+  carrier_company: {
+    value: "LOGISTICS_CODE",
+    label: "LOGISTICS_NAME"
+  },
+  shopService: {
+    value: "ORG_CODE",
+    label: "SERVICE_STATION_NAME"
+  },
+  firstCategory: {
+    value: "id",
+    label: "name"
+  }
+};
+export default {
+  getData(state, payload) {
+    switch( payload.name ) {
+      case "prdtype": 
+        var info = [];
+        payload.data.forEach((v,i) => {
+          if( v.buyCode || v.sellCode ){
+            info.push({ label: v.typeName, value: v.buyCode ? v.buyCode : v.sellCode});
+          }
+        });
+        state[payload.name] = info;
+      break;
+      default: 
+        state[payload.name] = makeSelectOptions(
+          payload.data,
+          vl[payload.name] ? vl[payload.name].label : "label",
+          vl[payload.name] ? vl[payload.name].value : "value"
+        );
+    }
+  }
+};

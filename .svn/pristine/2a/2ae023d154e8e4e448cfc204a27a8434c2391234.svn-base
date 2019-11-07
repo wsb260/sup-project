@@ -1,0 +1,139 @@
+{
+  "result": [{
+      "sys_tree_node_id": "31002",
+      "sys_tree_node_nm": "北京"
+    },
+    {
+      "sys_tree_node_id": "31022",
+      "sys_tree_node_nm": "天津"
+    },
+    {
+      "sys_tree_node_id": "31043",
+      "sys_tree_node_nm": "河北"
+    },
+    {
+      "sys_tree_node_id": "31244",
+      "sys_tree_node_nm": "山西"
+    },
+    {
+      "sys_tree_node_id": "31387",
+      "sys_tree_node_nm": "内蒙古"
+    },
+    {
+      "sys_tree_node_id": "31516",
+      "sys_tree_node_nm": "辽宁"
+    },
+    {
+      "sys_tree_node_id": "31649",
+      "sys_tree_node_nm": "吉林"
+    },
+    {
+      "sys_tree_node_id": "31733",
+      "sys_tree_node_nm": "黑龙江"
+    },
+    {
+      "sys_tree_node_id": "31892",
+      "sys_tree_node_nm": "上海"
+    },
+    {
+      "sys_tree_node_id": "31913",
+      "sys_tree_node_nm": "江苏"
+    },
+    {
+      "sys_tree_node_id": "32054",
+      "sys_tree_node_nm": "浙江"
+    },
+    {
+      "sys_tree_node_id": "32170",
+      "sys_tree_node_nm": "安徽"
+    },
+    {
+      "sys_tree_node_id": "32325",
+      "sys_tree_node_nm": "福建"
+    },
+    {
+      "sys_tree_node_id": "32430",
+      "sys_tree_node_nm": "江西"
+    },
+    {
+      "sys_tree_node_id": "32556",
+      "sys_tree_node_nm": "山东"
+    },
+    {
+      "sys_tree_node_id": "32737",
+      "sys_tree_node_nm": "河南"
+    },
+    {
+      "sys_tree_node_id": "32939",
+      "sys_tree_node_nm": "湖北"
+    },
+    {
+      "sys_tree_node_id": "33071",
+      "sys_tree_node_nm": "湖南"
+    },
+    {
+      "sys_tree_node_id": "33224",
+      "sys_tree_node_nm": "广东"
+    },
+    {
+      "sys_tree_node_id": "33400",
+      "sys_tree_node_nm": "广西"
+    },
+    {
+      "sys_tree_node_id": "33543",
+      "sys_tree_node_nm": "海南"
+    },
+    {
+      "sys_tree_node_id": "33569",
+      "sys_tree_node_nm": "重庆"
+    },
+    {
+      "sys_tree_node_id": "33613",
+      "sys_tree_node_nm": "四川"
+    },
+    {
+      "sys_tree_node_id": "33839",
+      "sys_tree_node_nm": "贵州"
+    },
+    {
+      "sys_tree_node_id": "33947",
+      "sys_tree_node_nm": "云南"
+    },
+    {
+      "sys_tree_node_id": "34110",
+      "sys_tree_node_nm": "西藏"
+    },
+    {
+      "sys_tree_node_id": "34199",
+      "sys_tree_node_nm": "陕西"
+    },
+    {
+      "sys_tree_node_id": "34239",
+      "sys_tree_node_nm": "甘肃"
+    },
+    {
+      "sys_tree_node_id": "34444",
+      "sys_tree_node_nm": "青海"
+    },
+    {
+      "sys_tree_node_id": "34508",
+      "sys_tree_node_nm": "宁夏"
+    },
+    {
+      "sys_tree_node_id": "34541",
+      "sys_tree_node_nm": "新疆"
+    },
+    {
+      "sys_tree_node_id": "34669",
+      "sys_tree_node_nm": "台湾"
+    },
+    {
+      "sys_tree_node_id": "34689",
+      "sys_tree_node_nm": "香港"
+    },
+    {
+      "sys_tree_node_id": "34691",
+      "sys_tree_node_nm": "澳门"
+    }
+  ]
+}

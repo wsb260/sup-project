@@ -1,0 +1,11 @@
+import e from "controller/index.js"
+export default {
+  filedown: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: "/xlslead/orderlead.xls"
+  },
+  fileUpLoad: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orderentry/read.json"
+  },
+};

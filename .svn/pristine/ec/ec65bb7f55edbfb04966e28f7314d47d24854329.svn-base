@@ -1,0 +1,89 @@
+<template>
+  <Dropdown trigger="custom" :transfer="!1" placement="bottom-start" :visible="visible">
+    <Button type="info" @click="changeVisible(true)">
+      <Icon type="ios-search" /> 精确查询
+    </Button>
+    <DropdownMenu slot="list" class="searchBox">
+      <Form :model="searchData" :label-width="90" ref="editForm" class="forms">
+        <Row >
+          <i-col span="12">
+            <Form-item label="申请人：">
+              <i-input v-model="searchData.applyname"  clearable placeholder="请填写申请人"></i-input>
+            </Form-item>
+          </i-col>
+          <i-col span="12">
+             <FormItem label="申请原因：">
+              <Select v-model="searchData.abnormal_type" clearable placeholder="请选择申请原因">
+                <Option v-for="item in ABNORMAL_TYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+           <i-col span="12">
+            <FormItem label="申请开始时间：">
+              <DatePicker type="date" v-model="searchData.apply_start_data"  clearable placeholder="请选择申请开始时间" ></DatePicker>
+            </FormItem>
+          </i-col>
+           <i-col span="12">
+             <FormItem label="申请结束日期：">
+              <DatePicker type="date" v-model="searchData.apply_end_data"  clearable placeholder="请选择申请结束日期" ></DatePicker>
+            </FormItem>
+          </i-col>
+        </Row>
+      </Form>
+      <div style="text-align:center;">
+        <Button type="info" @click="search">
+          <Icon type="md-search" /> 查询
+        </Button>
+        <Button type="success" @click="reset">
+          <span class="fa fa-refresh"></span> 重置
+        </Button>
+        <Button type="error" @click="changeVisible(false)">
+          <span class="fa fa-remove"></span> 关闭
+        </Button>
+      </div>
+    </DropdownMenu>
+  </Dropdown>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+    ABNORMAL_TYPE() {
+      return this.$store.state.selectData.abnormal_type;
+    },
+    searchData() {
+      return this.$store.state.abnormalcargohandle.searchData;
+    },
+    searchType() {
+      return this.$store.state.abnormalcargohandle.searchType;
+    }
+  },
+  deactivated() {
+    this.visible = false;
+  },
+  methods: {
+    search() {
+      this.$store.dispatch({ type: 'abnormalcargohandle/refreshData', searchType: true, current: 1 });
+      this.visible = false;
+    },
+    reset() {
+      this.$store.commit("abnormalcargohandle/clearSearchData");
+      this.$store.dispatch({ type: 'abnormalcargohandle/refreshData', searchType: false, current: 1 });
+    },
+    changeVisible(type) {
+      this.visible = type;
+    }
+  }
+};
+</script>
+<style>
+.forms{
+margin:0 10px 0 0;
+}
+</style>

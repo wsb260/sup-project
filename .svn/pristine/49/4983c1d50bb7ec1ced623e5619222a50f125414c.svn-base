@@ -1,0 +1,62 @@
+<template>
+  <Modal v-model="showMechanism" :mask-closable="!1" draggable :transfer="!1" @on-visible-change="visibleChange" :class-name="'blue'" width="400">
+    <p slot="header">
+      <Icon type="ios-add-circle-outline" ></Icon>
+      <span>选择配送机构</span>
+    </p>
+    <Card style="height: 400px; overflow: auto;">
+      <Tree :data="allOrgs" @on-select-change="treeCheck"></Tree>
+    </Card>
+    <div slot="footer">
+      <Button type="success" @click="onOk">保存</Button>
+      <Button type="error" @click="onCancel">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+    orderData() {
+      //左边的数据
+      return this.$store.state.orderlogistics.orderData;
+    },
+    showMechanism: {
+      get: function() {
+        return this.$store.state.orderlogistics.showMechanism;
+      },
+      set: function(val) {
+        this.$store.commit("orderlogistics/changeShowMechanism", val);
+      }
+    },
+    allOrgs() {
+      return this.$store.state.selectData.allOrgs;
+    }
+  },
+  deactivated() {
+    this.visible = false;  
+  },
+  methods: {
+    open(id) {
+      this.$store.commit("orderlogistics/changeShowMechanism", true);
+    },
+    onOk() {
+      this.$store.dispatch("orderlogistics/saveData2");
+    },
+    onCancel() {
+      this.$store.commit("orderlogistics/changeShowMechanism", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("orderlogistics/changePageWait", val);
+    },
+    treeCheck(dataList,nodeInfo) {
+      this.orderData.marryName = nodeInfo.name;
+      this.orderData.marryId = nodeInfo.ORGID;
+    }
+  }
+}
+</script>

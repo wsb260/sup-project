@@ -1,0 +1,38 @@
+<template>
+  <div>
+    <popup-upload ref="popupUpload" :option="option"></popup-upload>
+  </div>
+</template>
+<script>
+import popupUpload from "components/situation/popup-upload";
+import api from "controller/api/api.js";
+export default {
+  data() {
+    return {
+      option: {
+        downLoadUrl: api.OrderManagement.orderquery.filedown.url,
+        upLoadUrl: api.OrderManagement.orderquery.fileUpLoad.url,
+        pageWait: "orderquery/changePageWait",
+        text: ["111"]
+      }
+    };
+  },
+  components: {
+    popupUpload
+  },
+  activated() {
+      this.refreshTable();
+    },
+  mounted() {
+    this.upload();
+  },
+  methods: {
+    upload() {
+      this.$refs.popupUpload.open();
+    },
+    refreshTable() {
+      this.$store.dispatch({ type: "orderquery/refreshData" });
+    }
+  }
+};
+</script>

@@ -1,0 +1,42 @@
+import {
+  makeGetAjaxUrl,
+  makeAjaxUrl,
+  forEachToJson,
+  timeText
+} from "tool/tool.js";
+import api from "controller/api/api.js";
+const apiInfo = api.system.roleandmodule;
+export default {
+  getData: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.getData.method,
+      url: apiInfo.getData.url + makeGetAjaxUrl(ajaxData)
+    };
+  },
+  saveNew: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.saveNew.method,
+      url: apiInfo.saveNew.url,
+      data: makeAjaxUrl( {
+        opername:state.byIdData.OPERNAME,
+        orgname:state.byIdData.ORGNAME,
+        opertype:state.byIdData.OPERTYPE,
+        tel:state.byIdData.TEL
+      })
+    };
+  },
+  saveEdit: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.saveEdit.method,
+      url: apiInfo.saveEdit.url,
+      data: makeAjaxUrl({
+        id: state.byIdData.ROLEID,
+        opername:state.byIdData.OPERNAME,
+        orgname:state.byIdData.ORGNAME,
+        opertype:state.byIdData.OPERTYPE,
+        tel:state.byIdData.TEL
+
+      })
+    };
+  }
+};

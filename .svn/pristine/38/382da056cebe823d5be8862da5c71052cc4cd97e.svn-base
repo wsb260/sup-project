@@ -1,0 +1,19 @@
+import e from "controller/index.js"
+export default {
+  ORGNAME: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/ORGNAME/list.json"
+  },
+  ORGTYPE: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/ORGTYPE/list.json"
+  },
+  ORGAREA: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/ORGAREA/list.json"
+  },
+  UPORGNAME: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/UPORGNAME/list.json"
+  }
+}

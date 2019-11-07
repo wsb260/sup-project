@@ -1,0 +1,15 @@
+import e from "controller/index.js"
+export default {
+  saveNew: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orderlogistics/save.json"
+  },
+  wares: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orderlogistics/wares.json"
+  },
+  address: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orderlogistics/marryOrg.json"
+  },
+};

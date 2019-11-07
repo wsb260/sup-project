@@ -1,0 +1,127 @@
+<template>
+  <div :class="'pageBody' + (pageWait ? ' wait' : '')" id="operandrole">
+    <div class="layout-page-tool">
+      <search-box ref="searchBox"></search-box>
+    </div>
+    <div class="layout-page-content">
+      <Table border stripe :loading="tableLoading" :height="table.height" :columns="table.columns" :data="tableData" :highlight-row="true">
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page :total="total" :current="current" :page-size="page_size" :page-size-opts="page.page_sizepts" @on-change="page_change" @on-page-size-change="page_size_change" show-sizer show-elevator show-total size="small">
+      </Page>
+    </div>
+    <popup-role ref="popupRole"></popup-role>
+  </div>
+</template>
+<script>
+import searchBox from "./components/searchBox.vue";
+import popupRole from "./components/popup-role.vue";
+import { getTableHeight } from "tool/tool.js";
+export default {
+  name: "operandrole",
+  data() {
+    return {
+      delModel: {
+        // show: false
+      },
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center"},
+          { title: "人员名称", key: "OPERNAME", align: "center" },
+          { title: "所属机构", key: "ORGNAME", align: "center"},
+          { title: "人员类型", key: "OPERTYPE", align: "center" },
+          { title: "电话号码", key: "TEL", align: "center" },
+          { title: "备注", key: "NOTES", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "角色配置" },
+                  class: "tableBtn fa success fa-tags",
+                  on: {
+                    click: () => {
+                      this.$refs.popupRole.open(params.row.OPERID);
+                    }
+                  }
+                }),
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+  components: {
+    searchBox,
+    popupRole
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.operandrole.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.operandrole.tableLoading;
+    },
+    current() {
+      return this.$store.state.operandrole.current;
+    },
+    page_size() {
+      return this.$store.state.operandrole.page_size;
+    },
+    total() {
+      return this.$store.state.operandrole.total;
+    },
+    pageWait() {
+      return this.$store.state.operandrole.pageWait;
+    }
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("operandrole")) {
+      this.$store.dispatch({ type: "operandrole/refreshData" });
+    }
+  },
+   mounted() {
+    this.table.height = getTableHeight();
+   },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "operandrole/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "operandrole/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    pollings() {
+      this.visible = false;
+    },
+    reset() {
+      this.searchData = {};
+    },
+    onCancel() {
+      this.visible = !this.visible;
+    }
+  }
+};
+</script>
+
+<style>
+</style>

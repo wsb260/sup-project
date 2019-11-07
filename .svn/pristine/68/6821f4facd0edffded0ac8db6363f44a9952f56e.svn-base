@@ -1,0 +1,18 @@
+{
+  "ordercmc":{
+    "BLCADDRESS": "地址",
+    "BLCCONTACTSNM": "联系人",
+    "BLCCONTACTSTEL": "13111111111",
+    "BLCNAME": "承运商",
+    "BLCPRINCIPALNM": "负责人",
+    "BLCPRINCIPALTEL": "13000000000",
+    "BLCSTATUS": "10",
+    "BLCTYPE": "10",
+    "CREATE_DATE": "2018-12-12 09:42:12.0",
+    "FLAG": "0",
+    "ID": "9",
+    "SETTLEMENT": "10",
+    "UPDATE_DATE": ""
+  },
+   "success": "true"
+}

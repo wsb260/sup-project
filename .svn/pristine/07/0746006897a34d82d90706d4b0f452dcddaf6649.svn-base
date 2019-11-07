@@ -1,0 +1,190 @@
+<template>
+  <div :class="'pageBody' + (pageWait ? ' wait' : '')" id="org">
+    <div class="layout-page-tool">
+      <Button type="success" @click="add">
+        <Icon type="md-add" /> 新增
+      </Button>
+      <search-box ref="searchBox"></search-box>
+    </div>
+    <div class="layout-page-content">
+      <Table border stripe :loading="tableLoading" :height="table.height" :columns="table.columns" :data="tableData" :highlight-row="true">
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page :total="total" :current="current" :page-size="page_size" :page-size-opts="page.page_sizepts" @on-change="page_change" @on-page-size-change="page_size_change" show-sizer show-elevator show-total size="small">
+      </Page>
+    </div>
+    <popup-edit ref="popupEdit"></popup-edit>
+    <popup-tagging ref="popupTagging"></popup-tagging>
+    <popup-delete ref="popupDelete"></popup-delete>
+  </div>
+</template>
+<script>
+import popupEdit from "./components/popup-edit";
+import searchBox from "./components/searchBox.vue";
+import popupTagging from "./components/popup-tagging"
+import popupDelete from "components/situation/popup-delete";
+import { getTableHeight } from "tool/tool.js";
+export default {
+  name: "org",
+  data() {
+    return {
+      delModel: {
+        // show: false
+      },
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center"},
+          { title: "机构编号", key: "ORGID", align: "center" },
+          { title: "机构名称", key: "ORGNAME", align: "center"},
+          { title: "机构类型", key: "ORGTYPE", align: "center",
+            render: (h,params) => {
+              let orgtype = "";
+              if(params.row.ORGTYPE == "10"){
+                orgtype = "总部"
+              }else if(params.row.ORGTYPE == "20"){
+                orgtype = "转单网点"
+              }else if(params.row.ORGTYPE == "30"){
+                orgtype = "集散中心"
+              }else if(params.row.ORGTYPE == "40"){
+                orgtype = "县域网点"
+              }else if(params.row.ORGTYPE == "50"){
+                orgtype = "乡域网点"
+              }else{
+                orgtype = "服务站"
+              }
+              return h("span",orgtype)
+            }
+          },
+          { title: "机构区域", key: "ORGAREA", align: "center",
+            render :(h,params) => {
+               let orgarea = "";
+              if(params.row.ORGAREA == "10"){
+                orgarea = "A域"
+              }else if(params.row.ORGAREA == "20"){
+                orgarea = "B域"
+              }else if(params.row.ORGAREA == "30"){
+                orgarea = "C域"
+              }else{
+                orgarea = "D域"
+              }
+              return h("span",orgarea)
+            }
+          },
+          { title: "上级机构名称", key: "UPORGNAME", align: "center" },
+          { title: "联系人", key: "LINKMAN", align: "center" },
+          { title: "联系电话", key: "TEL", align: "center"},
+          { title: "服务时间", key: "CREATE_DATE", align: "center" },
+          { title: "联系地址", key: "ADDRESS", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "关键字标注" },
+                  class: "tableBtn fa success fa-tags",
+                  on: {
+                    click: () => {
+                      this.$refs.popupTagging.open();
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "编辑内容" },
+                  class: "tableBtn fa warning fa-edit",
+                  on: {
+                    click: () => {
+                      this.$refs.popupEdit.open(params.row.ORGID);
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "删除" },
+                  class: "tableBtn fa error fa-remove",
+                  on: {
+                    click: () => {
+                      this.$refs.popupDelete.open(params.row.ORGID, "org/delete");
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+  components: {
+    popupEdit,
+    popupDelete,
+    searchBox,
+    popupTagging
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.org.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.org.tableLoading;
+    },
+    current() {
+      return this.$store.state.org.current;
+    },
+    page_size() {
+      return this.$store.state.org.page_size;
+    },
+    total() {
+      return this.$store.state.org.total;
+    },
+    pageWait() {
+      return this.$store.state.org.pageWait;
+    }
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("org")) {
+      this.$store.dispatch({ type: "org/refreshData" });
+      this.$store.dispatch({ type: "selectData/getData", name: "orgtype" });
+      this.$store.dispatch({ type: "selectData/getData", name: "uporgname" });
+      this.$store.dispatch({ type: "selectData/getData", name: "orgarea" });
+    }
+  },
+   mounted() {
+    this.table.height = getTableHeight();
+   },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "org/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "org/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    add() {
+      this.$refs.popupEdit.open();
+    },
+    pollings() {
+      this.visible = false;
+    }
+  }
+};
+</script>
+
+<style>
+</style>

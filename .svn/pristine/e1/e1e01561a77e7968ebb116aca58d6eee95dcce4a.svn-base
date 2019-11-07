@@ -1,0 +1,35 @@
+import mutations from './mutations.js';
+import actions from './actions.js';
+import getters from './getters.js';
+export default {
+  namespaced: true,
+  state: {
+    popupLoading: false,
+    showEdit: false,
+    pageWait: false,
+    byIdData: {},
+    tableData:[],
+    tableLoading:false,
+    total: 0,
+    current: 1,
+    page_size: 50,
+    searchType: false,
+    searchData: {
+      blcaddress: "",
+      blccontactsnm: "",
+      blccontactstel: "",
+      blcname: "",
+      blcprincipalnm: "",
+      blcprincipaltel: "",
+      blcstatus: "",//运营商状态
+      blctype: "",//承运商类型
+      settlement: "",//结算规则
+    },
+    quickSearchData:{
+      blcname:""
+    }
+  },
+  mutations: mutations,//mutations END
+  actions: actions,//action END
+  getters: getters
+};

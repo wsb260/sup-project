@@ -1,0 +1,47 @@
+<template>
+  <Modal v-model="show" :mask-closable="!1" className="red delete" width="300">
+      <p slot="header">
+      <Icon type="ios-add-circle-outline" ></Icon>
+      <span>错误类型</span>
+    </p>
+    <p>您确定申请此类型错误吗</p>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      id: false,
+      show: false,
+    };
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.abnormalcargohandle.tableData;
+    },
+    popupLoading() {
+      return this.$store.state.abnormalcargohandle.popupLoading;
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    open(id) {
+      this.show = true;
+    },
+    onOk() {
+      this.$store.dispatch({ type: "abnormalcargohandle/apply" });
+      this.show = false;
+      
+    },
+    onCancel() {
+     this.show = false;
+    }
+  }
+};
+</script>
+

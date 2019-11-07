@@ -1,0 +1,81 @@
+<template>
+  <div :class="'pageBody orderlogistics' + (pageWait ? ' wait' : '' )">
+    <Card class="h100" style="width: 740px; margin: auto;">
+      <Form :model="byIdData" :label-width="100" ref="editForm">
+        <!-- :rules="ruleValidate" -->
+        <Row>
+          <i-col span="12">
+            <FormItem label="客户：" prop="BLCNAME">
+              <Select v-model="byIdData.SERVNAME" placeholder="请选择承运商">
+                <Option v-for="item in CARTYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="原订单号：" prop="CAROWNER_TEL">
+              <i-input v-model="byIdData.CAROWNER_TEL" placeholder="请输入车主电话"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+         <i-col span="12">
+            <FormItem label="寄件人：" prop="CAROWNER_TEL">
+              <i-input v-model="byIdData.CAROWNER_TEL" placeholder="请输入车主电话"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="寄件人电话：" prop="CAROWNER_CARDNO">
+              <i-input v-model="byIdData.CAROWNER_CARDNO" placeholder="请输入证件号码"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+            <FormItem label="寄件人地址：" prop="CAROWNER_TEL">
+              <i-input v-model="byIdData.CAROWNER_TEL" placeholder="请输入车主电话"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="收件人地址：" prop="CAROWNER_CARDNO">
+              <i-input v-model="byIdData.CAROWNER_CARDNO" placeholder="请输入证件号码"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+      </Form>
+      <div slot="footer">
+      <Button type="success" @click="onOk">保存</Button>
+      <Button type="error" @click="onCancel">关闭</Button>
+    </div>
+    </Card>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      CARTYPE: [],
+      CARDTYPE: [],
+    };
+  },
+  computed: {
+    pageWait() {
+      return this.$store.state.ordermenu.pageWait;
+    },
+    byIdData() {
+      return this.$store.state.ordermenu.byIdData;
+    },
+  },
+  methods:{
+      onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch({ type: "oper/saveData", id: this.id });
+        }
+      });
+    },
+    onCancel() {
+      this.$store.commit("oper/changeShowEdit", false);
+    },
+  }
+};
+</script>

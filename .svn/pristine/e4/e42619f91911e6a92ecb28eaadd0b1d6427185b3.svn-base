@@ -1,0 +1,19 @@
+import {
+  makeAjaxUrl,
+  timeText
+} from "tool/tool.js";
+import api from "controller/api/api.js";
+const apiInfo = api.OrderManagement.orgmarry;
+export default {
+  getData: (state, getters, rootState, rootGetters) => (option) => {
+    var ajaxData = {
+      "rows": option && option.page_size ? option.page_size : (state.page_size || 50),
+      "page": option && option.current ? option.current : (state.current || 1)
+    };
+    return {
+      method: apiInfo.getData.method,
+      url: apiInfo.getData.url,
+      data: makeAjaxUrl(ajaxData)
+    };
+  }
+};

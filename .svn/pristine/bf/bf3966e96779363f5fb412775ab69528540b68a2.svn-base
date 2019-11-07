@@ -1,0 +1,40 @@
+<template>
+  <div id="app" class="wh100">
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
+  </div>
+</template>
+
+<script>
+import p from "controller/projectOption.js";
+export default {
+  created() {
+    this.$store.dispatch("mainMenu/getData").then((type) => {
+      this.$router.push("/"+( type ? "" : "login" ));
+    });
+    
+    // if (this.$store.state.login.logined) {
+    //   if( this.$store.state.mainMenu.mainMenu && this.$store.state.mainMenu.mainMenu.length > 0 ){
+    //     this.$router.push("/");
+    //   }else{
+    //     console.log("菜单信息不对，传过来的菜单：");
+    //     //console.log(mainMenu);
+    //   }
+    // }else {
+    //   this.$router.push("/login");
+    // }
+  },
+  mounted() {
+    document.title = p.title;
+  }
+}
+</script>
+
+<style>
+#app {
+  font-family: "Microsoft YaHei", 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+</style>

@@ -1,0 +1,46 @@
+import {
+  makeAjaxUrl,
+  forEachToJson,
+  timeText
+} from "tool/tool.js";
+import api from "controller/api/api.js";
+const apiInfo = api.statisticalManagement.settle;
+export default {
+  getData: (state, getters, rootState, rootGetters) => (option) => {
+    var ajaxData = {
+      "rows": option && option.page_size ? option.page_size : (state.page_size || 50),
+      "page": option && option.current ? option.current : (state.current || 1)
+    };
+    if (state.searchType) {
+      forEachToJson(state.searchData, (key, v) => {
+        if( v != "" || typeof(v) == "number" ){
+          if(key == "starteditdate"){
+            ajaxData.starteditdate = timeText(v)
+          }else if(key == "endeditdate"){
+            ajaxData.endeditdate = timeText(v)
+          }else if(key == "startsettledate"){
+            ajaxData.startsettledate = timeText(v)
+          }else if(key == "endsettledate"){
+            ajaxData.endsettledate = timeText(v)
+          }else{
+            ajaxData[key] = v;
+          }
+        }
+      });
+    }
+    return {
+      method: apiInfo.getData.method,
+      url: apiInfo.getData.url,
+      data: makeAjaxUrl(ajaxData)
+    };
+  },
+  delete: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.delete.method,
+      url: apiInfo.delete.url,
+      data: makeAjaxUrl({
+        ids: option.id
+      })
+    };
+  }
+};

@@ -1,0 +1,111 @@
+<template>
+  <Modal v-model="showEdit" :mask-closable="!1" draggable :transfer="!1" :closable="!popupLoading"  width="740" className="green">
+    <p slot="header">
+      <Icon type="tableBtn fa success fa-tags"></Icon>
+      <span>模块配置</span>
+    </p>
+      <Form :model="byIdData" :label-width="100"  ref="editForm">
+        <Row>
+          <i-col span="8">
+            <FormItem label="人员名称：">
+              <i-input v-model="byIdData.OPERNAME" readonly ></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="8">
+            <FormItem label="机构名称：">
+              <i-input v-model="byIdData.ORGNAME" readonly ></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="8">
+            <FormItem label="电话号码：">
+              <i-input v-model="byIdData.TEL" readonly ></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="24">
+            <Transfer :data="leftList" :titles="titles" :target-keys="rightList" :list-style="listStyle" :render-format="renderFormat" :operations="['向左移','向右移']" filterable  @on-change="handleChange">
+            </Transfer>
+          </i-col>
+        </Row>
+      </Form>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">取消</Button>
+    </div>
+    <popup-delete ref="popupDelete"></popup-delete>
+  </Modal>
+</template>
+<script>
+import popupDelete from "components/situation/popup-delete";
+import { eltValidators } from "tool/eltValidators.js";
+import { getTableHeight } from "tool/tool.js";
+export default {
+  data() {
+    return {
+      id:false,
+      table: {
+        height: 500,
+      },
+      titles:['未选择角色信息列表','已选择角色信息列表'],
+      listStyle: {
+        width: "300px",
+        height: "300px"
+      },
+      ruleValidate: {}
+    }
+  },
+   components: {
+    popupDelete,
+  },
+  computed: {
+    showEdit: {
+      get: function() {
+        return this.$store.state.operandrole.showEdit;
+      },
+      set: function(val) {
+        this.$store.commit("operandrole/changeShowEdit", val);
+      }
+    },
+    byIdData() {
+      return this.$store.state.operandrole.byIdData;
+    },
+    tableLoading() {
+      return this.$store.state.operandrole.tableLoading;
+    },
+    popupLoading() {
+      return this.$store.state.operandrole.popupLoading;
+    },
+    leftList() {
+      return this.$store.state.operandrole.leftList;
+    },
+    rightList: {
+      get: function() {
+        return this.$store.state.operandrole.rightList;
+      },
+      set: function(val) {
+        this.$store.commit("operandrole/changeRight", val);
+      }
+    }
+  },
+  methods: {
+    handleChange(newTargetKeys) {
+      this.$store.commit("operandrole/changeRight", newTargetKeys);
+    },
+    renderFormat(item) {
+      return item.label;
+    },
+    open(id) {
+      this.id = id || false;
+      this.$store.dispatch({type:"operandrole/getByIdData",id:this.id})
+      this.$store.commit("operandrole/changeShowEdit", true);
+    },
+    onOk() {
+      this.$store.dispatch({ type: "operandrole/saveData", id: this.id });
+    },
+    onCancel() {
+      this.$store.commit("operandrole/changeShowEdit", false);
+    },
+  }
+}
+</script>

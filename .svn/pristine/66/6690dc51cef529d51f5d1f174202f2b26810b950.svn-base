@@ -1,0 +1,81 @@
+<template>
+  <div class="pageBody pathplayback">
+    <div class="layout-page-tool">
+      <Button type="info"><i class="fa fa-arrows-alt"></i> 全屏</Button>
+      <Button type="success"><i class="fa fa-play"></i> 播放</Button>
+      <Button type="error"><i class="ivu-icon ivu-icon-ios-pause-outline"></i> 暂停</Button>
+      <Button type="warning"><i class="fa fa-repeat"></i> 重置</Button>
+      <search-box></search-box>
+      <Checkbox>画面跟随</Checkbox>
+    </div>
+    <div class="layout-page-content" :style="'height:'+height+'px'">
+      <div class="map" id="allmap">
+        <baidu-map @ready="handler" :scroll-wheel-zoom="true" map-type="BMAP_HYBRID_MAP" :zoom="13"></baidu-map>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import searchBox from "./searchBox.vue"
+import { getTableHeight } from "tool/tool.js";
+export default {
+  data() {
+    return {
+      height: 300,
+      CARS: [
+        {value:1,label:"黑A5784"},
+        {value:2,label:"黑A3574"},
+        {value:3,label:"黑A6741"},
+        {value:4,label:"黑A8710"},
+        {value:5,label:"黑A5785"}
+      ]
+    };
+  },
+  components: {
+    searchBox
+  },
+  mounted(){
+    this.height = getTableHeight();
+  },
+  methods: {
+    baiduMap() {
+      var map = new BMap.Map("allmap");
+      map.centerAndZoom(new BMap.Point(126.592695,45.694494), 15);
+      map.enableScrollWheelZoom();
+      map.addControl( new BMap.OverviewMapControl({
+        isOpen: false,
+        anchor: BMAP_ANCHOR_BOTTOM_RIGHT
+      }));
+      map.addControl(new BMap.NavigationControl());
+      map.addControl(new BMap.ScaleControl());
+      map.addOverlay(new BMap.Marker(new BMap.Point(126.592695,45.694494), {
+        icon: new BMap.Icon( "../../static/img/p.png", new BMap.Size(100, 100) )
+      }));
+    },
+    handler({ BMap, map }) {
+      this.baiduMap();
+    }
+  }
+};
+</script>
+<style lang="scss">
+.pathplayback {
+  .ivu-select-dropdown .searchBox{
+    width: 300px;
+  }
+  .timer{
+    font-size: 14px;
+    color: #666;
+    vertical-align: middle;
+    span{
+      padding: 0 4px;
+      color: #f40;
+    }
+  }
+  .map{
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>
+

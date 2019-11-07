@@ -1,0 +1,7 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/transhipmentquery/listpage.json"
+  },
+};

@@ -1,0 +1,27 @@
+{
+  "SENDER_NAME": "dad",
+  "SENDER_MOBILE": "18222222222",
+  "SENDER_PHONE": "",
+  "PAYWAY": "货到付款",
+  "SENDER_ADDRESS": "",
+  "RECEIVER_MOBILE": "18213333333",
+  "CREATION_DATE1": "2018-12-06 14:28:28.0",
+  "STATUS": "待发货",
+  "orderItemInfo": [{
+    "ID": 153,
+    "CTRCODE": "143",
+    "TXLOGISTICID": "YTS1812061428287",
+    "ITEMNAME": "weqe",
+    "ITEMNUMBER": 1,
+    "ITEMVALUE": 0.0,
+    "CREATION_DATE": null,
+    "PRODUCT_SPEC_NM": "0.0,0.0,0.0",
+    "ITEMID": "1"
+  }],
+  "QTY": "1",
+  "ORIGINAL_ORDERNO": "",
+  "RECEIVER_NAME": "qe",
+  "ID": "143",
+  "RECEIVER_ADDRESS": "123",
+  "CUSTOMERNAME": ""
+}

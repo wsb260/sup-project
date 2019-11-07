@@ -1,0 +1,29 @@
+import Vue from 'vue'
+import vuex from 'vuex'
+Vue.use(vuex);
+
+import index from './index/index.js';
+import notice from './tool/notice.js';
+import login from './login/index.js';
+import pageTab from './index/pageTab.js';
+import mainMenu from './tool/mainMenu/index.js';
+import org from './modules/basicInformation/org/index.js'
+import oper from './modules/basicInformation/oper/index.js'
+import deliveryresource from './modules/basicInformation/deliveryresource/index.js'
+import selectData from './tool/selectData/index.js'
+
+export default new vuex.Store({
+  modules: {
+    index: index,
+    notice: notice,
+    login: login,
+    pageTab: pageTab,
+    mainMenu: mainMenu,
+    org:org,
+    oper:oper,
+    deliveryresource:deliveryresource,
+
+    selectData:selectData
+
+  }
+})

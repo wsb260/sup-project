@@ -1,0 +1,133 @@
+<template>
+  <Dropdown trigger="custom" :transfer="!1" placement="bottom-start" :visible="visible">
+    <Button type="info" @click="changeVisible(true)">
+      <Icon type="ios-search" /> 精确查询
+    </Button>
+    <DropdownMenu slot="list" class="searchBox">
+      <Form :model="searchData" :label-width="90" ref="editForm" class="forms">
+         <Row>
+          <i-col span="12">
+            <FormItem label="承运商：">
+              <i-input v-model="searchData.BLCNAME" clearable placeholder="请填写承运商"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="承运商地址：">
+              <i-input v-model="searchData.BLCADDRESS" clearable placeholder="请填写承运商地址"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+            <FormItem label="负责人：">
+              <i-input v-model="searchData.BLCPRINCIPALNM" clearable placeholder="请填写负责人"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="负责人电话：">
+              <i-input v-model="searchData.BLCPRINCIPALTEL" clearable placeholder="请填写负责人电话"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+            <FormItem label="联系人：">
+              <i-input v-model="searchData.BLCCONTACTSNM" clearable placeholder="请填写联系人"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="联系人电话：">
+              <i-input v-model="searchData.BLCCONTACTSTEL" clearable placeholder="请填写联系人电话"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+            <FormItem label="运营状态：">
+              <Select v-model="searchData.BLCSTATUS" clearable placeholder="请选择运营状态">
+                <Option v-for="item in BLCSTATUS" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="承运商类型：">
+              <Select v-model="searchData.BLCTYPE" clearable placeholder="请选择承运商类型">
+                <Option v-for="item in BLCTYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+            <FormItem label="结算方式：">
+              <Select v-model="searchData.SETTLEMENT" clearable placeholder="请选择结算方式">
+                <Option v-for="item in SETTLEMENT" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+        </Row>
+      </Form>
+      <div style="text-align:center;">
+        <Button type="info" @click="search">
+          <Icon type="md-search" /> 查询
+        </Button>
+        <Button type="success" @click="reset">
+          <span class="fa fa-refresh"></span> 重置
+        </Button>
+        <Button type="error" @click="changeVisible(false)">
+          <span class="fa fa-remove"></span> 关闭
+        </Button>
+      </div>
+    </DropdownMenu>
+  </Dropdown>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.ordercmc.byIdData;
+    },
+    BLCSTATUS() {
+      return this.$store.state.selectData.BLCSTATUS;
+    },
+    BLCTYPE() {
+      return this.$store.state.selectData.BLCTYPE;
+    },
+    SETTLEMENT() {
+      return this.$store.state.selectData.SETTLEMENT;
+    },
+    searchData() {
+      return this.$store.state.ordercmc.searchData;
+    },
+    searchType() {
+      return this.$store.state.ordercmc.searchType;
+    }
+  },
+  deactivated() {
+    this.visible = false;
+  },
+  methods: {
+    search() {
+      this.$store.dispatch({ type: 'ordercmc/refreshData', searchType: true, current: 1 });
+      this.visible = false;
+    },
+    reset() {
+      this.$store.commit("ordercmc/clearSearchData");
+      this.$store.dispatch({ type: 'ordercmc/refreshData', searchType: false, current: 1 });
+    },
+    changeVisible(type) {
+      this.visible = type;
+    }
+  }
+};
+</script>
+<style>
+.forms{
+margin:0 10px 0 0;
+}
+</style>

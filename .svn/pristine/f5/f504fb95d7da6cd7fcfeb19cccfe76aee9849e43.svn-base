@@ -1,0 +1,31 @@
+{
+  "result": [{
+    "CRMTEL": "0451-3638989",
+    "CRMADDRESSS": "哈尔滨市南岗区",
+    "ACCOUNTNUMBER": "",
+    "BANKPERSON": "",
+    "CRMPOSTCODE": "15000",
+    "BANKTEL": "",
+    "FLAG": "0",
+    "CRMCONTACTSTEL": "",
+    "CRMCONTACTSTYPE": "",
+    "BENEFITSCALE": "",
+    "CRMCOUNTY": "",
+    "CRMGRADE": "30",
+    "CRMREMARK": "",
+    "CRMCONTACTS": "",
+    "USERID": "",
+    "CRMNAME": "中通",
+    "CRMSTATUS": "30",
+    "ID": "2",
+    "CRMTRADE": "40",
+    "CRMCITY": "",
+    "BANKNAME": "",
+    "CRMDATE": "2017-03-10 14:41:54.0",
+    "CRMTYPE": "10",
+    "BALANCE": "",
+    "CRMORGID": "1",
+    "CRMSOURCE": "30",
+    "CRMPROV": ""
+  }]
+}

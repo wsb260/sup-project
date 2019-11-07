@@ -1,0 +1,33 @@
+{
+  "result": [{
+    "sys_tree_node_id": "31245",
+    "sys_tree_node_nm": "太原市"
+  }, {
+    "sys_tree_node_id": "31257",
+    "sys_tree_node_nm": "大同市"
+  }, {
+    "sys_tree_node_id": "31270",
+    "sys_tree_node_nm": "阳泉市"
+  }, {
+    "sys_tree_node_id": "31277",
+    "sys_tree_node_nm": "长治市"
+  }, {
+    "sys_tree_node_id": "31292",
+    "sys_tree_node_nm": "晋城市"
+  }, {
+    "sys_tree_node_id": "31300",
+    "sys_tree_node_nm": "晋中市"
+  }, {
+    "sys_tree_node_id": "31313",
+    "sys_tree_node_nm": "运城市"
+  }, {
+    "sys_tree_node_id": "31328",
+    "sys_tree_node_nm": "忻州市"
+  }, {
+    "sys_tree_node_id": "31344",
+    "sys_tree_node_nm": "临汾市"
+  }, {
+    "sys_tree_node_id": "31363",
+    "sys_tree_node_nm": "吕梁市"
+  }]
+}

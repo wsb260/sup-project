@@ -1,0 +1,103 @@
+import {
+  makeGetAjaxUrl,
+  makeAjaxUrl,
+  forEachToJson
+} from "tool/tool.js";
+import api from "controller/api/api.js";
+const apiInfo = api.basicInformation.org;
+export default {
+  getData: (state, getters, rootState, rootGetters) => (option) => {
+    var ajaxData = {
+      "limit": option && option.page_size ? option.page_size : (state.page_size || 50),
+      "pageNo": option && option.current ? option.current : (state.current || 1)
+    };
+    if( state.searchType ){
+      forEachToJson(state.searchData, (key, v) => {
+        if( v != "" || typeof(v) == "number" ){
+          if( key == "type" ){
+            ajaxData.type = state.searchType ? rootGetters["selectData/findData"]({ name: "TYPE", value: state.searchData.type }) : "";
+          }else if( key == "orgtype" ){
+            ajaxData.orgtype = state.searchType ? rootGetters["selectData/findData"]({ name: "SHOPTYPE", value: state.searchData.shoptype }) : "";
+          }else if( key == "ind" ){
+            ajaxData.ind = state.searchType ? rootGetters["selectData/findData"]({ name: "SERVICETYPE", value: state.searchData.ind }) : "";
+          }else if( key == "servicetype" ){
+            ajaxData.servicetype = state.searchType ? rootGetters["selectData/findData"]({ name: "SERVICETYPE", value: state.searchData.servicetype }) : "";
+          }else{
+            ajaxData[key] = v;
+          }
+        }
+      });
+    }
+    return {
+      method: apiInfo.getData.method,
+      url: apiInfo.getData.url + makeGetAjaxUrl(ajaxData)
+    };
+  },
+  getByIdData: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.getByIdData.method,
+      url: apiInfo.getByIdData.url,
+      data: makeAjaxUrl({
+        id: option.id
+      })
+    };
+  },
+  saveNew: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.saveNew.method,
+      url: apiInfo.saveNew.url,
+      data: makeAjaxUrl( {
+        orgid: state.byIdData.SHOPID,
+        shopname: state.byIdData.SHOPNAME,
+        address: state.byIdData.ADDRESS,
+        type: rootGetters["selectData/findData"]({name: "TYPE", value: state.byIdData.TYPE}),
+        shoptype: rootGetters["selectData/findData"]({name: "SHOPTYPE", value: state.byIdData.SHOPTYPE}),
+        province: state.byIdData.PROVINCE,
+        city: state.byIdData.CITY,
+        county: state.byIdData.COUNTY,
+        mainscope: state.byIdData.MAINSCOPE,
+        servicetype: rootGetters["selectData/findData"]({name: "SERVICETYPE", value: state.byIdData.SERVICETYPE}),
+        productsum: state.byIdData.PRODUCTSUM,
+        salecount: state.byIdData.SALECOUNT,
+        shoplevel: state.byIdData.SHOPLEVEL,
+        ind: state.byIdData.IND,
+        helpfamilys: state.byIdData.HELPFAMILYS,
+        shopurl: state.byIdData.SHOPURL
+      })
+    };
+  },
+  saveEdit: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.saveEdit.method,
+      url: apiInfo.saveEdit.url,
+      data: makeAjaxUrl({
+        id: state.byIdData.ID,
+        shopid: state.byIdData.SHOPID,
+        shopname: state.byIdData.SHOPNAME,
+        address: state.byIdData.ADDRESS,
+        type: rootGetters["selectData/findData"]({name: "TYPE", value: state.byIdData.TYPE}),
+        shoptype: rootGetters["selectData/findData"]({name: "SHOPTYPE", value: state.byIdData.SHOPTYPE}),
+        province: state.byIdData.PROVINCE,
+        city: state.byIdData.CITY,
+        county: state.byIdData.COUNTY,
+        mainscope: state.byIdData.MAINSCOPE,
+        servicetype: rootGetters["selectData/findData"]({name: "SERVICETYPE", value: state.byIdData.SERVICETYPE}),
+        productsum: state.byIdData.PRODUCTSUM,
+        salecount: state.byIdData.SALECOUNT,
+        shoplevel: state.byIdData.SHOPLEVEL,
+        ind: state.byIdData.IND,
+        helpfamilys: state.byIdData.HELPFAMILYS,
+        shopurl: state.byIdData.SHOPURL
+      })
+    };
+  },
+  delete: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.delete.method,
+      url: apiInfo.delete.url,
+      data: makeAjaxUrl({
+        ids: option.id
+      })
+    };
+  }
+};

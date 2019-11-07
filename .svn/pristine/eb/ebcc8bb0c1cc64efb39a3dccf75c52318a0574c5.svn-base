@@ -1,0 +1,330 @@
+<template>
+  <Modal v-model="showEdit" :mask-closable="!1" draggable :transfer="!1" @on-visible-change="visibleChange" :closable="!popupLoading" :class-name="(id ? 'yellow' : 'green') + (popupLoading ? ' popupLoading' : '')" width="740">
+    <p slot="header">
+      <span class="fa fa-edit" v-if="id"></span>
+      <Icon type="ios-add-circle-outline" v-else></Icon>
+      <span>{{'店铺信息' + (id ? '修改' : '新增')}}</span>
+    </p>
+    <Form :model="byIdData" :label-width="100" :rules="ruleValidate" ref="editForm">
+      <Row>
+        <i-col span="24">
+          <FormItem label="店铺名称：" v-show="Boolean(id)">
+            <i-input v-model="byIdData.SHOPNAME" placeholder="请填写店铺名称" :disabled="id ? true : false">></i-input>
+          </FormItem>
+          <FormItem label="店铺名称：" prop="SHOPNAME" v-show="!Boolean(id)">
+            <i-input v-model="byIdData.SHOPNAME" placeholder="请填写店铺名称" :disabled="id ? true : false">></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="8">
+          <FormItem label="店铺ID：" v-show="Boolean(id)">
+            <i-input v-model="byIdData.SHOPID" placeholder="请填写店铺ID" :disabled="id ? true : false"></i-input>
+          </FormItem>
+          <FormItem label="店铺ID：" prop="SHOPID" v-show="!Boolean(id)">
+            <i-input v-model="byIdData.SHOPID" placeholder="请填写店铺ID" :disabled="id ? true : false"></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="8">
+          <FormItem label="所属平台：" prop="SHOPTYPE">
+            <Select v-model="byIdData.SHOPTYPE" placeholder="请选择所属平台">
+              <Option v-for="item in SHOPTYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+        <i-col span="8" prop="SHOPLEVEL">
+          <FormItem label="店铺等级：" v-show="Boolean(id)">
+            <i-input v-model="byIdData.SHOPLEVEL" :disabled="id ? true : false">></i-input>
+          </FormItem>
+          <FormItem label="店铺等级：" prop="SHOPLEVEL" v-show="!Boolean(id)">
+            <i-input v-model="byIdData.SHOPLEVEL" :disabled="id ? true : false">></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="8">
+          <FormItem label="企业类型：" prop="TYPE">
+            <Select v-model="byIdData.TYPE" placeholder="请选择企业类型">
+              <Option v-for="(item,i) in TYPE" :value="item.value" :key="i">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+        <i-col span="8">
+          <FormItem label="服务类型：" prop="SERVICETYPE">
+            <Select v-model="byIdData.SERVICETYPE" placeholder="请选择服务类型">
+              <Option v-for="item in SERVICETYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+        <i-col span="8">
+          <FormItem label="分类：" prop="IND">
+            <Select v-model="byIdData.IND" placeholder="请选择分类">
+              <Option v-for="item in SERVICETYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="8">
+          <FormItem label="所属省份：" prop="PROVINCE">
+            <Select ref="provice" v-model="byIdData.PROVINCE" placeholder="请选择所属省份" @on-change="changeSelect('city')">
+              <Option v-for="(item,i) in provinceData" :value="item.value" :key="i">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+        <i-col span="8">
+          <FormItem label="所属市：" prop="CITY" v-if="citys">
+            <i-input placeholder="请选择所属城市" disabled></i-input>
+          </FormItem>
+          <FormItem label="所属市：" prop="CITY" v-if="!citys">
+            <Select ref="city" v-model="byIdData.CITY" clearable placeholder="请选择所属城市" @on-change="changeSelect('county')">
+              <Option v-for="(item,i) in cityData" :value="item.value" :key="i">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+        <i-col span="8">
+          <FormItem label="区/县：" prop="COUNTY" v-if="countys">
+            <i-input placeholder="请选择所属区/县" disabled></i-input>
+          </FormItem>
+          <FormItem label="区/县：" prop="COUNTY" v-if="!countys">
+            <Select ref="county" v-model="byIdData.COUNTY" clearable placeholder="请选择所属区/县">
+              <Option v-for="(item,i) in countyData" :value="item.value" :key="i">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+      </Row>
+      <FormItem label="详细地址：" prop="ADDRESS">
+        <i-input v-model="byIdData.ADDRESS" placeholder="请填写详细地址"></i-input>
+      </FormItem>
+      <FormItem label="主营范围：" prop="MAINSCOPE">
+        <i-input v-model="byIdData.MAINSCOPE" placeholder="请填写经营范围"></i-input>
+      </FormItem>
+      <Row>
+        <i-col span="12">
+          <FormItem label="商品总数量：" prop="PRODUCTSUM">
+            <i-input v-model="byIdData.PRODUCTSUM" :disabled="id ? true : false"></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="销售总数量：" prop="SALECOUNT">
+            <i-input v-model="byIdData.SALECOUNT" :disabled="id ? true : false"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="12">
+          <FormItem label="帮扶贫困户数：" prop="HELPFAMILYS">
+            <i-input v-model="byIdData.HELPFAMILYS" placeholder="请填写帮扶贫困户数量"></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="店铺网址：" prop="SHOPURL">
+            <i-input v-model="byIdData.SHOPURL" placeholder="请填写店铺网址"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+    </Form>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+import { eltValidators } from "tool/eltValidators.js";
+export default {
+  data() {
+    return {
+      id: false,
+      citys: true,
+      countys: true,
+      ruleValidate: {
+        SHOPID: [{ required: true, message: "请输入店铺ID！" }, {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "maxLength", message: "输入内容最大20位", info: "20" }
+            ]
+          }],
+        SHOPNAME: [{ required: true, message: "请输入店铺名称！" }, {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "maxLength", message: "输入内容最大200位", info: "200" }
+            ]
+          }],
+        TYPE: [{ required: true, message: "请选择企业类型！" }],
+        SHOPTYPE: [{ required: true, message: "请选择所属平台！" }],
+        SERVICETYPE: [{ required: true, message: "请选择服务类型！" }],
+        IND: [{ required: true, message: "请选择分类！" }],
+        PROVINCE: [{ required: true, message: "请选择所属省份！" }],
+        CITY: [{ required: true, message: "请选择所属城市！" }],
+        COUNTY: [{ required: true, message: "请选择所属区/县！" }],
+        ADDRESS: [{ required: true, message: "请填写详细地址！" },{
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "maxLength", message: "输入内容最大200位", info: "200" }
+            ]
+          }],
+        MAINSCOPE: [{ required: true, message: "请选择主营范围！" },{
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "maxLength", message: "输入内容最大200位", info: "200" }
+            ]
+          }],
+        PRODUCTSUM: [
+          {
+            validator: eltValidators, //所有自定义验证都走这个方法
+            message: "请输入数字！", //基本的提示信息
+            notEmpty: false, //是否必填，这个和上边定义的 required: true 必须同步， false 的话可以不写
+            rules: [
+              //全部的验证过则
+              // { name: "number", message: "", info: "" }, //要求数字型、没设置这条规则的提示信息、附带信息（数字型用不到）
+              { name: "integer_p", message: "", info: "" },
+              { name: "maxLength", message: "输入内容最大8位", info: "8" }
+            ]
+          }
+        ],
+        SALECOUNT: [
+          {
+            validator: eltValidators,
+            message: "请输入数字！",
+            notEmpty: false,
+            rules: [
+              { name: "integer_p", message: "", info: "" },
+              { name: "maxLength", message: "输入内容最大8位", info: "8" }
+            ]
+          }
+        ],
+        HELPFAMILYS: [
+          {
+            validator: eltValidators,
+            message: "请输入数字！",
+            notEmpty: false,
+            rules: [
+              { name: "integer_p", message: "", info: "" },
+              { name: "maxLength", message: "输入内容最大8位", info: "8" }
+            ]
+          }
+        ],
+        SHOPLEVEL: [
+          {
+            validator: eltValidators,
+            message: "请输入数字！",
+            notEmpty: false,
+            rules: [
+              { name: "integer_p", message: "", info: "" },
+              { name: "maxLength", message: "输入内容最大5位",info:"5"}
+            ]
+          }
+        ],
+        SHOPURL: [
+          {
+            validator: eltValidators,
+            rules: [
+              { name: "maxLength", message: "输入内容最大64位",info:"64"}
+            ]
+          }
+        ],
+      }
+    };
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.shop.byIdData;
+    },
+    provinceData() {
+      return this.$store.state.address.province;
+    },
+    cityData() {
+      return this.$store.state.address.city;
+    },
+    countyData() {
+      return this.$store.state.address.county;
+    },
+    TYPE() {
+      return this.$store.state.selectData.TYPE;
+    },
+    SHOPTYPE() {
+      return this.$store.state.selectData.SHOPTYPE;
+    },
+    SERVICETYPE() {
+      return this.$store.state.selectData.SERVICETYPE;
+    },
+    showEdit: {
+      get: function() {
+        return this.$store.state.shop.showEdit;
+      },
+      set: function(val) {
+        this.$store.commit("shop/changeShowEdit", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.shop.popupLoading;
+    }
+  },
+  mounted() {},
+  methods: {
+    open(id) {
+      this.id = id || false;
+      this.result();
+      if (this.id) {
+        this.$store.dispatch({ type: "shop/getByIdData", id: this.id });
+      } else {
+        this.$store.commit({ type: "shop/isNewData" });
+      }
+      this.$store.commit("shop/changeShowEdit", true);
+    },
+    result() {
+      this.$refs["editForm"].resetFields();
+    },
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch({ type: "shop/saveData", id: this.id });
+        }
+      });
+    },
+    onCancel() {
+      this.$store.commit("shop/changeShowEdit", false);
+    },
+    changeSelect(val) {
+      if (val == "city") {
+        this.citys = true;
+        this.countys = true;
+      } else if (val == "county") {
+        this.countys = true;
+      }
+      this.$store.dispatch({
+        type: "address/getData",
+        province: false,
+        city: val == "city" ? this.byIdData.PROVINCE : false,
+        county: val == "county" ? this.byIdData.CITY : false
+      }).then(() => {
+        if (val == "city") {
+          this.citys = false;
+          this.$nextTick(() => {
+            this.$refs.city.clearSingleSelect();
+            this.$refs.county.clearSingleSelect();
+          });
+        } else if (val == "county") {
+          this.countys = false;
+          this.$nextTick(() => {
+            this.$refs.county.clearSingleSelect();
+          });
+        }
+      });
+    },
+    visibleChange(val) {
+      this.$store.commit("shop/changePageWait", val);
+    }
+  }
+};
+</script>
+<style scoped>
+.isEdit {
+  background: #ccc;
+}
+</style>

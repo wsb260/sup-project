@@ -1,0 +1,95 @@
+<template>
+  <Modal v-model="show" :mask-closable="!1" className="blue" width="728" >
+		<p slot="header">
+			<i class="ivu-icon ivu-icon-ios-star-outline"></i>
+			<span>图标库</span>
+    </p>
+    <div class="allSvg">
+      <table class="allIcon">
+        <tr v-for="(item,i) in option" :key="i">
+          <td v-for="(val,j) in item" :key="j+val" class="td" :class="{ selected: selected == val }" @click="icons(val)">
+            <i :class="val" style="cursor: pointer;"></i>
+          </td>
+        </tr>
+      </table>
+    </div>
+		<div slot="footer">
+			<Button type="error" @click="onCancel">取消</Button>
+		</div>
+	</Modal>
+</template>
+<script>
+import { forEachToJson } from "tool/tool.js";
+import allSvg from "./allSvg.js";
+import fa from "./fa.js";
+export default {
+  data() {
+    return {
+			show: false,
+			id: 0,
+      type: "",
+      option: [],
+      a:{}
+    }
+  },
+  props: {
+    selected: String
+  },
+  created() {
+    var d = [];
+    var f = [...allSvg,...fa];
+    var j = 12;
+    for( let i = 0 ; i < (parseInt(f.length / j) + 1) ; i++ ){
+      let s = [];
+      for( let k = 0 ; k < j ; k++ ){
+        s.push( ( i*j+k >= allSvg.length ? "fa fa-" : "ivu-icon ivu-icon-" ) + (f[i*j+k] ? f[i*j+k] : "") );
+      }
+      this.option.push(s);
+    }
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.sysmenu.byIdData;
+    }
+  },
+  methods: {
+    open(id) {
+			this.id = id || "";
+      this.show = true;
+    },
+    icons(iconName){
+      this.$emit("checked", iconName)
+      this.show = false;
+    },
+    onCancel() {
+      this.show = false;
+		}
+  }
+}
+</script>
+<style lang="scss">
+.allSvg{
+  height: 50vh;
+  overflow-y: scroll;
+  margin: -16px;
+  .allIcon{
+    width:100%;
+  }
+  svg{
+    width: 3vw;
+    height: 3vw;
+    fill: #fff;
+  }
+  .selected{
+    background-color: #19be6b;
+    color: #fff;
+  }
+  td{
+    padding:10px 0;
+    text-align:center;
+    i{
+      font-size: 28px;
+    }
+  }
+}
+</style>

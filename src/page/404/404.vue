@@ -1,0 +1,68 @@
+<template>
+  <div class="main">
+    <div class="notfoud-container">
+      <div class="img-404">
+      </div>
+      <p class="notfound-p">对不起，您请求的页面不存在、或已被删除、或暂时不可用</p>
+      <div class="txtbox">
+      </div>
+      <div class="notfound-text">
+        <span>
+          <span class="red">{{time}}</span> 秒后跳转到首页...</span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      time: 5,
+      setIntervalId: -1
+    };
+  },
+  mounted() {
+    let _this = this;
+    this.setIntervalId = setInterval(() => {
+      _this.time--;
+      if( _this.time <= 0 ){
+        clearInterval( _this.setIntervalId );
+        _this.$router.push("/homepage");
+      }
+    }, 1000);
+  },
+  methods: {}
+};
+</script>
+<style scoped>
+.notfoud-container .img-404 {
+  height: 155px;
+  background: url(../../assets/images/404/404.png) center center no-repeat;
+  background-size: 150px auto;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+.txtbox {
+  width: 390px;
+  position: relative;
+  top: 30px;
+  left: 60px;
+  color: #262b31;
+  font-size: 13px;
+  margin: 0 auto;
+}
+.notfoud-container .notfound-p,
+.notfound-text {
+  line-height: 22px;
+  font-size: 17px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f6f6f6;
+  text-align: center;
+  color: #262b31;
+  margin-bottom: 10px;
+}
+.red {
+  color: red;
+}
+</style>

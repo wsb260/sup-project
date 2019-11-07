@@ -1,0 +1,41 @@
+import mutations from './mutations.js';
+import actions from './actions.js';
+import getters from './getters.js';
+export default {
+  namespaced: true,
+  state: {
+    orgtype: [],
+    uporgname:[],
+    orgarea:[],
+    opertype:[],
+    carowner_nm: [],
+    cartype: [],
+    cardtype: [],
+    blcname: [],
+    blcstatus: [],
+    blctype: [],
+    settlement: [],
+    crmtrade: [],
+    crmstatus: [],
+    crmtype: [],
+    crmgrade: [],
+    crmsource: [],
+    crmnameId: [],
+    delivery_way: [],
+    carnolist: [],
+    STATUS: [],
+    type: [],
+    abnormal_type: [],
+    apply_status: [],
+    status: [],
+    status_orderquery:[],
+    upanddownstatus: [],
+    trancompanyid: [],
+    transtatus: [],
+    treeloader: [],
+    DELIVERY_LOGISTICS_COMPANY_ID: []
+  },
+  mutations: mutations,//mutations END
+  actions: actions,//action END
+  getters: getters
+};

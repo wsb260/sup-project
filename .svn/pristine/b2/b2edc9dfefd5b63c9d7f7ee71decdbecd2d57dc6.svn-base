@@ -1,0 +1,84 @@
+<template>
+  <Dropdown trigger="custom" :transfer="!1" placement="bottom-start" :visible="visible">
+    <Button type="info" @click="changeVisible(true)">
+      <Icon type="ios-search" /> 精确查询
+    </Button>
+    <DropdownMenu slot="list" class="searchBox">
+      <Form :model="searchData" :label-width="90" ref="editForm" class="forms">
+        <Row >
+          <i-col span="12">
+            <Form-item label="订单号：">
+              <i-input v-model="searchData.orderno"  clearable placeholder="请输入订单号"></i-input>
+            </Form-item>
+          </i-col>
+          <i-col span="12">
+            <Form-item label="收件人名称：">
+              <i-input v-model="searchData.receivername"  clearable placeholder="请输入收件人名称"></i-input>
+            </Form-item>
+          </i-col>
+        </Row>
+        <Row >
+          <i-col span="12">
+            <Form-item label="收件人电话：">
+              <i-input v-model="searchData.receivertel"  clearable placeholder="请输入收件人电话"></i-input>
+            </Form-item>
+          </i-col>
+          <i-col span="12">
+            <Form-item label="收件人地址：">
+              <i-input v-model="searchData.receiveraddress"  clearable placeholder="请输入收件人地址"></i-input>
+            </Form-item>
+          </i-col>
+        </Row>
+      </Form>
+      <div style="text-align:center;">
+        <Button type="info" @click="search">
+          <Icon type="md-search" /> 查询
+        </Button>
+        <Button type="success" @click="reset">
+          <span class="fa fa-refresh"></span> 重置
+        </Button>
+        <Button type="error" @click="changeVisible(false)">
+          <span class="fa fa-remove"></span> 关闭
+        </Button>
+      </div>
+    </DropdownMenu>
+  </Dropdown>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+    searchData() {
+      return this.$store.state.delStock.searchData;
+    },
+    searchType() {
+      return this.$store.state.delStock.searchType;
+    }
+  },
+  deactivated() {
+    this.visible = false;
+  },
+  methods: {
+    search() {
+      this.$store.dispatch({ type: 'delStock/refreshData', searchType: true, current: 1 });
+      this.visible = false;
+    },
+    reset() {
+      this.$store.commit("delStock/clearSearchData");
+      this.$store.dispatch({ type: 'delStock/refreshData', searchType: false, current: 1 });
+    },
+    changeVisible(type) {
+      this.visible = type;
+    }
+  }
+};
+</script>
+<style>
+.forms{
+margin:0 10px 0 0;
+}
+</style>

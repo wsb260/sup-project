@@ -1,0 +1,456 @@
+@charset "UTF-8";
+/* 底部分页组件 */
+.ivu-page.mini {
+  text-align: center;
+  background-color: #daeefe;
+  padding: 2px;
+  border: 1px solid #9ecef5;
+  border-top: 0 none;
+}
+
+.ivu-page.mini .ivu-page-next,
+.ivu-page.mini .ivu-page-prev,
+.ivu-page.mini .ivu-page-item {
+  border: 1px solid #dddee1;
+  height: auto;
+  line-height: normal;
+  padding: 1px 0;
+  font-size: 12px;
+}
+
+.ivu-page.mini .ivu-page-item-active {
+  background-color: #2d8cf0;
+  border-color: #2d8cf0;
+}
+
+.ivu-page.mini .ivu-page-item-active a {
+  color: #fff;
+}
+
+.ivu-page.mini .ivu-page-total {
+  float: right;
+}
+
+.ivu-page.mini .ivu-page-options-elevator input {
+  height: auto;
+  line-height: normal;
+  text-align: center;
+}
+
+.ivu-page.mini .ivu-select-single .ivu-select-selection {
+  height: auto;
+}
+
+.ivu-page.mini .ivu-select-single .ivu-select-selection .ivu-select-placeholder,
+.ivu-page.mini .ivu-select-single .ivu-select-selection .ivu-select-selected-value {
+  height: auto;
+  line-height: normal;
+  padding-left: 10px;
+  padding-right: 30px;
+}
+
+.ivu-page.mini .ivu-select-single .ivu-select-selection .ivu-select-selected-value {
+  padding: 1px 26px 1px 10px;
+}
+
+/* 表格 */
+.ivu-table-wrapper {
+  height: 100%;
+  border-color: #9ecef5;
+}
+
+.ivu-table-wrapper .ivu-table:before,
+.ivu-table-wrapper .ivu-table:after {
+  background-color: #9ecef5;
+}
+
+.ivu-table-wrapper .ivu-table-column-center .ivu-table-cell {
+  padding: 0;
+}
+
+.ivu-table-wrapper .ivu-table-column-center .ivu-table-cell .ivu-checkbox-wrapper {
+  margin-right: 0;
+}
+
+.ivu-table-stripe .ivu-table-body tr:nth-child(2n) td,
+.ivu-table-stripe .ivu-table-fixed-body tr:nth-child(2n) td {
+  background-color: #f5fbff;
+}
+
+.ivu-table {
+  color: #333;
+}
+
+.ivu-table td, .ivu-table th {
+  height: 30px;
+}
+
+.ivu-table th {
+  background-color: #daeefe;
+  border-color: #9ecef5;
+}
+
+.ivu-table-cell {
+  padding: 2px 10px;
+}
+
+.tableBtn {
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  vertical-align: middle;
+  line-height: 18px;
+}
+
+.tableBtn + .tableBtn {
+  margin-left: 8px;
+}
+
+.tableBtn.info {
+  color: #2db7f5;
+}
+
+.tableBtn.success {
+  color: #19be6b;
+}
+
+.tableBtn.warning {
+  color: #f90;
+}
+
+.tableBtn.error {
+  color: #ed3f14;
+}
+
+.tableBtn.info:hover {
+  color: #57c5f7;
+}
+
+.tableBtn.success:hover {
+  color: #47cb89;
+}
+
+.tableBtn.warning:hover {
+  color: #ffad33;
+}
+
+.tableBtn.error:hover {
+  color: #f16543;
+}
+
+.ivu-spin-fix {
+  background-color: rgba(45, 140, 240, 0.2);
+}
+
+/* 按钮里的图标 */
+.ivu-btn {
+  padding: 0px 7px 3px;
+  border-radius: 3px;
+}
+
+.ivu-btn .ivu-icon {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.ivu-btn > .ivu-icon.ivu-icon-ios-loading {
+  line-height: 1;
+}
+
+.ivu-btn span {
+  vertical-align: middle;
+  line-height: 13px;
+  height: 14px;
+  display: inline-block;
+}
+
+.ivu-btn.ivu-btn-ghost {
+  border-color: #fff;
+}
+
+.ivu-btn.ivu-btn-ghost:hover {
+  box-shadow: 0 0 4px #fff;
+}
+
+.ivu-btn.ivu-btn-ghost.ivu-btn-success:hover {
+  border-color: #19be6b;
+  box-shadow: 0 0 4px #19be6b;
+}
+
+.ivu-btn.ivu-btn-ghost.ivu-btn-warning:hover {
+  border-color: #f90;
+  box-shadow: 0 0 4px #f90;
+}
+
+.ivu-btn.ivu-btn-ghost.ivu-btn-error:hover {
+  border-color: #ed4014;
+  box-shadow: 0 0 4px #ed4014;
+}
+
+.ivu-btn.ivu-btn-ghost.ivu-btn-info:hover {
+  border-color: #2db7f5;
+  box-shadow: 0 0 4px #2db7f5;
+}
+
+.ivu-btn + .ivu-btn {
+  margin-left: 4px;
+}
+
+.ivu-transfer .ivu-btn + .ivu-btn {
+  margin-left: 0;
+}
+
+/* tab */
+.ivu-tabs {
+  height: 100%;
+  color: #666;
+}
+
+.ivu-tabs .ivu-tabs-bar {
+  margin-bottom: 0;
+}
+
+.ivu-tabs .ivu-tabs-bar .ivu-tabs-nav {
+  padding-left: 6px;
+}
+
+.ivu-tabs .ivu-tabs-bar .ivu-tabs-nav .ivu-tabs-tab {
+  user-select: none;
+  background-color: #eee;
+}
+
+.ivu-tabs .ivu-tabs-bar .ivu-tabs-nav .ivu-tabs-tab:hover {
+  border-color: #ccc;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  background-color: #f6f6f6;
+}
+
+.ivu-tabs .ivu-tabs-bar .ivu-tabs-nav .ivu-tabs-tab.ivu-tabs-tab-active {
+  background-color: #fff;
+}
+
+.ivu-tabs .ivu-tabs-tabpane {
+  padding: 4px;
+}
+
+.ivu-tabs.tabPage .ivu-tabs-content-animated {
+  position: absolute;
+  top: 36px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  margin: auto;
+}
+
+.ivu-tabs .ivu-table-cell .ivu-btn {
+  padding: 1px 6px;
+}
+
+/* 卡片组件 */
+.ivu-card-body {
+  padding: 6px;
+}
+
+.leftCol .ivu-card-body, .rightCol .ivu-card-body {
+  height: 100%;
+}
+
+.ivu-card.treeBox .ivu-card-body {
+  padding: 0;
+}
+
+.ivu-card.treeBox .ivu-card-body .layout-page-content {
+  height: 100%;
+  overflow: auto;
+}
+
+/* tree */
+.ivu-tree {
+  padding: 0 4px;
+}
+
+.ivu-tree-children li:hover > span > .ivu-tree-arrow,
+.ivu-tree-children li:hover > span > .tree-lineBox:before,
+.ivu-tree-children li:hover > span > .tree-lineBox:after {
+  border-color: #666 !important;
+}
+
+.ivu-tree-children li {
+  position: relative;
+}
+
+.ivu-tree-children li .ivu-btn {
+  padding: 0 4px;
+}
+
+.ivu-tree-children li .tree-lineBox {
+  cursor: pointer;
+}
+
+.ivu-tree-children li .tree-lineBox:after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: 7px;
+  bottom: 10px;
+  margin: auto;
+  display: block;
+  width: 1px;
+  border-right: 1px dashed #ccc;
+  z-index: 0;
+}
+
+.ivu-tree-children li .ivu-tree-arrow-open + span > .tree-lineBox.parent:before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  bottom: 8px;
+  margin: auto;
+  display: block;
+  width: 18px;
+  height: 1px;
+  border-bottom: 1px dashed #ccc;
+  z-index: 0;
+}
+
+.ivu-tree-children li .tree-lineBox:not(.first) span {
+  position: relative;
+}
+
+.ivu-tree-children li .tree-lineBox:not(.first) span:before {
+  position: absolute;
+  left: -27px;
+  top: 8px;
+  margin: auto;
+  display: block;
+  width: 14px;
+  height: 1px;
+  border-bottom: 1px dashed #ccc;
+  z-index: 0;
+}
+
+.ivu-tree-children li .tree-lineBox.selected {
+  background-color: #f90;
+  color: #fff;
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+.ivu-tree-children li .tree-lineBox.selected:before,
+.ivu-tree-children li .tree-lineBox.selected:after {
+  border-color: #f90 !important;
+}
+
+.ivu-tree-children li .tree-lineBox.selected:hover {
+  background-color: #ffad33;
+}
+
+.ivu-tree-children li .tree-lineBox.selected:hover:before,
+.ivu-tree-children li .tree-lineBox.selected:hover:after {
+  border-color: #ffad33 !important;
+}
+
+/* 弹窗 */
+.popupLoading .ivu-modal-body {
+  position: relative;
+}
+
+.popupLoading .ivu-modal-body:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+  z-index: 10;
+}
+
+.ivu-modal-content {
+  border-radius: 3px;
+  border: 1px solid rgba(45, 140, 240, 0.3);
+}
+
+.ivu-modal-content .ivu-modal-footer {
+  border-radius: 0 0 3px 3px;
+  background-color: #eff3f8;
+  padding: 10px;
+}
+
+.hideOk .ivu-modal-content .ivu-btn-success,
+.ivu-modal-wrap.hideOk .ivu-modal-content .ivu-btn-success {
+  display: none;
+}
+
+.hideOk .ivu-modal-content .ivu-modal-footer button + button,
+.ivu-modal-wrap.hideOk .ivu-modal-content .ivu-modal-footer button + button {
+  margin: 0;
+}
+
+.hideEsc .ivu-modal-content .ivu-btn-error,
+.ivu-modal-wrap.hideEsc .ivu-modal-content .ivu-btn-error {
+  display: none;
+}
+
+.hideEsc .ivu-modal-content .ivu-modal-footer button + button,
+.ivu-modal-wrap.hideEsc .ivu-modal-content .ivu-modal-footer button + button {
+  margin: 0;
+}
+
+.ivu-modal-wrap .ivu-modal-header i {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.ivu-modal-wrap.delete .ivu-modal-content {
+  border: 0 none;
+}
+
+.ivu-modal-wrap.green .ivu-modal-header * {
+  color: #19be6b;
+}
+
+.ivu-modal-wrap.blue .ivu-modal-header * {
+  color: #2db7f5;
+}
+
+.ivu-modal-wrap.yellow .ivu-modal-header * {
+  color: #f90;
+}
+
+.ivu-modal-wrap.red .ivu-modal-header * {
+  color: #ed3f14;
+}
+
+.ivu-modal-footer .ivu-btn {
+  padding: 3px 7px 2px;
+}
+
+/* 下拉悬浮框 */
+.ivu-select-dropdown {
+  z-index: 4;
+}
+
+/* select */
+.ivu-select .ivu-select-dropdown {
+  max-height: 200px;
+  overflow: auto;
+}
+
+/* disabled 的 input */
+.ivu-input[disabled],
+fieldset[disabled] .ivu-input {
+  color: #333;
+}
+
+/* 日期组件 */
+.ivu-date-picker {
+  display: block;
+}
+
+/* 下拉菜单，这个样式主要是搜索弹窗 */
+.ivu-select-dropdown .searchBox {
+  width: 600px;
+  padding: 6px 12px;
+}

@@ -1,0 +1,86 @@
+import Vue from 'vue'
+import vuex from 'vuex'
+Vue.use(vuex);
+
+import index from './index/index.js';
+import notice from './tool/notice.js';
+import login from './login/index.js';
+import pageTab from './index/pageTab.js';
+import mainMenu from './tool/mainMenu/index.js';
+import org from './modules/basicInformation/org/index.js'
+import orgKey from './modules/basicInformation/orgKey/index.js'
+import oper from './modules/basicInformation/oper/index.js'
+import ordercmc from './modules/basicInformation/ordercmc/index.js'
+import deliveryresource from './modules/basicInformation/deliveryresource/index.js'
+import ordercrm from './modules/basicInformation/ordercrm/index.js'
+import orderplan from './modules/DispatchingManagement/orderplan/index.js'
+import delStock from './modules/DispatchingManagement/delStock/index.js'
+import orderassign from './modules/DispatchingManagement/orderassign/index.js'
+import orderquery from './modules/OrderManagement/orderquery/index.js'
+import orderproductadd from './modules/OrderManagement/orderproductadd/index.js'
+import orderproductquery from './modules/OrderManagement/orderproductquery/index.js'
+import orderlogistics from './modules/OrderManagement/orderlogistics/index.js'
+import ordermenu from './modules/system/ordermenu/index.js'
+import role from './modules/system/role/index.js'
+import roleandmodule from './modules/system/roleandmodule/index.js'
+import operandrole from './modules/system/operandrole/index.js'
+import deliverymanage from './modules/system/deliverymanage/index.js'
+import abnormalcargohandle from './modules/exceptionManagement/abnormalcargohandle/index.js'
+import abnormalcargoexamine from './modules/exceptionManagement/abnormalcargoexamine/index.js'
+import driveraccount from './modules/statisticalManagement/driveraccount/index.js'
+import settle from './modules/statisticalManagement/settle/index.js'
+import statisticsorder from './modules/statisticalManagement/statisticsorder/index.js'
+import dailyShipments from './modules/statisticalManagement/dailyShipments/index.js'
+import businessquantity from './modules/statisticalManagement/businessquantity/index.js'
+import servicestatistics from './modules/statisticalManagement/servicestatistics/index.js'
+import clientshipment from './modules/statisticalManagement/clientshipment/index.js'
+
+
+
+
+
+import selectData from './tool/selectData/index.js'
+import address from './tool/address/index.js';
+
+
+export default new vuex.Store({
+  modules: {
+    index: index,
+    notice: notice,
+    login: login,
+    pageTab: pageTab,
+    mainMenu: mainMenu,
+    org:org,
+    orgKey:orgKey,
+    oper:oper,
+    ordercmc:ordercmc,
+    deliveryresource:deliveryresource,
+    orderproductadd:orderproductadd,
+    ordercrm:ordercrm,
+    orderplan:orderplan,
+    delStock:delStock,
+    ordermenu:ordermenu,
+    orderassign:orderassign,
+    orderquery:orderquery,
+    orderproductquery:orderproductquery,
+    orderlogistics:orderlogistics,
+    role:role,
+    roleandmodule:roleandmodule,
+    operandrole:operandrole,
+    deliverymanage:deliverymanage,
+    abnormalcargohandle:abnormalcargohandle,
+    abnormalcargoexamine:abnormalcargoexamine,
+    driveraccount:driveraccount,
+    settle:settle,
+    statisticsorder:statisticsorder,
+    dailyShipments:dailyShipments,
+    businessquantity:businessquantity,
+    servicestatistics:servicestatistics,
+    clientshipment:clientshipment,
+
+
+    selectData:selectData,
+    address:address
+
+  }
+})

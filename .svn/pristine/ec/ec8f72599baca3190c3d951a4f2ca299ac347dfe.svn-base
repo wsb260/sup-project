@@ -1,0 +1,194 @@
+<template>
+  <div :class="'pageBody orderlogistics' + (pageWait ? ' wait' : '' )">
+    <Card class="h100" style="width: 740px; margin: auto;">
+      <Form :model="byIdData" :label-width="100" ref="editForm">
+        <!-- :rules="ruleValidate" -->
+        <Row>
+          <i-col span="12">
+            <FormItem label="客户：" prop="BLCNAME">
+              <Select v-model="byIdData.SERVNAME" placeholder="请选择承运商">
+                <Option v-for="item in CARTYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="原订单号：" prop="CAROWNER_TEL">
+              <i-input v-model="byIdData.CAROWNER_TEL" placeholder="请输入车主电话"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+         <i-col span="12">
+            <FormItem label="寄件人名字：" prop="CAROWNER_TEL">
+              <i-input v-model="byIdData.CAROWNER_TEL" placeholder="请输入车主电话"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="寄件人电话：" prop="CAROWNER_CARDNO">
+              <i-input v-model="byIdData.CAROWNER_CARDNO" placeholder="请输入证件号码"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+            <FormItem label="收件人名字：" prop="CAROWNER_TEL">
+              <i-input v-model="byIdData.CAROWNER_TEL" placeholder="请输入车主电话"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="收件人电话：" prop="CAROWNER_CARDNO">
+              <i-input v-model="byIdData.CAROWNER_CARDNO" placeholder="请输入证件号码"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="8">
+            <FormItem label="省份：" prop="BLCNAME">
+              <Select v-model="byIdData.SERVNAME" placeholder="请选择承运商">
+                <Option v-for="item in CARTYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+          <i-col span="8">
+            <FormItem label="市区：" prop="CARTYPE">
+              <Select v-model="byIdData.CARTYPE" placeholder="请选择车辆类型">
+                <Option v-for="item in CARTYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+          <i-col span="8">
+            <FormItem label="县/乡：" prop="CARTYPE">
+              <Select v-model="byIdData.CARTYPE" placeholder="请选择车辆类型">
+                <Option v-for="item in CARTYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+        </Row>
+        <FormItem label="收件人地址：" prop="CARNO">
+          <i-input v-model="byIdData.CARNO" placeholder="请输入车牌号码"></i-input>
+        </FormItem>
+        <Row>
+          <i-col span="12">
+            <FormItem label="匹配机构：" prop="CARNO">
+              <i-input v-model="byIdData.CARNO" placeholder="请输入车牌号码"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="代收款：" prop="CARLENGTH">
+              <i-input v-model="byIdData.CARLENGTH" placeholder="请输入车辆长度"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+            <FormItem label="运费：" prop="TOTALWEIGHT">
+              <i-input v-model="byIdData.TOTALWEIGHT" placeholder="请输入总载重"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="配送方式：" prop="CARTYPE">
+              <Select v-model="byIdData.CARTYPE" placeholder="请选择车辆类型">
+                <Option v-for="item in CARTYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+            <FormItem label="支付方式：" prop="TOTALWEIGHT">
+              <RadioGroup v-model="byIdData.payment">
+                <Radio label="0">货到付款</Radio>
+                <Radio label="1">现金支付</Radio>
+              </RadioGroup>
+            </FormItem>
+          </i-col>
+        </Row>
+      </Form>
+      <div class="layout-page-content">
+      <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      >
+      </Table>
+    </div>
+    </Card>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      CARTYPE: [],
+      CARDTYPE: [],
+      table: {
+        height: 200,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "商品名称", key: "CAROWNER_NM", align: "center" },
+          { title: "商品数量", key: "CAROWNER_TEL", align: "center" },
+          { title: "商品重量", key: "BLCNAME", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "编辑内容" },
+                  class: "tableBtn fa warning fa-add",
+                  on: {
+                    click: () => {
+                      this.$refs.popupEdit.open(params.row.ID);
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "删除" },
+                  class: "tableBtn fa error fa-remove",
+                  on: {
+                    click: () => {
+                      this.$refs.popupDelete.open(
+                        params.row.ID,
+                        "deliveryresource/delete"
+                      );
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+    };
+  },
+  computed: {
+    pageWait() {
+      return this.$store.state.ordermenu.pageWait;
+    },
+    byIdData() {
+      return this.$store.state.ordermenu.byIdData;
+    },
+    tableData() {
+      return this.$store.state.ordermenu.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.deliveryresource.tableLoading;
+    },
+    current() {
+      return this.$store.state.deliveryresource.current;
+    },
+    page_size() {
+      return this.$store.state.deliveryresource.page_size;
+    },
+    total() {
+      return this.$store.state.deliveryresource.total;
+    },
+  }
+};
+</script>

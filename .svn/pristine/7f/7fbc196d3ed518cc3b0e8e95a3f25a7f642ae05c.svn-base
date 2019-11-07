@@ -1,0 +1,9 @@
+import roleandmodule from "./roleandmodule/index.js"
+import moduleConfiguration from "./moduleConfiguration/index.js"
+export default {
+  namespaced: true,
+  modules: {
+    roleandmodule: roleandmodule,
+    moduleConfiguration: moduleConfiguration
+  }
+};

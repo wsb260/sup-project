@@ -1,0 +1,21 @@
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  isNewData(state, payload) {
+    state.byIdData = {
+      crmnameId:"",
+      original_orderno:"",
+      senderName: "",
+      senderMobile: "",
+      senderAddress: "",
+      receiverAddress: ""
+    };
+  }
+};

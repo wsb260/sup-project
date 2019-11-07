@@ -1,0 +1,20 @@
+{
+  "success":"true",
+    "result": [{
+        "value": "10",
+        "label": "邮政"
+      },
+      {
+        "value": "20",
+        "label": "中通"
+      },
+      {
+        "value": "30",
+        "label": "申通"
+      },
+      {
+        "value": "40",
+        "label": "顺丰"
+      }
+    ]
+  }

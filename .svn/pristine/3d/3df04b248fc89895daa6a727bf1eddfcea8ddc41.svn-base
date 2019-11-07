@@ -1,0 +1,168 @@
+.eltTree-ul {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  transition: all .2s ease-in-out;
+  padding-left: 18px;
+}
+
+.eltTree-ul .eltTree-li {
+  width: 100%;
+  overflow: hidden;
+  line-height: 20px;
+}
+
+.eltTree-ul .eltTree-li.hasChildren {
+  position: relative;
+}
+
+.eltTree-ul .eltTree-li.hasChildren.open:before, .eltTree-ul .eltTree-li.hasChildren.open:after {
+  content: "";
+  transition: all .2s ease-in-out;
+  position: absolute;
+  display: block;
+  margin: auto;
+  z-index: 0;
+}
+
+.eltTree-ul .eltTree-li.hasChildren.open:before {
+  left: 7px;
+  bottom: 8px;
+  width: 12px;
+  height: 1px;
+  border-bottom: 1px dashed #ccc;
+}
+
+.eltTree-ul .eltTree-li.hasChildren.open:after {
+  top: 21px;
+  left: 7px;
+  bottom: 10px;
+  width: 1px;
+  border-right: 1px dashed #ccc;
+}
+
+.eltTree-ul .eltTree-li.hasChildren.open:hover:before, .eltTree-ul .eltTree-li.hasChildren.open:hover:after {
+  border-color: #333;
+}
+
+.eltTree-ul .eltTree-li.hasChildren.close .arrow .ivu-icon {
+  transform: rotate(-90deg);
+}
+
+.eltTree-ul .eltTree-li span {
+  vertical-align: middle;
+  height: 20px;
+  line-height: 18px;
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+}
+
+.eltTree-ul .eltTree-li > div.ulBox {
+  width: 100%;
+  height: auto;
+  transition: all .2s ease-in-out;
+}
+
+.eltTree-ul .eltTree-li .arrow {
+  min-width: 12px;
+}
+
+.eltTree-ul .eltTree-li .arrow .ivu-icon {
+  transition: all .2s ease-in-out;
+}
+
+.eltTree-ul .eltTree-li .name {
+  font-size: 12px;
+}
+
+.eltTree-ul .eltTree-li .name.hasActions {
+  cursor: pointer;
+  z-index: 3;
+}
+
+.eltTree-ul .eltTree-li .name.hasActions:before {
+  content: "";
+  cursor: default;
+  position: absolute;
+  top: 1px;
+  left: 100%;
+  right: -330px;
+  bottom: 0;
+  display: block;
+  margin: auto;
+  width: 300px;
+  height: 20px;
+  z-index: 1;
+}
+
+.eltTree-ul .eltTree-li .name.hasActions:after {
+  content: "";
+  cursor: default;
+  position: absolute;
+  top: 1px;
+  left: calc(100% + 20px);
+  bottom: 0;
+  display: block;
+  margin: auto;
+  width: 300px;
+  height: 1px;
+  border-top: 1px dashed #ccc;
+  z-index: 2;
+}
+
+.eltTree-ul .eltTree-li .name.hasActions:hover:after {
+  border-color: #333;
+}
+
+.eltTree-ul .eltTree-li .actionBtnBox {
+  background-color: #fff;
+  padding-left: 10px;
+  float: right;
+  z-index: 3;
+  user-select: none;
+}
+
+.eltTree-ul .eltTree-li .actionBtnBox .actionBtn {
+  line-height: 16px;
+  width: 22px;
+  border-radius: 3px;
+  text-align: center;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.eltTree-ul .eltTree-li .actionBtnBox .actionBtn i {
+  font-weight: bold;
+}
+
+.eltTree-ul .eltTree-li .actionBtnBox .actionBtn.success {
+  color: #19be6b;
+}
+
+.eltTree-ul .eltTree-li .actionBtnBox .actionBtn.warning {
+  color: #f90;
+}
+
+.eltTree-ul .eltTree-li .actionBtnBox .actionBtn.error {
+  color: #ed4014;
+}
+
+.eltTree-ul .eltTree-li .actionBtnBox .actionBtn.noBtn {
+  color: #ccc;
+}
+
+.eltTree-ul .eltTree-li .actionBtnBox .actionBtn:hover.success {
+  border: 1px solid #19be6b;
+  box-shadow: 0 0 2px #19be6b;
+}
+
+.eltTree-ul .eltTree-li .actionBtnBox .actionBtn:hover.warning {
+  border: 1px solid #f90;
+  box-shadow: 0 0 2px #f90;
+}
+
+.eltTree-ul .eltTree-li .actionBtnBox .actionBtn:hover.error {
+  border: 1px solid #ed4014;
+  box-shadow: 0 0 2px #ed4014;
+}

@@ -1,0 +1,13 @@
+import mutations from "./mutations.js";
+import actions from "./actions.js";
+import getters from "./getters.js";
+export default {
+  namespaced: true,
+  state: {
+    menu: [], //菜单原始数据
+    mainMenu: [] //菜单整理楼的最终数据
+  },
+  mutations: mutations, //mutations END
+  actions: actions, //action END
+  getters: getters
+};

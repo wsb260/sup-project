@@ -1,0 +1,182 @@
+<template>
+  <div :class="'pageBody' + (pageWait ? ' wait' : '')" id="statisticsorder">
+    <div class="layout-page-tool">
+      <Row>
+        <i-col span="2">
+          <Button type="warning" @click="upload">
+            <Icon type="md-add" /> 导出报表
+          </Button>
+        </i-col>
+        <i-col span="10"  style="margin-bottom:-20px">
+          <Form :model="searchData" :label-width="120" ref="editForm" class="forms">
+          <Row>
+        <i-col span="12">
+            <FormItem label="统计开始时间：">
+              <DatePicker type="date" v-model="searchData.startdate" clearable @on-clear="reset1()"></DatePicker>
+            </FormItem>
+        </i-col>
+        <i-col span="12">
+            <FormItem label="统计结束时间：">
+              <DatePicker type="date" v-model="searchData.enddate" clearable @on-clear="reset2()"></DatePicker>
+            </FormItem>
+        </i-col>
+          </Row>
+          </Form>
+        </i-col>
+        <i-col span="2" style="margin-left:5px;margin-top:2px;">
+          <Button type="info" @click="search()">
+            <Icon type="ios-search" /> 精确查询
+          </Button>
+        </i-col>
+      </Row>
+    </div>
+    <div class="layout-page-content">
+      <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      >
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page
+        :total="total"
+        :current="current"
+        :page-size="page_size"
+        :page-size-opts="page.page_sizepts"
+        @on-change="page_change"
+        @on-page-size-change="page_size_change"
+        show-sizer
+        show-elevator
+        show-total
+        size="small"
+      >
+      </Page>
+    </div>
+    <!-- <popup-upload ref="popupUpload" :option="option" v-on:refresh="refreshTable"></popup-upload> -->
+  </div>
+</template>
+<script>
+// import popupUpload from "components/situation/popup-upload";
+import api from "controller/api/api.js";
+import { getTableHeight,timeText } from "tool/tool.js";
+export default {
+  name: "statisticsorder",
+  data() {
+    return {
+      delModel: {},
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "隶属网点", key: "ORGNAME", align: "center" },
+          { title: "配送单进口量", key: "IMPORT_VOLUME", align: "center" },
+          { title: "配送单出口量", key: "EXPORT_VOLUME", align: "center" }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      },
+       option: {
+        upLoadUrl: api.statisticalManagement.statisticsorder.fileDown.url,
+        pageWait: "statisticsorder/changePageWait",
+        text: []
+      }
+    };
+  },
+  // components: {
+  //   popupUpload
+  // },
+  computed: {
+    tableData() {
+      return this.$store.state.statisticsorder.tableData;
+    },
+    searchData() {
+      return this.$store.state.statisticsorder.searchData;
+    },
+    searchType() {
+      return this.$store.state.statisticsorder.searchType;
+    },
+    tableLoading() {
+      return this.$store.state.statisticsorder.tableLoading;
+    },
+    current() {
+      return this.$store.state.statisticsorder.current;
+    },
+    page_size() {
+      return this.$store.state.statisticsorder.page_size;
+    },
+    total() {
+      return this.$store.state.statisticsorder.total;
+    },
+    pageWait() {
+      return this.$store.state.statisticsorder.pageWait;
+    }
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("statisticsorder")) {
+      this.refreshTable();
+      this.$store.dispatch({ type: "statisticsorder/refreshData" });
+    }
+  },
+  mounted() {
+    this.table.height = getTableHeight();
+  },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "statisticsorder/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "statisticsorder/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    upload() {
+      window.open(this.option.upLoadUrl + "?startdate=" + ( timeText(this.searchData.startdate) || "" )+ "&enddate=" + ( timeText(this.searchData.enddate) || "" ));
+    },
+    search() {
+      this.$store.dispatch({
+        type: "statisticsorder/getData2",
+        searchType: true,
+        current: 1
+      });
+    },
+    refreshTable() {
+      this.$store.dispatch({ type: "statisticsorder/refreshData" });
+    },
+    reset1() {
+      this.$store.commit("statisticsorder/clearSearchData1");
+      this.$store.dispatch({
+        type: "statisticsorder/refreshData",
+        searchType: false,
+        current: 1
+      });
+    },
+    reset2() {
+      this.$store.commit("statisticsorder/clearSearchData2");
+      this.$store.dispatch({
+        type: "statisticsorder/refreshData",
+        searchType: false,
+        current: 1
+      });
+    }
+  }
+};
+</script>
+
+<style scoped>
+
+</style>

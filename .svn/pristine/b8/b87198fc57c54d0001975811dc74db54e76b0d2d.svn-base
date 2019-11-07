@@ -1,0 +1,67 @@
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state,payload) {
+    console.log(1)
+    console.log(payload)
+    state.showEdit = payload;
+  },
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  getData(state, payload) {
+    if (payload.worked == 'table') {
+      state.tableData = payload.data;
+    }
+  },
+  getByIdData(state, payload) {
+    payload.data.forEach((v,i) => {
+      v.key = v.ROLEID;
+      v.label = v.ROLENAME;
+      v.description = v.DESCRIPTION;
+    });
+    state.leftList = payload.data;
+  },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  changeTotal(state, payload) {
+    state.total = payload;
+  },
+  changeCurrent(state, payload) {
+    if (payload && payload != state.current) {
+      state.current = payload;
+    }
+  },
+  changePageSize(state, payload) {
+    if (payload && payload != state.page_size) {
+      state.page_size = payload;
+    }
+  },
+  changeSearchType(state, payload) {
+    state.searchType = payload;
+  },
+  clearSearchData(state, payload) {
+    state.searchType = false;
+    state.searchData = {
+      opername:"",
+      opertype:"",
+      opertype:"",
+      tel:""
+    };
+  },
+  isNewData(state, payload) {
+    state.byIdData = {
+      CREATE_BY: "1",
+      CREATE_DATE: "2016-08-11",
+      DESCRIPTION: "",
+      FLAG: "",
+      NOTES: "",
+      ROLEID: "",
+      ROLENAME: "",
+      UPDATE_BY: "1",
+      UPDATE_DATE: "2016-08-11"
+    };
+  }
+};

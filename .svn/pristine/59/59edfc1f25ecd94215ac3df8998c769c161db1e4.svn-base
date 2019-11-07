@@ -1,0 +1,86 @@
+import {
+  makeSelectOptions,
+  makeTreeInfo
+} from "tool/tool.js";
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changeShowCheck(state, payload) {
+    state.showCheck = payload;
+  },  
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  getData(state, payload) {
+    if (payload.worked == 'table') {
+      state.tableData = payload.data;
+    }
+  },
+  getByIdData(state, payload) {
+    payload.data.SERVICETYPETEXT = payload.data.SERVICETYPE;
+    payload.data.SHOPTYPETEXT = payload.data.SHOPTYPE;
+    payload.data.TYPETEXT = payload.data.TYPE 
+    payload.data.SERVICETYPE = this.getters["selectData/findData"]({name: "SERVICETYPE", label: payload.data.SERVICETYPE});
+    payload.data.INDTEXT = this.getters["selectData/findData"]({name: "SERVICETYPE", value: payload.data.IND});
+    payload.data.SHOPTYPE = this.getters["selectData/findData"]({name: "SHOPTYPE", label: payload.data.SHOPTYPE});
+    payload.data.TYPE = this.getters["selectData/findData"]({name: "TYPE", label: payload.data.TYPE});
+    
+    payload.data.PROVINCETEXT = payload.data.PROVINCE ? this.getters["address/getText"]({ province: payload.data.PROVINCE }).province : "";
+    payload.data.CITYTEXT = payload.data.CITY ? this.getters["address/getText"]({ city: payload.data.CITY }).city : "";
+    payload.data.COUNTYTEXT = payload.data.COUNTY ? this.getters["address/getText"]({ county: payload.data.COUNTY }).county : "";
+    state.byIdData = payload.data;
+  },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  changeTotal(state, payload) {
+    state.total = payload;
+  },
+  changeCurrent(state, payload) {
+    if (payload && payload != state.current) {
+      state.current = payload;
+    }
+  },
+  changePageSize(state, payload) {
+    if (payload && payload != state.page_size) {
+      state.page_size = payload;
+    }
+  },
+  changeSearchType(state, payload) {
+    state.searchType = payload;
+  },
+  clearSearchData(state, payload) {
+    state.searchType = false;
+    state.searchData = {
+      shopname: "",
+      address: "",
+      TYPE: "",
+      shoptype: "",
+      IND: "",
+      SERVICETYPE:""
+    };
+  },
+  isNewData(state, payload) {
+    state.byIdData = {
+      "SHOPID": "",
+      "SHOPNAME": "",
+      "TYPE": "0",
+      "SHOPTYPE": "0",
+      "SHOPLEVEL": "",
+      "SERVICETYPE": "0",
+      "IND": "0",
+      "PROVINCE": "",
+      "CITY": "",
+      "COUNTY": "",
+      "ADDRESS": "",
+      "MAINSCOPE": "",
+      "PRODUCTSUM": "",
+      "SALECOUNT": "",
+      "HELPFAMILYS": "",
+    };
+  }
+};

@@ -1,0 +1,160 @@
+<template>
+ <div :class="'pageBody' + (pageWait ? ' wait' : '')" id="settle">
+    <div class="layout-page-tool">
+      <Button type="warning" @click="back">
+        <Icon type="md-arrow-back" /> 返回
+      </Button>
+    <search-box ref="searchBox"></search-box>
+    </div>
+    <div class="layout-page-content">
+      <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      >
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page
+        :total="total"
+        :current="current"
+        :page-size="page_size"
+        :page-size-opts="page.page_sizepts"
+        @on-change="page_change"
+        @on-page-size-change="page_size_change"
+        show-sizer
+        show-elevator
+        show-total
+        size="small"
+      >
+      </Page>
+    </div>
+    <popup-check ref="popupCheck"></popup-check>
+    <popup-delete ref="popupDelete"></popup-delete>
+  </div>
+</template>
+<script>
+import popupDelete from "components/situation/popup-delete";
+import popupCheck from "./components/popup-check"
+import searchBox from "./components/searchBox"
+import { getTableHeight } from "tool/tool.js";
+export default {
+  name: "settle",
+  data() {
+    return {
+      delModel: {},
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "对账单号", key: "ID", align: "center" },
+          { title: "承接机构名称", key: "BLC_NM", align: "center" },
+          { title: "制单机构", key: "EDITORGNAME", align: "center" },
+          { title: "制单人员", key: "EDITORNAME", align: "center" },
+          { title: "制单时间", key: "CREATE_DATE", align: "center" },
+          { title: "结算人员", key: "SETTLENAME", align: "center" },
+          { title: "结算时间", key: "SETTLEDATE", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "详细" },
+                  class: "tableBtn fa info fa-file-text-o",
+                  on: {
+                    click: () => {
+                      this.$refs.popupCheck.open(
+                        params.row.ID,
+                      );
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "删除" },
+                  class: "tableBtn fa error fa-remove",
+                  on: {
+                    click: () => {
+                      this.$refs.popupDelete.open(
+                        params.row.ID,
+                        "settle/delete"
+                      );
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+  components: {
+    popupDelete,
+    popupCheck,
+    searchBox
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.settle.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.settle.tableLoading;
+    },
+    current() {
+      return this.$store.state.settle.current;
+    },
+    page_size() {
+      return this.$store.state.settle.page_size;
+    },
+    total() {
+      return this.$store.state.settle.total;
+    },
+    pageWait() {
+      return this.$store.state.settle.pageWait;
+    }
+  },
+  // activated() {
+  //   if (this.$store.getters["pageTab/pageInTab"]("settle")) {
+  //     }
+  // },
+  mounted() {
+      this.$store.dispatch({ type: "settle/refreshData" });
+    this.table.height = getTableHeight();
+  },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "settle/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "settle/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    back() {
+      this.$router.push('/driveraccount')
+    }
+  }
+};
+</script>
+
+<style>
+</style>

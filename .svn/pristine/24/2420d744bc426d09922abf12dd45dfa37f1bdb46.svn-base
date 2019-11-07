@@ -1,0 +1,16 @@
+{
+  "result": [{
+      "DELIVERY_RULE_ID": 254,
+      "CONTINUE_WEIGHT": 33.0,
+      "CONTINUE_WEIGHT_PRICE": 44.0,
+      "DELIVERY_WAY_ID": 119,
+      "DESCR": null,
+      "FIRST_WEIGHT": 11.0,
+      "FIRST_WEIGHT_PRICE": 22.0,
+      "IS_SUPPORT_COD": "N",
+      "IS_ZONE": "N",
+      "DELIVERY_RULE_ZONE_RELATIONSHIPS": [],
+      "ZONENMS": ""
+    }]
+
+}

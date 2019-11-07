@@ -1,0 +1,371 @@
+<template>
+  <div :class="'pageBody orderlogistics' + (pageWait ? ' wait' : '' )">
+    <div class="layout-page-tool">
+      <Button type="success" @click="onOk" :loading="pageWait">保存</Button>
+    </div>
+    <div class="layout-page-content">
+      <Row :gutter="8">
+        <i-col span="12">
+          <Card class="h100 left">
+            <Form :model="orderData" :label-width="110" :rules="ruleValidate" ref="editForm">
+              <Row>
+                <i-col span="12">
+                  <FormItem label="客户：" prop="crmnameId">
+                    <Select v-model="orderData.crmnameId" placeholder="请选择客户">
+                      <Option v-for="item in crmnameId" :value="item.value" :key="item.value">{{item.label}}</Option>
+                    </Select>
+                  </FormItem>
+                </i-col>
+                <i-col span="12">
+                  <FormItem label="原订单号：" prop="original_orderno">
+                    <i-input v-model="orderData.original_orderno" placeholder="请输入原订单号"></i-input>
+                  </FormItem>
+                </i-col>
+              </Row>
+              <Row>
+                <i-col span="12">
+                  <FormItem label="寄件人名字：" prop="sendername">
+                    <i-input v-model="orderData.sendername" placeholder="请输入寄件人名字"></i-input>
+                  </FormItem>
+                </i-col>
+                <i-col span="12">
+                  <FormItem label="寄件人电话：" prop="sendermobile">
+                    <i-input v-model="orderData.sendermobile" placeholder="请输入寄件人电话"></i-input>
+                  </FormItem>
+                </i-col>
+              </Row>
+              <Row>
+                <i-col span="12">
+                  <FormItem label="收件人名字：" prop="receivername">
+                    <i-input v-model="orderData.receivername" placeholder="请输入收件人名字"></i-input>
+                  </FormItem>
+                </i-col>
+                <i-col span="12">
+                  <FormItem label="收件人电话：" prop="receivermobile">
+                    <i-input v-model="orderData.receivermobile" placeholder="请输入收件人电话"></i-input>
+                  </FormItem>
+                </i-col>
+              </Row>
+              <Row>
+                <i-col span="8">
+                  <FormItem label="所属省份：" prop="receiver_prov">
+                    <Select ref="receiver_prov" v-model="orderData.receiver_prov" placeholder="请选择所属省份" @on-change="changeSelect('city')">
+                      <Option v-for="(item,i) in provinceData" :value="item.value" :key="i">{{item.label}}</Option>
+                    </Select>
+                  </FormItem>
+                </i-col>
+                <i-col span="8">
+                  <FormItem label="所属市：" prop="receiver_city" v-if="citys">
+                    <i-input placeholder="请选择所属城市" disabled></i-input>
+                  </FormItem>
+                  <FormItem label="所属市：" prop="receiver_city" v-if="!citys">
+                    <Select ref="receiver_city" v-model="orderData.receiver_city" clearable placeholder="请选择所属城市" @on-change="changeSelect('county')">
+                      <Option v-for="(item,i) in cityData" :value="item.value" :key="i">{{item.label}}</Option>
+                    </Select>
+                  </FormItem>
+                </i-col>
+                <i-col span="8">
+                  <FormItem label="区/县：" prop="receiver_county" v-if="countys">
+                    <i-input placeholder="请选择所属区/县" disabled></i-input>
+                  </FormItem>
+                  <FormItem label="区/县：" prop="receiver_county" v-if="!countys">
+                    <Select ref="receiver_county" v-model="orderData.receiver_county" clearable placeholder="请选择所属区/县" @on-change="getWares">
+                      <Option v-for="(item,i) in countyData" :value="item.value" :key="i">{{item.label}}</Option>
+                    </Select>
+                  </FormItem>
+                </i-col>
+              </Row>
+              <Row>
+                <i-col span="12">
+                  <FormItem label="匹配机构：" prop="marryName">
+                    <div class="ivu-input-wrapper ivu-input-wrapper-default ivu-input-type">
+                      <div @click="changeVisible(true)" class="ivu-input ivu-input-default falseInput" style="line-height: 22px;">{{orderData.marryName}}</div>
+                    </div>
+                  </FormItem>
+                </i-col>
+                <i-col span="12">
+                  <FormItem label="配送方式：" prop="delivery_way">
+                    <Select v-model="orderData.delivery_way" placeholder="请选择配送方式" @on-change="getWares">
+                      <Option v-for="item in delivery_way" :value="item.value" :key="item.value">{{item.label}}</Option>
+                    </Select>
+                  </FormItem>
+                </i-col>
+              </Row>
+              <Row>
+                <i-col span="12">
+                  <FormItem label="运费：" prop="totaldiversity">
+                    <i-input v-model="orderData.totaldiversity" placeholder="请输入运费">
+                      <span slot="append">元</span>
+                    </i-input>
+                  </FormItem>
+                </i-col>
+                <i-col span="12">
+                  <FormItem label="代收款：" prop="itemsvalue">
+                    <i-input v-model="orderData.itemsvalue" placeholder="请输入代收款金额">
+                      <span slot="append">元</span>
+                    </i-input>
+                  </FormItem>
+                </i-col>
+              </Row>
+              <Row>
+                <i-col span="12">
+                  <FormItem label="支付方式：" prop="payway">
+                    <RadioGroup v-model="orderData.payway">
+                      <Radio label="1">货到付款</Radio>
+                      <Radio label="2">现金支付</Radio>
+                    </RadioGroup>
+                  </FormItem>
+                </i-col>
+              </Row>
+              <Row>
+                <i-col span="24">
+                  <FormItem label="收件人地址：" prop="receiver_address">
+                    <i-input type="textarea" :rows="4" v-model="orderData.receiver_address" placeholder="请输入收件人地址"></i-input>
+                  </FormItem>
+                </i-col>
+              </Row>
+            </Form>
+          </Card>
+        </i-col>
+        <i-col span="12">
+          <Card class="right">
+            <div class="layout-page-tool">
+              <Button type="success" @click="add">新增</Button>
+              <span class="errorText" v-if="tableError">请完善信息！</span>
+            </div>
+            <div class="layout-page-content" :class="{tableError: tableError}">
+              <Table border stripe :loading="tableLoading" :height="table.height" :columns="table.columns" :data="tableData" :highlight-row="true">
+              </Table>
+            </div>
+            <orderInfo></orderInfo>
+          </Card>
+        </i-col>
+      </Row>
+    </div>
+    <popup-edit ref="popupEdit"></popup-edit>
+    <popup-delete ref="popupDelete"></popup-delete>
+    <popup-mechanism ref="popupMechanism"></popup-mechanism>
+  </div>
+</template>
+<script>
+import popupEdit from "./components/popup-edit";
+import popupDelete from "components/situation/popup-delete";
+import orderInfo from "./components/orderInfo";
+import popupMechanism from "./components/popup-mechanism";
+import { eltValidators } from "tool/eltValidators.js";
+export default {
+  data() {
+    return {
+      tableError: false,
+      id: false,
+      citys: true,
+      countys: true,
+      table: {
+        height: 422,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "商品名称", key: "itemname", align: "center" },
+          { title: "商品数量", key: "itemnum", align: "center" },
+          { title: "商品重量", key: "weight", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "编辑内容" },
+                  class: "tableBtn fa warning fa-edit",
+                  on: {
+                    click: () => {
+                      this.$refs.popupEdit.open(params.row.id);
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "删除" },
+                  class: "tableBtn fa error fa-remove",
+                  on: {
+                    click: () => {
+                      this.$refs.popupDelete.open( params.row.id, "orderlogistics/deleteData" );
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      ruleValidate: {
+        crmnameId: [{ required: true, message: "请选择客户！" }],
+        original_orderno: [{ required: true, message: "请填写原订单号！" }],
+        sendername: [{ required: true, message: "请填写寄件人名字！" }],
+        sendermobile: [
+          { required: true, message: "请填写寄件人电话！" },
+          { validator: eltValidators, rules: [{ name: "telephone", message: "", info: "" }]}
+        ],
+        receivername: [{ required: true, message: "请填写收件人名字！" }],
+        receivermobile: [
+          { required: true, message: "请填写角色名称！" },
+          { validator: eltValidators, rules: [{ name: "telephone", message: "", info: "" }]}
+        ],
+        receiver_prov: [{ required: true, message: "请选择所属省份！" }],
+        receiver_city: [{ required: true, message: "请选择所属市！" }],
+        receiver_county: [{ required: true, message: "请选择区/县！" }],
+        receiver_address: [{ required: true, message: "请填写收件人地址！" }],
+        marryName: [{ required: true, message: "请选择匹配机构！" }],
+        itemsvalue: [],
+        totaldiversity: [],
+        delivery_way: [{ required: true, message: "请选择配送方式！" }],
+        payway: [{ required: true, message: "请选择支付方式！" }]
+      }
+    };
+  },
+  created() {
+    this.$store.commit({ type: "orderlogistics/isNewData" });
+  },
+  components: {
+    popupEdit,
+    popupDelete,
+    orderInfo,
+    popupMechanism
+  },
+  mounted() {
+    this.$store.dispatch({ type: "selectData/getData", name: "crmnameId" });
+    this.$store.dispatch({ type: "selectData/getData", name: "delivery_way" });
+    this.$store.dispatch({ type: "selectData/getData", name: "allOrgs" });
+    this.$store.dispatch({
+      type: "address/getData",
+      province: true,
+      city: false,
+      county: false
+    });
+  },
+  computed: {
+    crmnameId() {
+      return this.$store.state.selectData.crmnameId;
+    },
+    delivery_way() {
+      return this.$store.state.selectData.delivery_way;
+    },
+    pageWait() {
+      return this.$store.state.orderlogistics.pageWait;
+    },
+    orderData() {
+      //左边的数据
+      return this.$store.state.orderlogistics.orderData;
+    },
+    tableData() {
+      return this.$store.state.orderlogistics.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.orderlogistics.tableLoading;
+    },
+    current() {
+      return this.$store.state.orderlogistics.current;
+    },
+    provinceData() {
+      return this.$store.state.address.province;
+    },
+    cityData() {
+      return this.$store.state.address.city;
+    },
+    countyData() {
+      return this.$store.state.address.county;
+    },
+    allOrgs() {
+      console.log( this.$store.state.selectData.allOrgs );
+      return this.$store.state.selectData.allOrgs;
+    }
+  },
+  watch: {
+    tableData() {
+      this.tableError = false;//!(this.tableData.length > 0);
+      this.getWares();
+    }
+  },
+  methods: {
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        this.tableError = !(this.tableData.length > 0);
+        if ( valid ) {
+          this.$store.dispatch({ type: "orderlogistics/saveData", id: this.id });
+        }
+      });
+    },
+    add() {
+      this.$refs.popupEdit.open();
+    },
+    changeSelect(val) {
+      if (val == "city") {
+        this.citys = true;
+        // this.countys = true;
+      } else if (val == "county") {
+        this.countys = true;
+      }
+      this.$store.dispatch({
+        type: "address/getData",
+        province: false,
+        city: val == "city" ? this.orderData.receiver_prov : false,
+        county: val == "county" ? this.orderData.receiver_city : false
+      }).then(() => {
+        if (val == "city") {
+          this.citys = false;
+          this.$nextTick(() => {
+            this.$refs.receiver_city.clearSingleSelect();
+          });
+        } else if (val == "county") {
+          this.countys = false;
+          this.$nextTick(() => {
+            this.$refs.receiver_county.clearSingleSelect();
+          });
+        }
+      });
+    },
+    getWares() {
+      if( this.orderData.delivery_way &&
+        this.tableData.length > 0 &&
+        this.orderData.receiver_prov &&
+        this.orderData.receiver_city &&
+        this.orderData.receiver_county ){
+          this.$store.dispatch({ type: "orderlogistics/getWares" });
+      }
+    },
+    changeVisible() {
+      this.$refs.popupMechanism.open();
+    }
+  }
+};
+</script>
+<style lang="scss">
+.orderlogistics{
+  .layout-page-content{
+    .falseInput:empty:after{
+      content: "请输入匹配机构";
+      color: #c9c9c9;
+    }
+    overflow: hidden;
+    $errorBorderColor: #ed4014;
+    &.tableError .ivu-table-wrapper{
+      border-color: $errorBorderColor;
+      .ivu-table:before,
+      .ivu-table:after{
+        background-color: $errorBorderColor;
+      }
+      .ivu-table th{
+        border-color: $errorBorderColor;
+        background-color: #f3f3f3;
+      }
+    }
+  }
+  .layout-page-page{
+    margin-top: 6px;
+    background-color: #daeefe;
+    border: 1px solid #9ecef5;
+    .ivu-form-item{
+      margin-bottom: 0;
+    }
+  }
+}
+</style>

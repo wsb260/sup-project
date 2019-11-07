@@ -1,0 +1,73 @@
+<template>
+  <Dropdown trigger="custom" :transfer="!1" placement="bottom-start" :visible="visible">
+    <Button type="info" @click="changeVisible(true)">
+      <Icon type="ios-search" /> 车辆查询
+    </Button>
+    <DropdownMenu slot="list" class="searchBox">
+      <Form :model="searchData" :label-width="80" ref="editForm">
+        <Form-item label="车牌号：">
+          <Select v-model="CARS">
+            <Option v-for="item in CARS" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+        </Form-item>
+        <Form-item label="结束时间：">
+          <DatePicker type="datetime" placeholder="结束时间"></DatePicker>
+        </Form-item>
+        <FormItem label="开始时间：">
+          <DatePicker type="datetime" placeholder="开始时间"></DatePicker>
+        </FormItem>
+      </Form>
+      <div style="text-align:center;">
+        <Button type="info" @click="search">
+          <Icon type="md-search" /> 查询
+        </Button>
+        <Button type="success" @click="reset">
+          <span class="fa fa-refresh"></span> 重置
+        </Button>
+        <Button type="error" @click="changeVisible(false)">
+          <span class="fa fa-remove"></span> 关闭
+        </Button>
+      </div>
+    </DropdownMenu>
+  </Dropdown>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+    // SHOPTYPE() {
+    //   return this.$store.state.selectData.SHOPTYPE;
+    // },
+    // firstCategory() {
+    //   return this.$store.state.selectData.firstCategory;
+    // },
+    // searchData() {
+    //   return this.$store.state.products.searchData;
+    // },
+    // searchType() {
+    //   return this.$store.state.products.searchType;
+    // }
+  },
+  deactivated() {
+    this.visible = false;  
+  },
+  methods: {
+    search() {
+      this.$store.dispatch({ type: 'products/refreshData', searchType: true, current: 1 });
+      this.visible = false;
+    },
+    reset() {
+      this.$store.commit("products/clearSearchData");
+      this.$store.dispatch({ type: 'products/refreshData', searchType: false, current: 1 });
+    },
+    changeVisible(type) {
+      this.visible = type;
+    }
+  }
+};
+</script>

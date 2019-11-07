@@ -1,0 +1,139 @@
+<template>
+  <div :class="'pageBody' + (pageWait ? ' wait' : '')" id="roleandmodule">
+    <div class="layout-page-tool">
+      <div class="quickSearch" v-if="showQuickSearch">
+        <span class="title">角色名称：</span>
+        <span class="info">
+          <i-input v-model="quickSearchData.rolename" placeholder="角色名称" clearable></i-input>
+        </span>
+        <Button type="info" @click="search()">
+          <Icon type="ios-search" /> 快速查询
+        </Button>
+      </div>
+      <search-box ref="searchBox"></search-box>
+    </div>
+    <div class="layout-page-content">
+      <Table border stripe :loading="tableLoading" :height="table.height" :columns="table.columns" :data="tableData" :highlight-row="true">
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page :total="total" :current="current" :page-size="page_size" :page-size-opts="page.page_sizepts" @on-change="page_change" @on-page-size-change="page_size_change" show-sizer show-elevator show-total size="small">
+      </Page>
+    </div>
+    <popup-module ref="popupModule"></popup-module>
+  </div>
+</template>
+<script>
+import searchBox from "./components/searchBox.vue";
+import popupModule from "./components/popup-module.vue"
+import { getTableHeight } from "tool/tool.js";
+export default {
+  name: "roleandmodule",
+  data() {
+    return {
+      showQuickSearch: false,
+      delModel: {
+        // show: false
+      },
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center"},
+          { title: "角色编号", key: "ROLEID", align: "center" },
+          { title: "角色名称", key: "ROLENAME", align: "center"},
+          { title: "角色描述", key: "DESCRIPTION", align: "center" },
+          { title: "备注", key: "NOTES", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "模块配置" },
+                  class: "tableBtn fa success fa-tags",
+                  on: {
+                    click: () => {
+                      this.$refs.popupModule.open(params.row.ROLEID);
+                    }
+                  }
+                }),
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+  components: {
+    searchBox,
+    popupModule
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.roleandmodule.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.roleandmodule.tableLoading;
+    },
+    current() {
+      return this.$store.state.roleandmodule.current;
+    },
+    page_size() {
+      return this.$store.state.roleandmodule.page_size;
+    },
+    total() {
+      return this.$store.state.roleandmodule.total;
+    },
+    pageWait() {
+      return this.$store.state.roleandmodule.pageWait;
+    },
+    quickSearchData() {
+      return this.$store.state.roleandmodule.quickSearchData;
+    }
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("roleandmodule")) {
+      this.$store.dispatch({ type: "roleandmodule/refreshData" });
+    }
+  },
+   mounted() {
+    this.$store.commit("roleandmodule/clearSearchData");
+    this.showQuickSearch = true;
+    this.table.height = getTableHeight();
+   },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "roleandmodule/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "roleandmodule/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    search() {
+      this.$store.dispatch({
+        type: 'roleandmodule/refreshData',
+        searchType: this.quickSearchData.rolename,
+        current: 1
+      });
+    },
+  }
+};
+</script>
+
+<style>
+</style>

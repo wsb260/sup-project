@@ -1,0 +1,76 @@
+import {
+  makeSelectOptions,
+  makeTreeInfo
+} from "tool/tool.js";
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changeShowCheck(state, payload) {
+    state.showCheck = payload;
+  },
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  getData(state, payload) {
+    if (payload.worked == 'table') {
+      state.tableData = payload.data;
+    }
+  },
+  getByIdData(state, payload) {
+    state.byIdData = payload.data.list[0];
+  },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  changeTotal(state, payload) {
+    state.total = payload;
+  },
+  changeCurrent(state, payload) {
+    if (payload && payload != state.current) {
+      state.current = payload;
+    }
+  },
+  changePageSize(state, payload) {
+    if (payload && payload != state.page_size) {
+      state.page_size = payload;
+    }
+  },
+  changeSearchType(state, payload) {
+    state.searchType = payload;
+  },
+  clearSearchData(state, payload) {
+    state.searchType = false;
+    state.searchData = {
+      blcaddress: "",
+      blccontactsnm: "",
+      blccontactstel: "",
+      blcname: "",
+      blcprincipalnm: "",
+      blcprincipaltel: "",
+      blcstatus: "",//运营商状态
+      blctype: "",//承运商类型
+      settlement: "",//结算规则
+    };
+  },
+  isNewData(state, payload) {
+    state.byIdData = {
+      BLCADDRESS: "",
+      BLCCONTACTSNM: "",
+      BLCCONTACTSTEL: "",
+      BLCNAME: "",
+      BLCPRINCIPALNM: "",
+      BLCPRINCIPALTEL: "",
+      BLCSTATUS: "",
+      BLCTYPE: "",
+      CREATE_DATE: "",
+      FLAG: "",
+      ID: "",
+      SETTLEMENT: "",
+      UPDATE_DATE: ""
+    };
+  }
+};

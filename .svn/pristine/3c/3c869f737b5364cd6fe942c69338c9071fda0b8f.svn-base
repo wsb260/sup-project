@@ -1,0 +1,153 @@
+<template>
+  <Modal
+    v-model="showCheck"
+    :mask-closable="!1"
+    draggable
+    :transfer="!1"
+    @on-visible-change="visibleChange"
+    :closable="!popupLoading"
+    :class-name="(popupLoading ? 'blue popupLoading' : 'blue')"
+    width="900"
+  >
+    <p slot="header">
+      <span class="fa fa-file-text-o"></span>
+      <span>详细信息</span>
+    </p>
+    <Form :model="byIdData" :label-width="100">
+      <Row>
+        <i-col span="6">
+          <FormItem label="寄件人：">
+            <i-input v-model="byIdData.SENDER_NAME" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="寄件人电话：">
+            <i-input v-model="byIdData.SENDER_MOBILE" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="寄件人地址：">
+            <i-input v-model="byIdData.SENDER_ADDRESS" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="收件人：" >
+            <i-input v-model="byIdData.RECEIVER_NAME" readonly></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="6">
+          <FormItem label="收件人电话：">
+            <i-input v-model="byIdData.RECEIVER_MOBILE" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="收件人地址：">
+            <i-input v-model="byIdData.RECEIVER_ADDRESS" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="总件数：">
+            <i-input v-model="byIdData.QTY" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="状态：">
+            <i-input v-model="byIdData.STATUS" readonly></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="6">
+          <FormItem label="支付方式：">
+            <i-input v-model="byIdData.PAYWAY" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="客户名称：">
+            <i-input v-model="byIdData.CUSTOMERNAME" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="6">
+          <FormItem label="原订单号：">
+            <i-input v-model="byIdData.ORIGINAL_ORDERNO" readonly></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+    </Form>
+     <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      ></Table>
+    <div slot="footer">
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      table: {
+        height: 300,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "订单号", key: "TXLOGISTICID", align: "center" },
+          { title: "商品名称", key: "ITEMNAME", align: "center" },
+          { title: "商品数量", key: "ITEMNUMBER", align: "center" },
+          { title: "商品单价", key: "ITEMVALUE", align: "center" },
+          { title: "商品规格", key: "PRODUCT_SPEC_NM", align: "center" },
+        ]
+      },
+    };
+  },
+  computed: {
+   byIdData() {
+      return this.$store.state.orderproductquery.byIdData;
+    },
+    tableData() {
+      return this.$store.state.orderproductquery.tableData1;
+    },
+    tableLoading() {
+      return this.$store.state.orderproductquery.tableLoading;
+    },
+    current() {
+      return this.$store.state.orderproductquery.current;
+    },
+    total() {
+      return this.$store.state.orderproductquery.total;
+    },
+    showCheck: {
+      get: function () {
+        return this.$store.state.orderproductquery.showCheck;
+      },
+      set: function (val) {
+        this.$store.commit("orderproductquery/changeShowCheck", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.orderproductquery.popupLoading;
+    }
+  },
+  created() {},
+  mounted() {},
+  methods: {
+    open(id) {
+      this.$store.dispatch({ type: "orderproductquery/getByIdData", id: id });
+      this.$store.commit("orderproductquery/changeShowCheck", true);
+    },
+    onCancel() {
+      this.$store.commit("orderproductquery/changeShowCheck", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("orderproductquery/changePageWait", val);
+    }
+  }
+};
+</script>

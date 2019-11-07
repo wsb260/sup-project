@@ -1,0 +1,42 @@
+{
+  "success":"true",
+  "result": [{
+    "DELIVERNUM": 0,
+    "ID": 2,
+    "CRMNAME": "中通"
+  }, {
+    "DELIVERNUM": 0,
+    "ID": 6,
+    "CRMNAME": "顺丰"
+  }, {
+    "DELIVERNUM": 0,
+    "ID": 3,
+    "CRMNAME": "邮政"
+  }, {
+    "DELIVERNUM": 0,
+    "ID": 7,
+    "CRMNAME": "邮政"
+  }, {
+    "DELIVERNUM": 0,
+    "ID": 4,
+    "CRMNAME": "申通"
+  }, {
+    "DELIVERNUM": 0,
+    "ID": 8,
+    "CRMNAME": "两河乡大客户1"
+  }, {
+    "DELIVERNUM": 0,
+    "ID": 1,
+    "CRMNAME": "邮政"
+  }, {
+    "DELIVERNUM": 0,
+    "ID": 5,
+    "CRMNAME": "顺丰"
+  }, {
+    "DELIVERNUM": 0,
+    "ID": 9,
+    "CRMNAME": "两河乡大客户2"
+  }],
+  "total": 3,
+  "totalPage": 1
+}

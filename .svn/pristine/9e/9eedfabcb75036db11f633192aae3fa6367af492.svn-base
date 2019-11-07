@@ -1,0 +1,20 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/orderplan/routesheetQuery.json"
+  },
+  getByIdData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/orderplan/routesheetDetail.json"
+  },
+  getPlanData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/orderplan/delStockQuery.json"
+  },
+  //删除
+  delete: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/deliveryresource/delete.json"
+  },
+};

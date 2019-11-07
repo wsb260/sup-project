@@ -1,0 +1,80 @@
+*{
+  margin: 0;
+  padding: 0;
+  border: 0 none;
+  list-style: none;
+}
+body{
+  color: #333;
+  font-size: 14px;
+}
+
+/* 公共样式 */
+html,
+body,
+.wh100 {
+  width: 100%;
+  height: 100%;
+}
+.h100{
+  height: 100%;
+}
+.pageBody {
+  position: relative;
+  height: 100%;
+  .layout-page-tool {
+    padding-bottom: 4px;
+  }
+  .layout-page-tool:empty {
+    display: none;
+  }
+  .layout-page-content {
+  }
+  .layout-page-page {
+    
+  }
+  &.rowBox{
+    padding: 4px;
+  }
+  &.wait{
+    .layout-page-tool,
+    .layout-page-content,
+    .layout-page-page{
+      user-select: none;
+    }
+    &:after{
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      //background-color: rgba(45, 140, 240,0.2);
+      background-color: rgba(255,255,255,0.2);
+      z-index: 7;
+    }
+  }
+}
+
+.pos_maxAll {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+/* 查询中Form的样式 */
+.forms{
+  margin:0 10px 0 0;
+}
+
+.afterText:after {
+  content: attr(data-afterText);
+  position: absolute;
+  top: 0;
+  right: 6px;
+  height: 100%;
+  line-height: 30px;
+}

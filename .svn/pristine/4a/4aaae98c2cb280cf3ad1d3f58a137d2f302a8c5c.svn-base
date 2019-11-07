@@ -1,0 +1,28 @@
+{
+  "success":"true",
+    "result": [{
+        "value": "10",
+        "label": "全部"
+      },
+      {
+        "value": "20",
+        "label": "计划"
+      },
+      {
+        "value": "30",
+        "label": "可执行"
+      },
+      {
+        "value": "40",
+        "label": "可分派"
+      },
+      {
+        "value": "50",
+        "label": "已分派"
+      },
+      {
+        "value": "60",
+        "label": "已完成"
+      }
+    ]
+  }

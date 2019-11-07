@@ -1,0 +1,102 @@
+<template>
+  <ul :class="'eltTree-ul ' + (open ? 'open' : 'close')" :ref="'eltTree-ul'+ids" :style="{maxHeight: height}" v-if="treeData.length > 0">
+    <li :class="'eltTree-li' + (info.children.length > 0 ? ' hasChildren' : '') + (info.open ? ' open' : ' close')" v-for="(info, i) in treeData" :key="i">
+      <span class="arrow">
+        <Icon type="ios-arrow-down" v-if="info.children.length > 0" @click="arrow(i)" />
+      </span>
+      <span class="check" v-if="check"></span>
+      <span class="icon" v-if="icon"></span>
+      <span :class="'name' + ( onChange ? ' hasActions' : '' )" @click="onChange(info) || (() =>{})">{{info[name||"name"]}}</span>
+      <span class="actionBtn del error" v-if="onDel" @click="onDel(info)">
+        <Icon type="ios-trash-outline" />
+      </span>
+      <span class="actionBtn edit warning" v-if="onEdit" @click="onEdit(info)">
+        <Icon type="ios-create-outline" />
+      </span>
+      <span class="actionBtn add success" v-if="onAdd" @click="onAdd(info)">
+        <Icon type="ios-add-circle-outline" />
+      </span>
+      <Etree
+        v-if="info.children.length > 0"
+        :ref="'eltTree-ul-'+ids+'-'+i"
+        :lv="lv+1"
+        :ids="ids+1"
+        :treeData="info.children"
+        :onChange="onChange"
+        :onAdd="onAdd"
+        :onEdit="onEdit"
+        :onDel="onDel"
+        :expand="expand"
+        :name="name"
+        :id="id"
+        :check="check"
+        :icon="icon"
+      ></Etree>
+    </li>
+  </ul>
+</template>
+
+<script>
+import Etree from "./tree.vue";
+export default {
+  name: "Etree",
+  data: function() {
+    return {
+      height: "none",
+      open: true,
+      iconOpen: true
+    };
+  },
+  props: {
+    ids: [ String , Number ],
+    lv: Number,
+    treeData: Array,
+    onChange: [ Function , Boolean ],
+    onAdd: [ Function , Boolean ],
+    onEdit: [ Function , Boolean ],
+    onDel: [ Function , Boolean ],
+    expand: Boolean,
+    name: String,
+    id: String,
+    check: Boolean,
+    icon: Boolean
+  },
+  components: {
+    Etree
+  },
+  watch: {
+    treeData: {
+      handler: function(val, oldVal) {
+        if( val.length != oldVal.length ){
+          this.refreshData();
+        }
+      },
+      deep: true
+    }
+  },
+  mounted () {
+    this.refreshData();
+  },
+  methods: {
+    refreshData() {
+      this.open = this.expand;
+      if( this.ids != 0 ){
+        this.height = "none";
+        this.$nextTick(() => {
+          this.height = this.$refs["eltTree-ul"+this.ids].offsetHeight + "px";
+          this.$refs["eltTree-ul"+this.ids].dataset.height = this.$refs["eltTree-ul"+this.ids].offsetHeight + "px";
+        });
+      }
+    },
+    arrow(i) {
+      this.treeData[i].open = !this.treeData[i].open;
+      this.$set(this.treeData, i, this.treeData[i]);
+      this.$refs["eltTree-ul-"+this.ids+"-"+i][0].close(this.treeData[i].open);
+    },
+    close(o) {
+      this.open = o;
+      this.height = o ? this.$refs["eltTree-ul"+this.ids].dataset.height : "0px";
+    }
+  }
+};
+</script>

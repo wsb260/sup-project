@@ -1,0 +1,217 @@
+{
+  "result": [{
+    "icon": "ivu-icon ivu-icon-md-analytics",
+    "modulename": "调度管理",
+    "seconds": [{
+      "icon": "",
+      "modulename": "任务配载",
+      "moduleid": "310",
+      "url": "orderplan"
+    }, {
+      "icon": "",
+      "modulename": "分派",
+      "moduleid": "330",
+      "url": "orderassign"
+    }, {
+      "icon": "",
+      "modulename": "指挥调度中心",
+      "moduleid": "340",
+      "url": "controlmap"
+    }, {
+      "icon": "",
+      "modulename": "轨迹回放",
+      "moduleid": "350",
+      "url": "pathplayback"
+    }],
+    "moduleid": "10"
+  }, {
+    "icon": "ivu-icon ivu-icon-md-cog",
+    "modulename": "系统管理",
+    "seconds": [{
+      "icon": "",
+      "modulename": "菜单管理",
+      "moduleid": "100",
+      "url": "ordermenu"
+    }, {
+      "icon": "",
+      "modulename": "角色管理",
+      "moduleid": "110",
+      "url": "role"
+    }, {
+      "icon": "",
+      "modulename": "权限管理",
+      "moduleid": "120",
+      "url": "roleandmodule"
+    }, {
+      "icon": "",
+      "modulename": "人员角色配置",
+      "moduleid": "130",
+      "url": "operandrole"
+    }, {
+      "icon": "",
+      "modulename": "配送管理",
+      "moduleid": "540",
+      "url": "deliverymanage"
+    }],
+    "moduleid": "1"
+  }, {
+    "icon": "fa fa-bar-chart-o",
+    "modulename": "统计管理",
+    "seconds": [{
+      "icon": "",
+      "modulename": "对账管理",
+      "moduleid": "528",
+      "url": "driveraccount"
+    }, {
+      "icon": "",
+      "modulename": "清分统计",
+      "moduleid": "529",
+      "url": "statisticsorder"
+    }, {
+      "icon": "",
+      "modulename": "日发货量统计",
+      "moduleid": "532",
+      "url": "dailyShipments"
+    }, {
+      "icon": "",
+      "modulename": "业务量统计",
+      "moduleid": "533",
+      "url": "businessquantity"
+    }, {
+      "icon": "",
+      "modulename": "营运统计",
+      "moduleid": "534",
+      "url": "servicestatistics"
+    }, {
+      "icon": "",
+      "modulename": "客户发货量排名统计",
+      "moduleid": "536",
+      "url": "clientshipment"
+    }],
+    "moduleid": "30"
+  }, {
+    "modulename": "菜单根节点",
+    "seconds": [{
+      "icon": "ivu-icon ivu-icon-md-cog",
+      "modulename": "系统管理",
+      "moduleid": "1",
+      "url": "1"
+    }, {
+      "icon": "fa fa-th-list",
+      "modulename": "基础信息",
+      "moduleid": "5",
+      "url": "2"
+    }, {
+      "icon": "ivu-icon ivu-icon-md-analytics",
+      "modulename": "调度管理",
+      "moduleid": "10",
+      "url": "3"
+    }, {
+      "icon": "fa fa-clipboard",
+      "modulename": "订单管理",
+      "moduleid": "15",
+      "url": "4"
+    }, {
+      "icon": "fa fa-bar-chart-o",
+      "modulename": "统计管理",
+      "moduleid": "30",
+      "url": "6"
+    }, {
+      "icon": "fa fa-wheelchair-alt",
+      "modulename": "异常管理",
+      "moduleid": "537",
+      "url": "7"
+    }],
+    "moduleid": "-1"
+  }, {
+    "icon": "fa fa-th-list",
+    "modulename": "基础信息",
+    "seconds": [{
+      "icon": "",
+      "modulename": "机构管理",
+      "moduleid": "200",
+      "url": "org"
+    }, {
+      "icon": "",
+      "modulename": "人员管理",
+      "moduleid": "210",
+      "url": "oper"
+    }, {
+      "icon": "",
+      "modulename": "车辆管理",
+      "moduleid": "230",
+      "url": "deliveryresource"
+    }, {
+      "icon": "",
+      "modulename": "承运商管理",
+      "moduleid": "526",
+      "url": "ordercmc"
+    }, {
+      "icon": "",
+      "modulename": "客户管理",
+      "moduleid": "531",
+      "url": "ordercrm"
+    }],
+    "moduleid": "5"
+  }, {
+    "icon": "fa fa-wheelchair-alt",
+    "modulename": "异常管理",
+    "seconds": [{
+      "icon": "",
+      "modulename": "异常货物申请",
+      "moduleid": "538",
+      "url": "abnormalcargohandle"
+    }],
+    "moduleid": "537"
+  }, {
+    "icon": "fa fa-clipboard",
+    "modulename": "订单管理",
+    "seconds": [{
+      "icon": "",
+      "modulename": "任务单查询",
+      "moduleid": "400",
+      "url": "orderquery"
+    }, {
+      "icon": "",
+      "modulename": "订单查询",
+      "moduleid": "410",
+      "url": "orderproductquery"
+    }, {
+      "icon": "",
+      "modulename": "物流订单受理",
+      "moduleid": "420",
+      "url": "orderlogistics"
+    }, {
+      "icon": "",
+      "modulename": "订单导入",
+      "moduleid": "430",
+      "url": "orderentry"
+    }, {
+      "icon": "",
+      "modulename": "电话下单录入",
+      "moduleid": "440",
+      "url": "orderteladd"
+    }, {
+      "icon": "",
+      "modulename": "订单信息补录",
+      "moduleid": "450",
+      "url": "orderproductadd"
+    }, {
+      "icon": "",
+      "modulename": "转单管理",
+      "moduleid": "460",
+      "url": "transhipment"
+    }, {
+      "icon": "",
+      "modulename": "转单查询",
+      "moduleid": "470",
+      "url": "transhipmentquery"
+    }, {
+      "icon": "",
+      "modulename": "匹配机构管理",
+      "moduleid": "530",
+      "url": "orgmarry"
+    }],
+    "moduleid": "15"
+  }]
+}

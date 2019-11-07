@@ -1,0 +1,13 @@
+{
+  "total": 1,
+  "result": [{
+    "RULE_NM": "易同送",
+    "IS_ENABLE": "Y",
+    "SYS_ORG_ID": "2",
+    "POSITION": "1",
+    "DELIVERY_LOGISTICS_COMPANY_ID": "易同送",
+    "DESCR": "易同送",
+    "DELIVERY_WAY_ID": "116"
+  }],
+  "totalPage": 1
+}

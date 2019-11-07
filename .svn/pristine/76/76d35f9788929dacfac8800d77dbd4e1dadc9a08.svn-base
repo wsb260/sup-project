@@ -1,0 +1,16 @@
+{
+  "success":"true",
+    "result": [{
+        "value": "10",
+        "label": "配送1"
+      },
+      {
+        "value": "20",
+        "label": "配送2"
+      },
+      {
+        "value": "30",
+        "label": "配送3"
+      }
+    ]
+  }

@@ -1,0 +1,12 @@
+import e from "controller/index.js"
+export default {
+  getByIdData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/orderlogistics/childrenNode.json"
+  },
+  //删除
+  saveNew: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orderlogistics/save.json"
+  }
+};

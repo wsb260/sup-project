@@ -1,0 +1,115 @@
+<template>
+  <Modal v-model="showEdit" :mask-closable="!1" draggable :transfer="!1" @on-visible-change="visibleChange" :closable="!popupLoading" :class-name="(id ? 'yellow' : 'green') + (popupLoading ? ' popupLoading' : '')" width="400">
+    <p slot="header">
+      <span class="fa fa-edit" v-if="id"></span>
+      <Icon type="ios-add-circle-outline" v-else></Icon>
+      <span>{{(id ? '编辑' : '新增') + '角色管理'}}</span>
+    </p>
+    <Form :model="byIdData" :label-width="100" :rules="ruleValidate" ref="editForm">
+      <Row>
+        <i-col span="24">
+          <FormItem label="角色名称：" prop="ROLENAME">
+            <i-input v-model="byIdData.ROLENAME" placeholder="请填写角色名称"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="24">
+          <FormItem label="角色描述：" prop="DESCRIPTION">
+            <i-input v-model="byIdData.DESCRIPTION" placeholder="请填写角色描述"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="24">
+          <FormItem label="备注：" prop="NOTES">
+            <i-input type="textarea" :row="4" v-model="byIdData.NOTES" placeholder="请填写备注"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+    </Form>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+import { eltValidators } from "tool/eltValidators.js";
+export default {
+  data() {
+    return {
+      id: false,
+      ruleValidate: {
+        ROLENAME: [
+          { required: true,message: "请填写角色名称！" },
+          {
+            validator: eltValidators,
+            rules: [
+              { name: "maxLength", message: "输入内容最大20位", info: "20" }
+            ]
+          }
+        ],
+        DESCRIPTION: [
+          { required: true,message: "请填写角色描述！" },
+          {
+            validator: eltValidators,
+            rules: [
+              { name: "maxLength", message: "输入内容最大20位", info: "20" }
+            ]
+          }
+        ],
+        NOTES: [
+          { message: "请填写备注！" }
+        ],
+      }
+    }
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.role.byIdData;
+    },
+    showEdit: {
+      get: function() {
+        return this.$store.state.role.showEdit;
+      },
+      set: function(val) {
+        this.$store.commit("role/changeShowEdit", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.role.popupLoading;
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    open(id) {
+      this.id = id || false;
+      this.result();
+      if (this.id) {
+        this.$store.dispatch({ type: "role/getByIdData", id: this.id });
+      } else {
+        this.$store.commit({ type: "role/isNewData" });
+      }
+      this.$store.commit("role/changeShowEdit", true);
+    },
+    result() {
+      this.$refs["editForm"].resetFields();
+    },
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch({ type: "role/saveData", id: this.id });
+        }
+      });
+    },
+    onCancel() {
+      this.$store.commit("role/changeShowEdit", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("role/changePageWait", val);
+    }
+  }
+};
+</script>

@@ -1,0 +1,96 @@
+<template>
+  <div class="controlmap">
+    <div class="layout-page-tool">
+      <div class="buttons">
+        <Button type="info">全部车辆</Button>
+        <Button type="warning">繁忙车辆</Button>
+        <Button type="success">空闲车辆</Button>
+      </div>
+      <div class="text">【地图上标记车辆总数: {{allCars}} ; 地图上标记繁忙车辆总数: {{busyCars}} ; 地图上标记空闲车辆总数: {{freeCars}}  】<span class="timer">页面 <span>{{second}} </span>秒后刷新！</span></div>
+        <Button type="info">车辆列表显示</Button>
+    </div>
+    <div class="map" id="allmap">
+      <baidu-map @ready="handler" :scroll-wheel-zoom="true" map-type="BMAP_HYBRID_MAP" :zoom="13">
+      </baidu-map>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      allCars:100,
+      busyCars:55,
+      freeCars:45,
+      second:59
+    };
+  },
+  mounted(){
+    setInterval(() => {
+      this.second --;
+      if(this.second < 1){
+        this.second = 59;
+        this.baiduMap();
+      }
+    }, 1000);
+  },
+  methods: {
+    baiduMap() {
+      var map = new BMap.Map("allmap");
+      var point = new BMap.Point(126.592695,45.694494); // 创建点坐标
+      map.centerAndZoom(point, 13);
+      map.enableScrollWheelZoom();
+      map.addControl(
+        new BMap.OverviewMapControl({
+          isOpen: false,
+          anchor: BMAP_ANCHOR_BOTTOM_RIGHT
+        })
+      );
+      map.addControl(new BMap.NavigationControl());
+      map.addControl(new BMap.ScaleControl());
+      var icon = new BMap.Icon(
+        "../../static/img/p.png",
+        new BMap.Size(100, 100)
+      );
+      var marker = new BMap.Marker(new BMap.Point(126.592695,45.694494), {
+        icon: icon
+      });
+      map.addOverlay(marker);
+    },
+    handler({ BMap, map }) {
+      this.baiduMap();
+    }
+  }
+};
+</script>
+<style lang="scss">
+.controlmap {
+  width: 100%;
+  height:100%;
+  margin: 0 auto;
+  font-size: 16px;
+  color: gray;
+  .map {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ccc;
+  }
+  .layout-page-tool{
+    padding-bottom:5px;
+    .buttons{
+      float: left;
+    }
+    .text{
+      float: left;
+      color:red;
+      .timer{
+        color:#aaa;
+        span{
+          color:red;
+        }
+      }
+    }
+  }
+}
+</style>
+

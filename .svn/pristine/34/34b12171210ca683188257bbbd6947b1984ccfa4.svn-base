@@ -1,0 +1,32 @@
+{
+  "org": {
+    "ADDRESS": "四川省阿坝藏族羌族自治州喇嘛寺坪办公大楼4楼",
+    "BDADDRESS": "",
+    "BUSTYPE": "",
+    "CREATE_BY": "1",
+    "CREATE_DATE": "2018-06-14 09:35:09.0",
+    "DELIVERYSCOPE": "0",
+    "FILEPATH": "",
+    "FLAG": "0",
+    "IFVALID": "0",
+    "LATITUDE": "31.002178754191103",
+    "LINKMAN": "111",
+    "LONGITUDE": "102.3693963783376",
+    "NOTES": "",
+    "ORGAREA": "10",
+    "ORGID": "2",
+    "ORGLEVEL": "",
+    "ORGNAME": "小金网点",
+    "ORGTYPE": "40",
+    "PROJECTID": "10,20",
+    "QUERYNUMBER": "",
+    "SERVE_DATE": "2018-06-14",
+    "TEL": "13856788765",
+    "THROUHPUT": "",
+    "UPDATE_BY": "1",
+    "UPDATE_DATE": "2018-06-14 09:35:09.0",
+    "UPORGID": "1",
+    "UPORGNAME": "易同送总部"
+  },
+  "success": "true"
+}

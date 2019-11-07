@@ -1,0 +1,41 @@
+import {
+  makeSelectOptions,
+  makeTreeInfo
+} from "tool/tool.js";
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeshowModule(state,payload) {
+    state.showModule = payload;
+  },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  getData(state, payload) {
+    if (payload.worked == 'table') {
+      state.tableData = payload.data;
+    }
+  },
+  getByIdData(state, payload) {
+    payload.data.forEach((v,i) => {
+      v.key = v.MODULEID;
+      v.label = v.MODULENAME;
+      v.description = v.DESCRIPTION;
+    });
+    state.leftList = payload.data;
+  },
+  isNewData(state, payload) {
+    state.byIdData = {
+      CREATE_BY: "1",
+      CREATE_DATE: "2018-12-05",
+      DESCRIPTION: "",
+      FLAG: "",
+      NOTES: "",
+      ROLEID: "",
+      ROLENAME: "",
+      UPDATE_BY: "1",
+      UPDATE_DATE: "2018-12-05",
+    };
+  }
+};

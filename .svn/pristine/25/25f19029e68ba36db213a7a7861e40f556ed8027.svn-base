@@ -1,0 +1,177 @@
+<template>
+  <Modal v-model="showEdit" :mask-closable="!1" draggable :transfer="!1" @on-visible-change="visibleChange" :closable="!popupLoading" :class-name="(id ? 'yellow' : 'green') + (popupLoading ? ' popupLoading' : '')" width="740">
+    <p slot="header">
+      <span class="fa fa-edit" v-if="id"></span>
+      <Icon type="ios-add-circle-outline" v-else></Icon>
+      <span>{{'承运商信息' + (id ? '修改' : '新增')}}</span>
+    </p>
+    <Form :model="byIdData" :label-width="100" :rules="ruleValidate" ref="editForm">
+      <Row>
+        <i-col span="12">
+          <FormItem label="承运商：" prop="BLCNAME">
+            <i-input v-model="byIdData.BLCNAME" placeholder="请填写承运商"></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="承运商地址：" prop="BLC">
+            <i-input v-model="byIdData.BLC" placeholder="请填写承运商地址"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="12">
+          <FormItem label="负责人：" prop="BLCPRINCIPALNM">
+            <i-input v-model="byIdData.BLCPRINCIPALNM" placeholder="请填写负责人"></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="负责人电话：" prop="BLCPRINCIPALTEL">
+            <i-input v-model="byIdData.BLCPRINCIPALTEL" placeholder="请填写负责人电话"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="12">
+          <FormItem label="联系人：" prop="BLCCONTACTSNM">
+            <i-input v-model="byIdData.BLCCONTACTSNM" placeholder="请填写联系人"></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="联系人电话：" prop="BLCCONTACTSTEL">
+            <i-input v-model="byIdData.BLCCONTACTSTEL" placeholder="请填写联系人电话"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="12">
+          <FormItem label="运营状态：" prop="BLCSTATUS">
+            <Select v-model="byIdData.BLCSTATUS" placeholder="请选择运营状态">
+              <Option v-for="item in BLCSTATUS" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="承运商类型：" prop="BLCTYPE">
+            <Select v-model="byIdData.BLCTYPE" placeholder="请选择承运商类型">
+              <Option v-for="item in BLCTYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="12">
+          <FormItem label="结算方式：" prop="SETTLEMENT">
+            <Select v-model="byIdData.SETTLEMENT" placeholder="请选择结算方式">
+              <Option v-for="item in SETTLEMENT" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+      </Row>
+
+    </Form>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+import { eltValidators } from "tool/eltValidators.js";
+export default {
+  data() {
+    return {
+      id: false,
+      ruleValidate: {
+        BLCNAME: [
+          { required: true, message: "请输入承运商名称！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "maxLength", message: "输入内容最大20位", info: "20" }
+            ]
+          }
+        ],
+        BLC: [{ required: true, message: "请输入承运商地址！" }],
+        BLCPRINCIPALTEL:[
+          {
+            validator: eltValidators,
+            rules: [
+              { name: "mobilephone", message: "", info: "" }
+            ]
+          }
+        ],
+        BLCCONTACTSNM: [{ required: true, message: "请输入联系人！" }],
+        BLCCONTACTSTEL: [
+          { required: true, message: "请输入联系电话！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "mobilephone", message: "", info: "" }
+            ]
+          }
+        ],
+        BLCSTATUS: [{ required: true, message: "请选择运营状态！" }],
+        BLCTYPE: [{ required: true, message: "请选择承运商类型"}],
+
+      }
+    };
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.ordercmc.byIdData;
+    },
+    BLCSTATUS() {
+      return this.$store.state.selectData.BLCSTATUS;
+    },
+    BLCTYPE() {
+      return this.$store.state.selectData.BLCTYPE;
+    },
+    SETTLEMENT() {
+      return this.$store.state.selectData.SETTLEMENT;
+    },
+    showEdit: {
+      get: function() {
+        return this.$store.state.ordercmc.showEdit;
+      },
+      set: function(val) {
+        this.$store.commit("ordercmc/changeShowEdit", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.ordercmc.popupLoading;
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    open(id) {
+      this.id = id || false;
+      this.result();
+      if (this.id) {
+        this.$store.dispatch({ type: "ordercmc/getByIdData", id: this.id });
+      } else {
+        this.$store.commit({ type: "ordercmc/isNewData" });
+      }
+      this.$store.commit("ordercmc/changeShowEdit", true);
+    },
+    result() {
+      this.$refs["editForm"].resetFields();
+    },
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch({ type: "ordercmc/saveData", id: this.id });
+        }
+      });
+    },
+    onCancel() {
+      this.$store.commit("ordercmc/changeShowEdit", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("ordercmc/changePageWait", val);
+    }
+  }
+};
+</script>

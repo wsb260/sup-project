@@ -1,0 +1,163 @@
+<template>
+  <Modal v-model="showEdit" :mask-closable="!1" draggable :transfer="!1" @on-visible-change="visibleChange" :closable="!popupLoading" :class-name="(id ? 'yellow' : 'green') + (popupLoading ? ' popupLoading' : '')" width="740">
+    <p slot="header">
+      <span class="fa fa-edit"></span>
+      <span>补录订单信息</span>
+    </p>
+    <Form :model="byIdData" :label-width="100" :rules="ruleValidate" ref="editForm">
+        <Row>
+          <i-col span="12">
+            <FormItem label="收件人名字：" prop="RECEIVER_NAME">
+              <i-input v-model="byIdData.RECEIVER_NAME" placeholder="请输入收件人名字"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="收件人电话：" prop="RECEIVER_PHONE">
+              <i-input v-model="byIdData.RECEIVER_PHONE" placeholder="请输入收件人电话"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+            <FormItem label="收件人地址：" prop="RECEIVER_ADDRESS">
+              <i-input v-model="byIdData.RECEIVER_ADDRESS" placeholder="请输入收件人地址"></i-input>
+            </FormItem>
+          </i-col>
+           <i-col span="12">
+            <FormItem label="支付方式：" prop="PAYWAY">
+              <RadioGroup v-model="byIdData.PAYWAY">
+                <Radio label="0">货到付款</Radio>
+                <Radio label="1">现金支付</Radio>
+              </RadioGroup>
+            </FormItem>
+          </i-col>
+        </Row>
+      </Form>
+      <div class="layout-page-content">
+        <Button type="success" @click="add" style="margin:5px;margin-left:0;">
+          <Icon type="md-add" /> 新增
+        </Button>
+        <Table  border stripe :loading="tableLoading" :height="table.height" :columns="table.columns" :data="tableData" :highlight-row="true"></Table>
+      </div>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+    <popup-add ref="popupAdd"></popup-add>
+  </Modal>
+</template>
+<script>
+import popupAdd from "./popup-add.vue"
+import { eltValidators } from "tool/eltValidators.js";
+export default {
+  data() {
+    return {
+      id: false,
+      table: {
+        height: 200,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "商品名称", key: "itemname", align: "center" },
+          { title: "商品数量", key: "itemnum", align: "center" },
+          { title: "商品重量", key: "wt", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "删除" },
+                  class: "tableBtn fa error fa-remove",
+                  on: {
+                    click: () => {
+                      this.$refs.popupDelete.open(
+                        params.row.ID,
+                        "orderlogistics/delete"
+                      );
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      ruleValidate: {
+        RECEIVER_NAME: [{ required: true, message: "请填写收件人姓名！" }],
+        RECEIVER_MOBILE: [
+          { required: true, message: "请填写收件人电话！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "mobilephone", message: "请输入正确格式的11位手机号码！", info: "" },
+              ]
+          }
+        ],
+        RECEIVER_ADDRESS: [{ required: true, message: "请填写收件人地址！" }],
+        PAYWAY: [{ required: true, message: "请选择支付方式" }]
+      }
+    };
+  },
+  components:{
+    popupAdd
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.orderproductadd.byIdData;
+    },
+    tableData() {
+      return this.$store.state.orderproductadd.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.orderproductadd.tableLoading;
+    },
+    showEdit: {
+      get: function() {
+        return this.$store.state.orderproductadd.showEdit;
+      },
+      set: function(val) {
+        this.$store.commit("orderproductadd/changeShowEdit", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.orderproductadd.popupLoading;
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    open(id) {
+      this.id = id || false;
+      this.result();
+      if (this.id) {
+        this.$store.dispatch({ type: "orderproductadd/getByIdData", id: this.id });
+      } else {
+        this.$store.commit({ type: "orderproductadd/isNewData" });
+      }
+      this.$store.commit("orderproductadd/changeShowEdit", true);
+    },
+    result() {
+      this.$refs["editForm"];
+    },
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch({ type: "orderproductadd/saveData", id: this.id });
+        }
+      });
+    },
+    onCancel() {
+      this.$store.commit("orderproductadd/changeShowEdit", false);
+    },
+     add() {
+      this.$refs.popupAdd.open();
+    },
+    visibleChange(val) {
+      this.$store.commit("orderproductadd/changePageWait", val);
+    }
+  }
+};
+</script>

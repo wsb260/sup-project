@@ -1,0 +1,32 @@
+{
+  "success": "true",
+  "ordercrm": {
+    "CRMTYPE": "10",
+    "CRMORGID": "1",
+    "BANKPERSON": "",
+    "CRMCONTACTSTEL": "",
+    "CRMGRADE": "10",
+    "CRMPROV": "",
+    "ID": "12",
+    "CRMTRADE": "10",
+    "BANKNAME": "",
+    "CRMREMARK": "",
+    "CRMADDRESSS": "哈尔滨南岗区",
+    "FLAG": "0",
+    "CRMSTATUS": "10",
+    "CRMCOUNTY": "",
+    "CRMCONTACTS": "",
+    "BALANCE": "",
+    "BENEFITSCALE": "",
+    "CRMCONTACTSTYPE": "",
+    "CRMTEL": "15911111111",
+    "ACCOUNTNUMBER": "",
+    "CRMNAME": "中通",
+    "CRMCITY": "",
+    "BANKTEL": "",
+    "CRMSOURCE": "10",
+    "CRMDATE": "2018-12-12 10:40:17.0",
+    "USERID": "",
+    "CRMPOSTCODE": "150000"
+  }
+}

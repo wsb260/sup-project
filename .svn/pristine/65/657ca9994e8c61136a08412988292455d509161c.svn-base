@@ -1,0 +1,47 @@
+import e from "controller/index.js"
+export default {
+  ORGNAME: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/ORGNAME/list.json"
+  },
+  ORGTYPE: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/ORGTYPE/list.json"
+  },
+  ORGAREA: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/ORGAREA/list.json"
+  },
+  UPORGNAME: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/UPORGNAME/list.json"
+  },
+  BLCSTATUS: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/BLCSTATUS/list.json"
+  },
+  BLCTYPE: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/BLCTYPE/list.json"
+  },
+  SETTLEMENT: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/SETTLEMENT/list.json"
+  },
+  CAROWNER_NM :{
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/CAROWNER_NM/list.json"
+  },
+  CARDTYPE :{
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/CARDTYPE/list.json"
+  },
+  CARTYPE :{
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/CARTYPE/list.json"
+  },
+  CRMTRADE :{
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/tool/CRMTRADE/list.json"
+  },
+}

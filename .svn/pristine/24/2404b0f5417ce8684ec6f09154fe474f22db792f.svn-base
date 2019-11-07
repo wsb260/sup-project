@@ -1,0 +1,175 @@
+<template>
+  <div :class="'pageBody' + (pageWait ? ' wait' : '')" id="abnormalcargoexamine">
+    <div class="layout-page-tool">
+      <search-box ref="searchBox"></search-box>
+    </div>
+    <div class="layout-page-content">
+      <Table border stripe :loading="tableLoading" :height="table.height" :columns="table.columns" :data="tableData" :highlight-row="true">
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page :total="total" :current="current" :page-size="page_size" :page-size-opts="page.page_sizepts" @on-change="page_change" @on-page-size-change="page_size_change" show-sizer show-elevator show-total size="small">
+      </Page>
+    </div>
+    <popup-approval ref="popupApproval"></popup-approval>
+    <popup-delete ref="popupDelete"></popup-delete>
+  </div>
+</template>
+<script>
+import popupApproval from "./components/popup-approval"
+import searchBox from "./components/searchBox.vue";
+import popupDelete from "components/situation/popup-delete";
+import { getTableHeight } from "tool/tool.js";
+export default {
+  name: "abnormalcargoexamine",
+  data(){
+    return {
+      delModel: {},
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "状态",
+            key: "APPLY_STATUS",
+            align: "center",
+            render: (h,params) => {
+              if(params.row.APPLY_STATUS == "1"){
+                return h("a",{
+                    on:{
+                      click:() =>{
+                        this.$refs.popupApproval.open(params.row.ID);
+                      }
+                    }
+                },"审批")
+              }else if(params.row.APPLY_STATUS == "2"){
+                return h("a","打印")
+              }else{
+                return h("span","")
+              }
+            }
+          },
+          { title: "异常订单号", key: "ORDERNO", align: "center" },
+          { title: "审核状态", key: "APPLY_STATUS", align: "center",
+            render: (h,params) => {
+              let status = ""
+              if(params.row.APPLY_STATUS == "0"){
+                status = "申请"
+              return h("a",status)
+              }else if(params.row.APPLY_STATUS == "1"){
+                status = "待审批"
+                return h("span",status)
+              }else if(params.row.APPLY_STATUS == "2"){
+                status = "审批通过"
+                  return h("span",status)
+              }else if(params.row.APPLY_STATUS == "3"){
+                status = "未审批通过"
+                return h("span",status)
+              }else{
+                status = ""
+                 return h("span",status)
+              }
+
+            }
+          },
+          { title: "申请人", key: "APPLYNAME", align: "center" },
+          { title: "申请金额", key: "APPLY_MONEY", align: "center" },
+          { title: "申请原因", key: "ABNORMAL_TYPE", align: "center",
+            render: (h,params) => {
+              let abnormal_type = "";
+              if(params.row.ABNORMAL_TYPE == "1"){
+                abnormal_type = "整单货物丢失";
+              }else if(params.row.ABNORMAL_TYPE == "2"){
+                abnormal_type = "部分货物丢失";
+              }else if(params.row.ABNORMAL_TYPE == "3"){
+                abnormal_type = "整单货物损坏";
+              }else if(params.row.ABNORMAL_TYPE == "4"){
+                abnormal_type = "部分货物损坏";
+              }else if(params.row.ABNORMAL_TYPE == "5"){
+                abnormal_type = "收货信息错误";
+              }else if(params.row.ABNORMAL_TYPE == "6"){
+                abnormal_type = "联系不上";
+              }else if(params.row.ABNORMAL_TYPE == "7"){
+                abnormal_type = "货物潮湿";
+              }else if(params.row.ABNORMAL_TYPE == "8"){
+                abnormal_type = "货物太晚到达";
+              }else if(params.row.ABNORMAL_TYPE == "9"){
+                abnormal_type = "其他";
+              }
+              return ("span",[abnormal_type])
+            }
+          },
+          { title: "申请时间", key: "APPLY_DATE", align: "center" },
+          { title: "申请备注", key: "APPLY_NOTES", align: "center" },
+          { title: "审核人", key: "EXAMINENAME", align: "center" },
+          { title: "审核金额", key: "EXAMINE_MONEY", align: "center" },
+          { title: "审核时间", key: "EXAMINE_DATE", align: "center" },
+          { title: "备注", key: "EXAMINE_NOTES", align: "center" },
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+  components: {
+    popupDelete,
+    popupApproval,
+    searchBox
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.abnormalcargoexamine.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.abnormalcargoexamine.tableLoading;
+    },
+    current() {
+      return this.$store.state.abnormalcargoexamine.current;
+    },
+    page_size() {
+      return this.$store.state.abnormalcargoexamine.page_size;
+    },
+    total() {
+      return this.$store.state.abnormalcargoexamine.total;
+    },
+    pageWait() {
+      return this.$store.state.abnormalcargoexamine.pageWait;
+    }
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("abnormalcargoexamine")) {
+      this.$store.dispatch({ type: "abnormalcargoexamine/refreshData" });
+      this.$store.dispatch({ type: "selectData/getData",name: "abnormal_type" });
+      this.$store.dispatch({ type: "selectData/getData",name: "apply_status" });
+    }
+  },
+  mounted() {
+    this.table.height = getTableHeight();
+  },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "abnormalcargoexamine/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "abnormalcargoexamine/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    add() {
+      this.$refs.popupApproval.open();
+    }
+  }
+};
+</script>
+
+<style>
+</style>

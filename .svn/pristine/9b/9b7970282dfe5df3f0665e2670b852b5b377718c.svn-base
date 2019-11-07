@@ -1,0 +1,86 @@
+@charset "UTF-8";
+/* 皮肤 */
+.layout-top {
+  background-color: #333;
+  background-image: linear-gradient(to bottom, #3c3c3c 0, #222 100%);
+}
+
+.mainMenu {
+  position: relative;
+  display: inline-block;
+  font-size: 12px;
+  vertical-align: middle;
+  user-select: none;
+  z-index: 1000;
+}
+
+.mainMenu .menu {
+  position: relative;
+  display: inline-block;
+  min-width: 50px;
+  cursor: pointer;
+}
+
+.mainMenu .menu .menuTitle {
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 34px;
+  border-radius: 3px 3px 0 0;
+  z-index: 10;
+}
+
+.mainMenu .menu .menuTitle .textSpan {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.mainMenu .menu .menuTitle.cur, .mainMenu .menu .menuTitle:hover {
+  color: #5f5f5f;
+  background-color: #eee;
+}
+
+.mainMenu .menu .menuSelect {
+  display: none;
+}
+
+.mainMenu .menu .menuSelect .selectLi {
+  margin: 0;
+  line-height: normal;
+  padding: 7px 16px;
+  color: #5f5f5f;
+  white-space: nowrap;
+  list-style: none;
+  clear: both;
+  cursor: pointer;
+}
+
+.mainMenu .menu .menuSelect .selectLi.cur {
+  color: #fff;
+  background-color: #333;
+}
+
+.mainMenu .menu .menuSelect .selectLi:hover {
+  color: #fff;
+  background-color: #666;
+}
+
+.mainMenu .menu:hover .menuTitle {
+  position: relative;
+  background-color: #eee;
+  color: #5f5f5f;
+}
+
+.mainMenu .menu:hover .menuSelect {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: inline-block;
+  background-color: #eee;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  border-radius: 0 3px 3px 3px;
+  z-index: 9;
+}

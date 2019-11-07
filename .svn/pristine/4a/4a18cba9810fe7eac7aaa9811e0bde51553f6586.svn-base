@@ -1,0 +1,113 @@
+import {
+  makeSelectOptions,
+  makeTreeInfo
+} from "tool/tool.js";
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changeShowTag(state,payload) {
+    state.showTag = payload;
+  },
+  changeShowTagEdit(state, payload) {
+    state.showTagEdit = payload;
+  },
+  changeShowCheck(state, payload) {
+    state.showCheck = payload;
+  },
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  getData(state, payload) {
+    if (payload.worked == 'table') {
+      state.tableData = payload.data;
+    }
+  },
+  getByIdData(state, payload) {
+    let arr1 = [];
+    let arr2 = [];
+    let arr3 = [];
+    payload.data[0].orgtypelist.forEach((v,i) => {
+    arr1.push({value:v.id,label:v.name});
+    })
+    payload.data[0].orgareatypelist.forEach((v,i) => {
+    arr2.push({value:v.id,label:v.name});
+    })
+    payload.data[0].uporglist.forEach((v,i) => {
+    arr3.push({value:v.ORGNAME,label:v.ORGNAME});
+    })
+    state.ORGTYPE = arr1;
+    state.ORGAREA = arr2;
+    state.UPORGNAME = arr3;
+    state.byIdData = payload.data[0];
+    },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  changeTotal(state, payload) {
+    state.total = payload;
+  },
+  changeCurrent(state, payload) {
+    if (payload && payload != state.current) {
+      state.current = payload;
+    }
+  },
+  changePageSize(state, payload) {
+    if (payload && payload != state.page_size) {
+      state.page_size = payload;
+    }
+  },
+  changeSearchType(state, payload) {
+    state.searchType = payload;
+  },
+  clearSearchData(state, payload) {
+    state.searchType = false;
+    state.searchData = {
+      ORGNANME:"",
+      ORGTYPE:"",
+      UPORGNAME:"",
+      AREATYPE:"",
+      LINKNAME:"",
+      TEL:"",
+      CREATE_DATE:""
+    };
+  },
+  isNewData(state, payload) {
+    state.byIdData = {
+      QUERYNUMBER: "15",
+      DLS: "0",
+      UPDATE_DATE: "2015-10-06 20:10:28.0",
+      DELIVERYSCOPE: "1",
+      CREATE_BY: "",
+      PROJECTID: "",
+      LS: "0",
+      ORGID: "",
+      LATITUDE: "45.749134132452",
+      ORGLEVEL: "",
+      DPS: "0",
+      FILEPATH: "",
+      ORGTYPE: "",
+      UPDATE_BY: "6",
+      ORGAREA: "",
+      TEL: "",
+      UPORGNAME: "",
+      UPORGID: "0",
+      SERVE_DATE: "",
+      BUSTYPE: "",
+      FLAG: "0",
+      NOTES: "",
+      ADDRESS: "",
+      BDADDRESS: "",
+      LINKMAN: "",
+      PS: "0",
+      THROUHPUT: "",
+      CREATE_DATE: "",
+      LONGITUDE: "126.63197546999",
+      ORGNAME: "",
+      IFVALID: "0"
+    };
+  }
+};

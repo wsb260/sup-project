@@ -1,0 +1,14 @@
+import {
+  makeData,
+  makeSelectOptions
+} from "tool/tool.js";
+export default {
+  logined(state, payload) {
+    //记录登陆状态
+    state.logined = payload || false;
+  },
+  changeUserInfo(state, payload) {
+    //记录登陆状态
+    state.userInfo = payload || {};
+  }
+};

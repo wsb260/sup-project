@@ -1,0 +1,17 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/orgKey/keyQuery.json"
+  },
+  //新增
+  saveNew: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/orgKey/keywordSave.json"
+  },
+  //删除
+  delete: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orgKey/keywordDel.json"
+  },
+};

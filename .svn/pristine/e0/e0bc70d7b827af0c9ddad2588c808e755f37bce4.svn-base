@@ -1,0 +1,116 @@
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changeShowCheck(state, payload) {
+    state.showCheck = payload;
+  },
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  getData(state, payload) {
+    if (payload.worked == 'table') {
+      state.tableData = payload.data;
+    }
+
+  },
+  getByIdData(state, payload) {
+    state.byIdData = payload.data;
+  },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  changeTotal(state, payload) {
+    state.total = payload;
+  },
+  changeCurrent(state, payload) {
+    if (payload && payload != state.current) {
+      state.current = payload;
+    }
+  },
+  changePageSize(state, payload) {
+    if (payload && payload != state.page_size) {
+      state.page_size = payload;
+    }
+  },
+  changeSearchType(state, payload) {
+    state.searchType = payload;
+  },
+  clearSearchData(state, payload) {
+    state.searchType = false;
+    state.searchData = {
+      ORDERNO:"",
+      RECEIVER_NAME:"",
+      BLCNAME:"",
+      CARNO:"",
+      EDITORDATE:"",
+      SENDDATE:""
+    };
+  },
+  isNewData(state, payload) {
+    state.byIdData = {
+      ACCOUNTNO: "",
+      ACCOUNTSPRICE: "",
+      BLCID: "",
+      BLCNAME: "",
+      BLCTYPE: "",
+      CARFEE: "",
+      CARNO: "",
+      CAROWNER_NM: "",
+      CAROWNER_TEL: "",
+      CARRIERORGID: "",
+      CAR_ID: "",
+      CONFIRM_BY: "",
+      CONFIRM_DATE: "",
+      CREATE_BY: "",
+      CREATE_DATE: "",
+      EDITOR: "",
+      EDITORDATE: "",
+      EDITORNAME: "",
+      ENDORGID: "",
+      ENDORGNAME: "",
+      FLAG: "",
+      ID: "",
+      IFACCOUNT: "",
+      LATITUDE: "",
+      LONGITUDE: "",
+      MILEAGE: "",
+      NOTES: "",
+      ROUTESHEETBARCODE: "",
+      SENDDATE: "",
+      SERVID: "",
+      SERVNAME: "",
+      STARTADDRESS: "",
+      STARTORGID: "",
+      STARTORGNAME: "",
+      STATUS: "",
+      STEPS: "",
+      TOTALPRICE: "",
+      TOTALQTY: "",
+      TOTALVOLUME: "",
+      TOTALWEIGHT: "",
+      TYPE: "",
+      UPDATE_BY: "",
+      UPDATE_DATE: ""
+    };
+  },
+  getDate() {
+    let date = new Date();
+    let year = date.getFullYear()
+    let month = date.getMonth()
+    let day = date.getDate()
+    let minute = date.getMinutes()
+    let second = date.getSeconds()
+    let hour = date.getHours()
+    console.log(hour);
+    console.log(minute);
+    console.log(second);
+    console.log(year + "-" + (month+1) + "-" + day + " " + hour + ":" + minute + ":" + second)
+    let time = year + "-" + (month+1) + "-" + day + " " + hour + ":" + minute + ":" + second
+      state.tableData.CREATE_DATE= time;
+
+  }
+};

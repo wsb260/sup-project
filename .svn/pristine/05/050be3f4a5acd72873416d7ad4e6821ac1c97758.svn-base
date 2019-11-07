@@ -1,0 +1,73 @@
+import {
+  makeAjaxUrl,
+  timeText
+} from "tool/tool.js";
+import api from "controller/api/api.js";
+const apiInfo = api.OrderManagement.orderlogistics;
+export default {
+  saveNew: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.saveNew.method,
+      url: apiInfo.saveNew.url,
+      data: makeAjaxUrl({
+        crmnameId: state.orderData.crmnameId,
+        original_orderno: state.orderData.original_orderno,
+        sendername: state.orderData.sendername,
+        sendermobile: state.orderData.sendermobile,
+        receivername: state.orderData.receivername,
+        receivermobile: state.orderData.receivermobile,
+        receiver_prov: state.defaultType ? state.defaultAddress.province : rootGetters["address/getText"]({ province: state.orderData.receiver_prov }).province,
+        receiver_city: state.defaultType ? state.defaultAddress.city : rootGetters["address/getText"]({ city: state.orderData.receiver_city }).city,
+        receiver_county: state.defaultType ? state.defaultAddress.county : rootGetters["address/getText"]({ county: state.orderData.receiver_county }).county,
+        receiver_address: state.orderData.receiver_address,
+        marryId: state.orgid,//匹配机构
+        itemsvalue: state.orderData.itemsvalue,
+        totaldiversity: state.orderInfo.totalfee,
+        delivery_way_id: state.orderData.delivery_way,
+        delivery_way_nm: rootGetters["selectData/findData"]({name: "delivery_way", value: state.orderData.delivery_way}),
+        payway: state.orderData.payway,
+        itemname: state.tableData.length > 1 ? state.tableData.reduce((a,b)=>(a.itemname ? a.itemname : a)+","+b.itemname) : ( state.tableData[0] ? state.tableData[0].itemname : "" ),
+        itemnumber: state.tableData.length > 1 ? state.tableData.reduce((a,b)=>(a.itemnum ? a.itemnum : a)+","+b.itemnum) : ( state.tableData[0] ? state.tableData[0].itemnum : "" ),
+        weight: state.tableData.length > 1 ? state.tableData.reduce((a,b)=>(a.weight ? a.weight : a)+","+b.weight) : ( state.tableData[0] ? state.tableData[0].weight : "" ),
+      })
+    };
+  },
+  wares: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.wares.method,
+      url: apiInfo.wares.url,
+      data: makeAjaxUrl({
+        weis: state.tableData.length==1?state.tableData.reduce((a,b) => (a.weight || a) + b.weight).weight:state.tableData.reduce((a,b) => (a.weight || a) + b.weight), //总重量
+        itemsvalue: state.orderData.itemsvalue, //代收款
+        delivery_way_id: state.orderData.delivery_way, //配送方式
+        zone_id_prov: state.orderData.receiver_prov,
+        zone_id_city: state.orderData.receiver_city,
+        zone_id: state.orderData.receiver_county
+      })
+    };
+  },
+  address: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.address.method,
+      url: apiInfo.address.url,
+      data: makeAjaxUrl({
+        receivername: state.orderData.receivername, // 收件人名字
+        receivermobile: state.orderData.receivermobile, // 收件人电话
+        province: state.defaultType ? state.defaultAddress.province : rootGetters["address/getText"]({ province: state.orderData.receiver_prov }).province,
+        city: state.defaultType ? state.defaultAddress.city : rootGetters["address/getText"]({ city: state.orderData.receiver_city }).city,
+        county: state.defaultType ? state.defaultAddress.county : rootGetters["address/getText"]({ county: state.orderData.receiver_county }).county,
+        address:
+          (state.defaultType ? state.defaultAddress.province : rootGetters["address/getText"]({ province: state.orderData.receiver_prov }).province) +
+          (state.defaultType ? state.defaultAddress.city : rootGetters["address/getText"]({ city: state.orderData.receiver_city }).city) +
+          (state.defaultType ? state.defaultAddress.county : rootGetters["address/getText"]({ county: state.orderData.receiver_county }).county) +
+          state.orderData.receiver_address,
+      })
+    };
+  },
+  getDefault: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.getDefault.method,
+      url: apiInfo.getDefault.url
+    }
+  }
+};

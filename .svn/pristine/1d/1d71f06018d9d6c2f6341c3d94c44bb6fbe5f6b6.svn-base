@@ -1,0 +1,28 @@
+import e from "../index.js"
+import oper from "../api/basicInformation/oper"
+import org from "../api/basicInformation/org"
+import selectData from "../api/tool/selectData.js"
+
+export default {
+  host: e.base,
+  index: {},
+  login: {
+    login: {
+      method: e.type == 1 ? "POST" : "POST",
+      url: e.base + "/user/login.json"
+    },
+    loginOut: {
+      method: e.type == 1 ? "POST" : "POST",
+      url: e.base + "/user/loginOut.json"
+    }
+  },
+  mainMenu: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/mainMenuSub.json"
+  },
+  basicInformation: {
+    oper:oper,
+    org:org
+  },
+  selectData: selectData
+}

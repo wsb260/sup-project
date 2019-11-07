@@ -1,0 +1,110 @@
+<template>
+  <Modal v-model="showEdit" :mask-closable="!1" draggable :transfer="!1" :closable="!popupLoading"  width="740" className="green">
+    <p slot="header">
+      <Icon type="tableBtn fa success fa-tags"></Icon>
+      <span>模块配置</span>
+    </p>
+      <Form :model="byIdData" :label-width="100"  ref="editForm">
+        <Row>
+          <i-col span="12">
+            <FormItem label="角色名称：">
+              <i-input v-model="tableData.ROLENAME" readonly ></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="角色描述：">
+              <i-input v-model="tableData.DESCRIPTION" readonly ></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="24">
+            <Transfer :data="leftList" :titles="titles" :target-keys="targetKeys" :list-style="listStyle" :render-format="renderFormat" :operations="['向左移','向右移']" filterable  @on-change="handleChange">
+            </Transfer>
+          </i-col>
+        </Row>
+      </Form>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">取消</Button>
+    </div>
+    <popup-delete ref="popupDelete"></popup-delete>
+  </Modal>
+</template>
+<script>
+import popupDelete from "components/situation/popup-delete";
+import { eltValidators } from "tool/eltValidators.js";
+import { getTableHeight } from "tool/tool.js";
+export default {
+  data() {
+    return {
+      id:false,
+      table: {
+        height: 500,
+      },
+      tableData:{
+        ROLENAME:"",
+        DESCRIPTION:""
+      },
+      titles:['未选择角色信息列表','已选择角色信息列表'],
+      targetKeys: [],
+      listStyle: {
+        width: "300px",
+        height: "300px"
+      },
+      ruleValidate: {}
+    }
+  },
+   components: {
+    popupDelete,
+  },
+  computed: {
+    showEdit: {
+      get: function() {
+        return this.$store.state.roleandmodule.showEdit;
+      },
+      set: function(val) {
+        this.$store.commit("roleandmodule/changeShowEdit", val);
+      }
+    },
+    byIdData() {
+      return this.$store.state.roleandmodule.byIdData;
+    },
+    tableLoading() {
+      return this.$store.state.roleandmodule.tableLoading;
+    },
+    popupLoading() {
+      return this.$store.state.roleandmodule.popupLoading;
+    },
+    leftList() {
+      return this.$store.state.roleandmodule.leftList;
+    }
+  },
+  mounted(){
+      this.$store.dispatch({ type: "roleandmodule/refreshData" });
+  },
+  methods: {
+    handleChange(newTargetKeys) {
+      this.targetKeys = newTargetKeys;
+    },
+    renderFormat(item) {
+      return item.label + " - " + item.description;
+    },
+    open(id,ROLENAME,DESCRIPTION) {
+      this.id = id || false;
+      this.tableData.ROLENAME = ROLENAME;
+      this.tableData.DESCRIPTION = DESCRIPTION;
+      this.$store.dispatch({type:"roleandmodule/getByIdData",id:this.id})
+      this.$store.commit("roleandmodule/changeShowEdit", true);
+    },
+    onOk() {
+      this.$store.state.roleandmodule.byIdData.MODULEID = this.targetKeys;
+      this.$store.state.roleandmodule.byIdData.ORGID = this.id;
+      this.$store.dispatch({ type: "roleandmodule/saveData", id: this.id });
+    },
+    onCancel() {
+      this.$store.commit("roleandmodule/changeShowEdit", false);
+    },
+  }
+}
+</script>

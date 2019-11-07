@@ -1,0 +1,94 @@
+import e from "../index.js"
+import oper from "./basicInformation/oper"
+import org from "./basicInformation/org"
+import orgKey from "./basicInformation/orgKey"
+import ordercmc from "./basicInformation/ordercmc"
+import deliveryresource from "./basicInformation/deliveryresource"
+import ordercrm from "./basicInformation/ordercrm"
+import orderplan from "./DispatchingManagement/orderplan"
+import delStock from "./DispatchingManagement/delStock"
+import orderassign from "./DispatchingManagement/orderassign"
+import orderquery from "./OrderManagement/orderquery"
+import orderproductquery from "./OrderManagement/orderproductquery"
+import orderproductadd from "./OrderManagement/orderproductadd"
+import transhipment from "./OrderManagement/transhipment"
+import ordermenu from "./system/ordermenu"
+import role from "./system/role"
+import roleandmodule from "./system/roleandmodule"
+import operandrole from "./system/operandrole"
+import abnormalcargohandle from "./exceptionManagement/abnormalcargohandle"
+import abnormalcargoexamine from "./exceptionManagement/abnormalcargoexamine"
+import statisticsorder from "./statisticalManagement/statisticsorder"
+import driveraccount from "./statisticalManagement/driveraccount"
+import dailyShipments from "./statisticalManagement/dailyShipments"
+import businessquantity from "./statisticalManagement/businessquantity"
+import servicestatistics from "./statisticalManagement/servicestatistics"
+import clientshipment from "./statisticalManagement/clientshipment"
+import deliverymanage from "./system/deliverymanage"
+
+
+import settle from "./statisticalManagement/settle"
+
+import selectData from "./tool/selectData.js"
+
+
+export default {
+  host: e.base,
+  index: {},
+  login: {
+    login: {
+      method: e.type == 1 ? "POST" : "POST",
+      url: e.base + "/user/login.json"
+    },
+    loginOut: {
+      method: e.type == 1 ? "POST" : "POST",
+      url: e.base + "/user/loginOut.json"
+    }
+  },
+  mainMenu: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/mainMenuSub.json"
+  },
+  basicInformation: {
+    oper:oper,
+    org:org,
+    orgKey:orgKey,
+    deliveryresource:deliveryresource,
+    ordercrm:ordercrm,
+    ordercmc:ordercmc,
+    deliveryresource:deliveryresource
+  },
+  DispatchingManagement: {
+    orderplan: orderplan,
+    delStock:delStock,
+    orderassign:orderassign
+  },
+  system:{
+    ordermenu:ordermenu,
+    role:role,
+    roleandmodule:roleandmodule,
+    operandrole:operandrole,
+    deliverymanage:deliverymanage
+  },
+  OrderManagement: {
+    orderquery:orderquery,
+    orderproductquery:orderproductquery,
+    orderproductadd:orderproductadd,
+    transhipment:transhipment
+  },
+  exceptionManagement:{
+    abnormalcargohandle:abnormalcargohandle,
+    abnormalcargoexamine:abnormalcargoexamine,
+  },
+  statisticalManagement:{
+  statisticsorder:statisticsorder,
+  driveraccount:driveraccount,
+  settle:settle,
+  dailyShipments:dailyShipments,
+  businessquantity:businessquantity,
+  servicestatistics:servicestatistics,
+  clientshipment:clientshipment,
+
+  },
+  selectData: selectData
+}

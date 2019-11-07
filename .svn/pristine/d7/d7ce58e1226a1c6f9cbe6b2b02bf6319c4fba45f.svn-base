@@ -1,0 +1,73 @@
+import {
+  makeSelectOptions,
+  makeTreeInfo
+} from "tool/tool.js";
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changeShowCheck(state, payload) {
+    state.showCheck = payload;
+  },
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  getData(state, payload) {
+    if (payload.data[0]) {
+      payload.data[0].onAdd = true;
+      payload.data[0].onEdit = false;
+      payload.data[0].onDel = false;
+      // if(!payload.data[0].hasChildren){
+      //   payload.data[0].onAdd = false;
+      // }
+    }
+    recursionData(payload.data);
+    //树型图处理
+    // var newData = [];
+    // payload.data.forEach((v,i) => {
+    //   v.children = v.children || [];
+    //   if( v.MODULELEVEL != 0 ){
+    //     payload.data.forEach((v2,i2) => {
+    //       if( v2.MODULEID == v.UPMODULEID ){
+    //         v2.children = v2.children || [];
+    //         v2.children.push(v);
+    //       }
+    //     });
+    //   }
+    // });
+    // newData = payload.data.filter(item => item.MODULELEVEL == 0);
+    // state.treeData = newData;
+    state.treeData = payload.data;
+  },
+  getByIdData(state, payload) {
+    payload.result[0].MODULELEVEL == "0" ? payload.result[0].UPMODULENAME = "菜单根节点" : "" 
+    state.byIdData = payload.result[0];
+    // state.byIdData.UPMODULENAME = payload.UPMODULENAME;
+
+  },
+  isNewData(state, payload) {
+    state.byIdData = {
+      id: payload ? payload.id : "",
+      UPMODULEID: payload ? payload.UPMODULEID : "",
+      UPMODULENAME: payload ? payload.UPMODULENAME : "",
+      FLAG: payload ? payload.FLAG : "",
+      MODULENAME: "",
+      URL: "",
+      ICON_FILE_ID: "",
+      MODULELEVEL: ""
+    };
+  },
+};
+
+function recursionData(info) {
+  info.forEach((v, i) => {
+    v.onAdd = v.MODULELEVEL == 0;
+    if (v.children && v.children.length > 0) {
+      v.onDel = false;
+      recursionData(v.children);
+    }
+  });
+}

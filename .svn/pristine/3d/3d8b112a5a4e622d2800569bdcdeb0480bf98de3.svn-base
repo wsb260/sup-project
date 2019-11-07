@@ -1,0 +1,6 @@
+import Vue from 'vue'
+import eltForm from"./eltForm"
+import eltInput from"./eltInput"
+
+Vue.use(eltForm)
+//Vue.use(eltInput)

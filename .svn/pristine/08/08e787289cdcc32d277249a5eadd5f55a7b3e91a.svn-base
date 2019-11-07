@@ -1,0 +1,54 @@
+<template>
+  <div class="popupBody">
+    <Row>
+      <i-col span="12">
+        <Form-item label="首重：" prop="FIRST_WEIGHT">
+          <i-input class="afterText" data-afterText="kg以内" v-model="byIdData.FIRST_WEIGHT" placeholder="请填写首重"></i-input>
+        </Form-item>
+      </i-col>
+      <i-col span="12">
+        <Form-item label="首费：" prop="FIRST_WEIGHT_PRICE">
+          <i-input class="afterText" data-afterText="元" v-model="byIdData.FIRST_WEIGHT_PRICE" placeholder="请填写首费"></i-input>
+        </Form-item>
+      </i-col>
+    </Row>
+    <Row>
+      <i-col span="12">
+        <Form-item label="续重：" prop="CONTINUE_WEIGHT">
+          <i-input class="afterText" data-afterText="kg" v-model="byIdData.CONTINUE_WEIGHT" placeholder="请填写续重"></i-input>
+        </Form-item>
+      </i-col>
+      <i-col span="12">
+        <Form-item label="续费：" prop="CONTINUE_WEIGHT_PRICE">
+          <i-input class="afterText" data-afterText="元" v-model="byIdData.CONTINUE_WEIGHT_PRICE" placeholder="请填写续费"></i-input>
+        </Form-item>
+      </i-col>
+    </Row>
+    <Form-item label="支持货到付款：" prop="IS_SUPPORT_COD">
+      <RadioGroup v-model="byIdData.IS_SUPPORT_COD">
+        <Radio label="Y"><span>是</span></Radio>
+        <Radio label="N"><span>否</span></Radio>
+      </RadioGroup>
+    </Form-item>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+
+    };
+  },
+  props: {
+    byIdData: Object
+  },
+  computed: {
+    // byIdData() {
+    //   return this.$store.state.deliverymanage.byIdData;
+    // }
+  },
+  methods: {
+
+  }
+}
+</script>

@@ -1,0 +1,129 @@
+<template>
+  <Dropdown trigger="custom" :transfer="!1" placement="bottom-start" :visible="visible">
+    <Button type="info" @click="changeVisible(true)">
+      <Icon type="ios-search" /> 精确查询
+    </Button>
+    <DropdownMenu slot="list" class="searchBox">
+      <Form :model="searchData" :label-width="130" ref="editForm" class="forms">
+        <Row >
+          <i-col span="12">
+            <Form-item label="客户名称：">
+              <i-input v-model="searchData.crmname"  clearable placeholder="请输入客户名称"></i-input>
+            </Form-item>
+          </i-col>
+          <i-col span="12">
+            <Form-item label="客户地址（市区）：">
+              <i-input v-model="searchData.crmaddresss"  clearable placeholder="请输入客户地址"></i-input>
+            </Form-item>
+          </i-col>
+        </Row>
+        <Row>
+           <i-col span="12">
+             <FormItem label="客户等级：">
+              <Select v-model="searchData.crmgrade" clearable placeholder="请选择客户等级">
+                <Option v-for="(item,i) in CRMGRADE" :value="item.value" :key="i">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+             <FormItem label="行业类型：">
+              <Select v-model="searchData.crmtrade" clearable placeholder="请选择行业类型">
+                <Option v-for="(item,i) in CRMTRADE" :value="item.value" :key="i">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+           <i-col span="12">
+             <FormItem label="客户状态：">
+              <Select v-model="searchData.crmstatus" clearable placeholder="请选择客户状态">
+                <Option v-for="(item,i) in CRMSTATUS" :value="item.value" :key="i">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+             <FormItem label="客户类别：">
+              <Select v-model="searchData.crmtype" clearable placeholder="请选择客户类别">
+                <Option v-for="(item,i) in CRMTYPE" :value="item.value" :key="i">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+           <i-col span="12">
+             <FormItem label="客户来源：">
+              <Select v-model="searchData.crmsource" clearable placeholder="请选择客户来源">
+                <Option v-for="(item,i) in CRMSOURCE" :value="item.value" :key="i">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+        </Row>
+      </Form>
+      <div style="text-align:center;">
+        <Button type="info" @click="search">
+          <Icon type="md-search" /> 查询
+        </Button>
+        <Button type="success" @click="reset">
+          <span class="fa fa-refresh"></span> 重置
+        </Button>
+        <Button type="error" @click="changeVisible(false)">
+          <span class="fa fa-remove"></span> 关闭
+        </Button>
+      </div>
+    </DropdownMenu>
+  </Dropdown>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+    CRMTRADE() {
+      return this.$store.state.selectData.crmtrade;
+    },
+    CRMSTATUS() {
+      return this.$store.state.selectData.crmstatus;
+    },
+    CRMTYPE() {
+      return this.$store.state.selectData.crmtype;
+    },
+    CRMGRADE() {
+      return this.$store.state.selectData.crmgrade;
+    },
+    CRMSOURCE() {
+      return this.$store.state.selectData.crmsource;
+    },
+    searchData() {
+      return this.$store.state.ordercrm.searchData;
+    },
+    searchType() {
+      return this.$store.state.ordercrm.searchType;
+    }
+  },
+  deactivated() {
+    this.visible = false;  
+  },
+  methods: {
+    search() {
+      this.$store.dispatch({ type: 'ordercrm/refreshData', searchType: true, current: 1 });
+      this.visible = false;
+    },
+    reset() {
+      this.$store.commit("ordercrm/clearSearchData");
+      this.$store.dispatch({ type: 'ordercrm/refreshData', searchType: false, current: 1 });
+    },
+    changeVisible(type) {
+      this.visible = type;
+    }
+  }
+};
+</script>
+<style>
+.forms{
+margin:0 10px 0 0;
+}
+</style>
+

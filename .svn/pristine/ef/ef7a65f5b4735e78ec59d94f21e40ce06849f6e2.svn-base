@@ -1,0 +1,101 @@
+<template>
+  <Dropdown trigger="custom" :transfer="!1" placement="bottom-start" :visible="visible">
+    <Button type="info" @click="changeVisible(true)">
+      <Icon type="ios-search" /> 精确查询
+    </Button>
+    <DropdownMenu slot="list" class="searchBox">
+      <Form :model="searchData" :label-width="90" ref="editForm" class="forms">
+        <Row >
+          <i-col span="12">
+            <Form-item label="转运单号：">
+              <i-input v-model="searchData.tranorderno"  clearable placeholder="请输入转运单号"></i-input>
+            </Form-item>
+          </i-col>
+         <i-col span="12">
+             <FormItem label="物流公司：">
+              <Select v-model="searchData.trancompanyid" clearable placeholder="请选择物流公司">
+                <Option v-for="(item,i) in TRANCOMPANYID" :value="item.value" :key="i">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+            <Form-item label="转运始时间：">
+              <DatePicker type="date" v-model="searchData.starttrandate"  clearable placeholder="请选择转运始时间" ></DatePicker>
+            </Form-item>
+          </i-col>
+           <i-col span="12">
+            <Form-item label="转运末时间：">
+              <DatePicker type="date" v-model="searchData.endtrandate"  clearable placeholder="请选择转运末时间" ></DatePicker>
+            </Form-item>
+          </i-col>
+        </Row>
+        <Row>
+           <i-col span="12">
+             <FormItem label="状态：">
+              <Select v-model="searchData.transtatus" clearable placeholder="请选择状态">
+                <Option v-for="(item,i) in TRANSTATUS" :value="item.value" :key="i">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+        </Row>
+      </Form>
+      <div style="text-align:center;">
+        <Button type="info" @click="search">
+          <Icon type="md-search" /> 查询
+        </Button>
+        <Button type="success" @click="reset">
+          <span class="fa fa-refresh"></span> 重置
+        </Button>
+        <Button type="error" @click="changeVisible(false)">
+          <span class="fa fa-remove"></span> 关闭
+        </Button>
+      </div>
+    </DropdownMenu>
+  </Dropdown>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+   TRANCOMPANYID() {
+      return this.$store.state.selectData.trancompanyid;
+    },
+    TRANSTATUS() {
+      return this.$store.state.selectData.transtatus;
+    },
+    searchData() {
+      return this.$store.state.transhipmentquery.searchData;
+    },
+    searchType() {
+      return this.$store.state.transhipmentquery.searchType;
+    }
+  },
+  deactivated() {
+    this.visible = false;
+  },
+  methods: {
+    search() {
+      this.$store.dispatch({ type: 'transhipmentquery/refreshData', searchType: true, current: 1 });
+      this.visible = false;
+    },
+    reset() {
+      this.$store.commit("transhipmentquery/clearSearchData");
+      this.$store.dispatch({ type: 'transhipmentquery/refreshData', searchType: false, current: 1 });
+    },
+    changeVisible(type) {
+      this.visible = type;
+    }
+  }
+};
+</script>
+<style>
+.forms{
+margin:0 10px 0 0;
+}
+</style>

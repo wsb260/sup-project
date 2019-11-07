@@ -1,0 +1,501 @@
+const keepAliveOption = {
+  aa: true
+};
+export default [
+  // 机构管理
+  {
+    name: 'org',
+    path: '/org',
+    meta: {
+      title: "机构管理",
+      keepAlive: keepAliveOption.org,
+      allPath: ["org"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/basicInformation/org/index.vue')
+  },
+  // 人员管理
+  {
+    name: 'oper',
+    path: '/oper',
+    meta: {
+      title: "人员管理",
+      keepAlive: keepAliveOption.oper,
+      allPath: ["oper"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/basicInformation/oper/index.vue')
+  },
+  //承运商管理
+  {
+    name: 'ordercmc',
+    path: '/ordercmc',
+    meta: {
+      title: "承运商管理",
+      keepAlive: keepAliveOption.ordercmc,
+      allPath: ["ordercmc"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/basicInformation/ordercmc/index.vue')
+  },
+  // 车辆管理
+  {
+    name: 'deliveryresource',
+    path: '/deliveryresource',
+    meta: {
+      title: "车辆管理",
+      keepAlive: keepAliveOption.deliveryresource,
+      allPath: ["deliveryresource"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/basicInformation/deliveryresource/index.vue')
+  },
+  // 客户管理
+  {
+    name: 'ordercrm',
+    path: '/ordercrm',
+    meta: {
+      title: "客户管理",
+      keepAlive: keepAliveOption.ordercrm,
+      allPath: ["ordercrm"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/basicInformation/ordercrm/index.vue')
+  },
+  // 任务配载
+  //菜单管理
+  {
+    name: 'ordermenu',
+    path: '/ordermenu',
+    meta: {
+      title: "菜单管理",
+      keepAlive: keepAliveOption.ordermenu,
+      allPath: ["ordermenu"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/system/ordermenu/index.vue')
+  },
+  // 角色管理
+  {
+    name: 'role',
+    path: '/role',
+    meta: {
+      title: "角色管理",
+      keepAlive: keepAliveOption.role,
+      allPath: ["role"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/system/role/index.vue')
+  },
+  //权限管理
+  {
+    name: 'roleandmodule',
+    path: '/roleandmodule',
+    meta: {
+      title: "权限管理",
+      keepAlive: keepAliveOption.roleandmodule,
+      allPath: ["roleandmodule"],
+      edit: { path: [], type: true },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/system/roleandmodule/index.vue')
+  },
+  //人员角色配置
+  {
+    name: 'operandrole',
+    path: '/operandrole',
+    meta: {
+      title: "人员角色配置",
+      keepAlive: keepAliveOption.operandrole,
+      allPath: ["operandrole"],
+      edit: { path: [], type: true },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/system/operandrole/index.vue')
+  },
+  //配送管理
+  {
+    name: 'deliverymanage',
+    path: '/deliverymanage',
+    meta: {
+      title: "配送管理",
+      keepAlive: keepAliveOption.deliverymanage,
+      allPath: ["deliverymanage"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/system/deliverymanage/index.vue')
+  },
+  //派送单查询
+  {
+    name: 'orderplan',
+    path: '/orderplan',
+    meta: {
+      title: "任务配载",
+      keepAlive: keepAliveOption.orderplan,
+      allPath: ["orderplan"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/DispatchingManagement/orderplan/index.vue')
+  },
+  //投递任务配载
+  {
+    name: 'delStock',
+    path: '/delStock',
+    meta: {
+      title: "投递任务配载",
+      keepAlive: keepAliveOption.delStock,
+      allPath: ["delStock"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/DispatchingManagement/delStock/index.vue')
+  },
+  //分派
+  {
+    name: 'orderassign',
+    path: '/orderassign',
+    meta: {
+      title: "分派",
+      keepAlive: keepAliveOption.orderassign,
+      allPath: ["orderassign"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/DispatchingManagement/orderassign/index.vue')
+  },
+  //指挥调度中心
+  {
+    name: 'controlmap',
+    path: '/controlmap',
+    meta: {
+      title: "指挥调度中心",
+      keepAlive: keepAliveOption.controlmap,
+      allPath: ["controlmap"],
+      edit: { path: [], type: false },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: false },
+      popupLoading: { path: [], type: false }
+    },
+    component: () => import ('page/DispatchingManagement/controlmap/index.vue')
+  },
+  //轨迹回放
+  {
+    name: 'pathplayback',
+    path: '/pathplayback',
+    meta: {
+      title: "轨迹回放",
+      keepAlive: keepAliveOption.pathplayback,
+      allPath: ["pathplayback"],
+      edit: { path: [], type: false },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: false },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/DispatchingManagement/pathplayback/index.vue')
+  },
+  //任务单查询
+  {
+    name: 'orderquery',
+    path: '/orderquery',
+    meta: {
+      title: "任务单查询",
+      keepAlive: keepAliveOption.orderquery,
+      allPath: ["orderquery"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/OrderManagement/orderquery/index.vue')
+  },
+  //订单查询
+  {
+    name: 'orderproductquery',
+    path: '/orderproductquery',
+    meta: {
+      title: "订单查询",
+      keepAlive: keepAliveOption.orderproductquery,
+      allPath: ["orderproductquery"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/OrderManagement/orderproductquery/index.vue')
+  },
+  //物流订单受理
+  {
+    name: 'orderlogistics',
+    path: '/orderlogistics',
+    meta: {
+      title: "物流订单受理",
+      keepAlive: keepAliveOption.orderlogistics,
+      allPath: ["orderlogistics"],
+      edit: { path: [], type: true },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: false }
+    },
+    component: () => import ('page/OrderManagement/orderlogistics/index.vue')
+  },
+  //订单导入
+  {
+    name: 'orderentry',
+    path: '/orderentry',
+    meta: {
+      title: "订单导入",
+      keepAlive: keepAliveOption.orderentry,
+      allPath: ["orderentry"],
+      edit: { path: [], type: false },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: false },
+      popupLoading: { path: [], type: false }
+    },
+    component: () => import ('page/OrderManagement/orderentry/index.vue')
+  },
+  //电话下单录入
+  {
+    name: 'orderteladd',
+    path: '/orderteladd',
+    meta: {
+      title: "电话下单录入",
+      keepAlive: keepAliveOption.orderteladd,
+      allPath: ["orderteladd"],
+      edit: { path: [], type: true },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/OrderManagement/orderteladd/index.vue')
+  },
+  //订单信息补录
+  {
+    name: 'orderproductadd',
+    path: '/orderproductadd',
+    meta: {
+      title: "订单信息补录",
+      keepAlive: keepAliveOption.orderproductadd,
+      allPath: ["orderproductadd"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/OrderManagement/orderproductadd/index.vue')
+  },
+  //转单管理
+  {
+    name: 'transhipment',
+    path: '/transhipment',
+    meta: {
+      title: "转单管理",
+      keepAlive: keepAliveOption.transhipment,
+      allPath: ["transhipment"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/OrderManagement/transhipment/index.vue')
+  },
+  //转单查询
+  {
+    name: 'transhipmentquery',
+    path: '/transhipmentquery',
+    meta: {
+      title: "转单查询",
+      keepAlive: keepAliveOption.transhipmentquery,
+      allPath: ["transhipmentquery"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/OrderManagement/transhipmentquery/index.vue')
+  },
+  //匹配机构管理
+  {
+    name: 'orgmarry',
+    path: '/orgmarry',
+    meta: {
+      title: "匹配机构管理",
+      keepAlive: keepAliveOption.orgmarry,
+      allPath: ["orgmarry"],
+      edit: { path: [], type: false },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/OrderManagement/orgmarry/index.vue')
+  },
+  //异常货物申请
+  {
+    name: 'abnormalcargohandle',
+    path: '/abnormalcargohandle',
+    meta: {
+      title: "异常货物申请",
+      keepAlive: keepAliveOption.abnormalcargohandle,
+      allPath: ["abnormalcargohandle"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/exceptionManagement/abnormalcargohandle/index.vue')
+  },
+ //异常货物审批
+  {
+    name: 'abnormalcargoexamine',
+    path: '/abnormalcargoexamine',
+    meta: {
+      title: "异常货物审批",
+      keepAlive: keepAliveOption.abnormalcargoexamine,
+      allPath: ["abnormalcargoexamine"],
+      edit: { path: [], type: true },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/exceptionManagement/abnormalcargoexamine/index.vue')
+  },
+  //清分统计
+  {
+    name: 'statisticsorder',
+    path: '/statisticsorder',
+    meta: {
+      title: "清分统计",
+      keepAlive: keepAliveOption.statisticsorder,
+      allPath: ["statisticsorder"],
+      edit: { path: [], type: false },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/statisticalManagement/statisticsorder/index.vue')
+  },
+  //对账管理
+  {
+    name: 'driveraccount',
+    path: '/driveraccount',
+    meta: {
+      title: "对账管理",
+      keepAlive: keepAliveOption.driveraccount,
+      allPath: ["driveraccount","settle"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/statisticalManagement/driveraccount/index.vue'),
+  },
+  //对账单查询
+  {
+    name: 'settle',
+    path: '/settle',
+    meta: {
+      title: "对账单查询",
+      keepAlive: keepAliveOption.settle,
+      allPath: ["settle"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/statisticalManagement/settle/index.vue')
+  },
+  //日发货量统计
+  {
+    name: 'dailyShipments',
+    path: '/dailyShipments',
+    meta: {
+      title: "日发货量统计",
+      keepAlive: keepAliveOption.dailyShipments,
+      allPath: ["dailyShipments"],
+      edit: { path: [], type: false },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/statisticalManagement/dailyShipments/index.vue')
+  },
+  //业务量统计
+  {
+    name: 'businessquantity',
+    path: '/businessquantity',
+    meta: {
+      title: "业务量统计",
+      keepAlive: keepAliveOption.businessquantity,
+      allPath: ["businessquantity"],
+      edit: { path: [], type: false },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/statisticalManagement/businessquantity/index.vue')
+  },
+  //运营统计
+  {
+    name: 'servicestatistics',
+    path: '/servicestatistics',
+    meta: {
+      title: "运营统计",
+      keepAlive: keepAliveOption.servicestatistics,
+      allPath: ["servicestatistics"],
+      edit: { path: [], type: false },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/statisticalManagement/servicestatistics/index.vue')
+  },
+  //客户发货量排名统计
+  {
+    name: 'clientshipment',
+    path: '/clientshipment',
+    meta: {
+      title: "客户发货量排名统计",
+      keepAlive: keepAliveOption.clientshipment,
+      allPath: ["clientshipment"],
+      edit: { path: [], type: false },
+      check: { path: [], type: false },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/statisticalManagement/clientshipment/index.vue')
+  },
+];

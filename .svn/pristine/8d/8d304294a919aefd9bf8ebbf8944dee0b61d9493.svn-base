@@ -1,0 +1,114 @@
+<template>
+  <Modal
+    v-model="showEdit"
+    :mask-closable="!1"
+    draggable
+    :transfer="!1"
+    :class-name="id ? 'yellow' : 'green'"
+    width="600"
+  >
+    <p slot="header">
+      <span class="fa fa-edit" v-if="id"></span>
+      <Icon type="ios-add-circle-outline" v-else></Icon>
+      <span>{{(id ? '修改' : '新增') + '指定地区运费'}}</span>
+    </p>
+    <div class="popupBody">
+      <Form :model="byIdData" :label-width="120" :rules="ruleValidate" ref="editForm" >
+        <Tabs type="card" v-model="showTab" >
+          <TabPane label="费用" name="name1" >
+            <cost ref="cost" :byIdData="byIdData"></cost>
+          </TabPane>
+          <TabPane label="运送地点" name="name2" >
+            <area-p ref="area"></area-p>
+          </TabPane>
+        </Tabs>
+      </Form>
+    </div>
+    <div slot="footer">
+      <Button type="success" @click="onOk">保存</Button>
+      <Button type="error" @click="onCancel">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+import { eltValidators } from "tool/eltValidators.js";
+import cost from "./popupEditTabs/cost";
+//area是保留关键字好像
+import areaP from "./popupEdit2Tabs/area";
+export default {
+  data() {
+    return {
+      showTab: "name1",
+      id: false,
+      ruleValidate: {
+        FIRST_WEIGHT: [
+          { required: true, message: "请填写首重！" },
+          { validator: eltValidators, notEmpty: true, rules: [{ name: "number", message: "", info: "" }]}
+        ],
+        FIRST_WEIGHT_PRICE: [
+          { required: true, message: "请填写首费！" },
+          { validator: eltValidators, notEmpty: true, rules: [{ name: "number", message: "", info: "" }]}
+        ],
+        CONTINUE_WEIGHT:[
+          { required: true, message: "请填写续重！" },
+          { validator: eltValidators, notEmpty: true, rules: [{ name: "number", message: "", info: "" }]}
+        ],
+        CONTINUE_WEIGHT_PRICE: [
+          { required: true, message: "请填写续费！" },
+          { validator: eltValidators, notEmpty: true, rules: [{ name: "number", message: "", info: "" }]}
+        ]
+      }
+    }
+  },
+  components: {
+    cost,
+    areaP
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.deliverymanage.freight.byIdData;
+    },
+    showEdit: {
+      get: function() {
+        return this.$store.state.deliverymanage.freight.showEdit;
+      },
+      set: function(val) {
+        this.changeShowEdit(val);
+      }
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    open(id) {
+      this.id = id || false;
+      this.result();
+      this.$refs.area.clear();
+      if (this.id) {
+        this.$store.commit({ type: "deliverymanage/freight/getByIdData", id: this.id });
+      } else {
+        this.$store.commit({ type: "deliverymanage/freight/isNewData" });
+      }
+      this.changeShowEdit(true);
+    },
+    result() {
+      this.$refs["editForm"].resetFields();
+    },
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.commit({ type: "deliverymanage/freight/saveTableData", data: this.$refs.area.getInfo() });
+          this.changeShowEdit(false);
+        }
+      });
+    },
+    onCancel() {
+      this.changeShowEdit(false);
+    },
+    changeShowEdit(val) {
+      this.$store.commit("deliverymanage/freight/changeShowEdit", val);
+      this.$store.commit("deliverymanage/changePopupLoading", val);
+    }
+  }
+};
+</script>

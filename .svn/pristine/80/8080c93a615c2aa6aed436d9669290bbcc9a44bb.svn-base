@@ -1,0 +1,65 @@
+<template>
+  <div class="eltCheck">
+    <span v-for="v in textList" :key="v">
+      {{v}}
+    </span>
+  </div>
+</template>
+
+<script>
+export default {
+  data: function() {
+    return {
+      
+    };
+  },
+  props: {
+    eltCheck: [Array, String],
+    all: Array
+  },
+  computed: {
+    textList() {
+      var list = [];
+      if( this.all && this.all.length > 0 && this.eltCheck && this.eltCheck.length > 0 ){
+        var _this = this;
+        this.eltCheck.forEach((v,i) => {
+          _this.all.eltForEach((v2,i2) => {
+            if( v == v2.id ){
+              list.push(v2.label);
+              return true;
+            }
+          });
+        });
+      }
+      return list;
+    }
+  },
+  created() {
+    
+  },
+  mounted(){
+    
+  }
+};
+</script>
+
+<style lang="scss">
+.eltCheck {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  span {
+    border: 1px solid #57a3f3;
+    background-color: #f5fbff;
+    height: auto;
+    display: inline-block;
+    margin: 2px 4px 2px 2px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    vertical-align: middle;
+    color: #495060;
+  }
+}
+.eltCheck:hover {
+  border-color: #57a3f3;
+}
+</style>

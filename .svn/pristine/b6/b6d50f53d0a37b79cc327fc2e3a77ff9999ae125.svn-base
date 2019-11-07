@@ -1,0 +1,14 @@
+{
+  "role":{
+    "CREATE_BY": "1",
+    "CREATE_DATE": "2018-12-17",
+    "DESCRIPTION": "测试",
+    "FLAG": "0",
+    "NOTES": "测试",
+    "ROLEID": "38",
+    "ROLENAME": "测试",
+    "UPDATE_BY": "1",
+    "UPDATE_DATE": "2018-12-17"
+  },
+  "success":"true"
+}

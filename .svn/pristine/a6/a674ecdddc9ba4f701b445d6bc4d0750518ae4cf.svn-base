@@ -1,0 +1,96 @@
+<template>
+  <Dropdown trigger="custom" :transfer="!1" placement="bottom-start" :visible="visible">
+    <Button type="info" @click="changeVisible(true)">
+      <Icon type="ios-search" /> 精确查询
+    </Button>
+    <DropdownMenu slot="list" class="searchBox">
+      <Form :model="searchData" :label-width="90" ref="editForm" class="forms">
+        <Row >
+          <i-col span="12">
+            <Form-item label="对账单号：">
+              <i-input v-model="searchData.accountid"  clearable placeholder="请填写对账单号"></i-input>
+            </Form-item>
+          </i-col>
+          <i-col span="12">
+            <Form-item label="承接机构：">
+              <i-input v-model="searchData.servname"  clearable placeholder="请填写承接机构"></i-input>
+            </Form-item>
+          </i-col>
+        </Row>
+        <Row >
+          <i-col span="12">
+            <FormItem label="制单始时间：">
+              <DatePicker type="date" v-model="searchData.starteditdate"  clearable placeholder="请选择制单始时间" ></DatePicker>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="制单末时间：">
+              <DatePicker type="date" v-model="searchData.endeditdate"  clearable placeholder="请选择制单末时间" ></DatePicker>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row >
+          <i-col span="12">
+            <FormItem label="结算始时间：">
+              <DatePicker type="date" v-model="searchData.startsettledate"  clearable placeholder="请选择制单始时间" ></DatePicker>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="结算末时间：">
+              <DatePicker type="date" v-model="searchData.endsettledate"  clearable placeholder="请选择制单末时间" ></DatePicker>
+            </FormItem>
+          </i-col>
+        </Row>
+      </Form>
+      <div style="text-align:center;">
+        <Button type="info" @click="search">
+          <Icon type="md-search" /> 查询
+        </Button>
+        <Button type="success" @click="reset">
+          <span class="fa fa-refresh"></span> 重置
+        </Button>
+        <Button type="error" @click="changeVisible(false)">
+          <span class="fa fa-remove"></span> 关闭
+        </Button>
+      </div>
+    </DropdownMenu>
+  </Dropdown>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+    searchData() {
+      return this.$store.state.settle.searchData;
+    },
+    searchType() {
+      return this.$store.state.settle.searchType;
+    }
+  },
+  deactivated() {
+    this.visible = false;
+  },
+  methods: {
+    search() {
+      this.$store.dispatch({ type: 'settle/refreshData', searchType: true, current: 1 });
+      this.visible = false;
+    },
+    reset() {
+      this.$store.commit("settle/clearSearchData");
+      this.$store.dispatch({ type: 'settle/refreshData', searchType: false, current: 1 });
+    },
+    changeVisible(type) {
+      this.visible = type;
+    }
+  }
+};
+</script>
+<style>
+.forms{
+margin:0 10px 0 0;
+}
+</style>

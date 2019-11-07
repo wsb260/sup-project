@@ -1,0 +1,41 @@
+<template>
+  <div class="mainMenu h100">
+    <div class="menu h100" v-for="(v,i) in mainMenu" :key="i" v-if="v.name != 'home'">
+      <div :class="(v.cur ? 'cur':'') + ' menuTitle h100'">
+        <i :class ="v.icon" style="font-size:20px;vertical-align:middle;display:inline-block;" ></i>
+        <div class="textSpan">
+          {{v.title}}
+        </div>
+      </div>
+      <div class="menuSelect" v-if="v.children && v.children.length > 0">
+        <ul>
+          <li v-for="(k,j) in v.children" :key="j" @click="goToPage(k)" :class="(k.cur?'cur':'') + ' selectLi'">
+            <i :class= "k.icon" style="vertical-align:middle;display:inline-block;font-size:14px;"></i> <div style="vertical-align:middle;display:inline-block">{{k.title}}</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import "./mainMenu.scss";
+export default {
+  data() {
+    return {};
+  },
+  computed: {
+    mainMenu() {
+      // return this.$store.state.menu.mainMenu;
+      return this.$store.state.mainMenu.mainMenu;
+    }
+  },
+  methods: {
+    goToPage(obj) {
+      // this.$store.commit("menu/clickMenu", obj.name);
+      this.$store.commit("mainMenu/clickMenu", obj.name);
+      this.$store.commit("pageTab/addTabs", obj.name);
+      this.$router.push(obj.describe);
+    }
+  }
+};
+</script>

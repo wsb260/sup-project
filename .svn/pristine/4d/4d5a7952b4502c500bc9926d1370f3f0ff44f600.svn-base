@@ -1,0 +1,28 @@
+import {
+  makeAjaxUrl,
+  makeGetAjaxUrl,
+  forEachToJson
+} from "tool/tool.js";
+import api from "controller/api/api.js";
+const apiInfo = api.statisticalManagement.clientshipment;
+export default {
+  getData: (state, getters, rootState, rootGetters) => (option) => {
+    var ajaxData = {
+      "rows": option && option.page_size ? option.page_size : (state.page_size || 50),
+      "page": option && option.current ? option.current : (state.current || 1)
+    };
+    if( state.searchType ){
+      var quickSearch = {};
+      forEachToJson(state.quickSearchData, (key, v) => {
+        if( v != "" || typeof(v) == "number" ){
+          quickSearch[key] = v;
+        }
+      });
+    }
+    return {
+      method: apiInfo.getData.method,
+      url: apiInfo.getData.url + makeGetAjaxUrl(quickSearch),
+      data: makeAjaxUrl(ajaxData)
+    };
+  }
+};

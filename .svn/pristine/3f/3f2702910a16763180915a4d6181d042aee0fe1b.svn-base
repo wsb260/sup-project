@@ -1,0 +1,14 @@
+{
+  "success": "true",
+  "result": [
+    {
+      "UPMODULEID": 3301685,
+      "ICON_FILE_ID": "fa fa-film",
+      "MODULENAME": "监控管理",
+      "SYS_TREE_NODE_POSITION": 0,
+      "URL": "page/modules/system",
+      "FLAG": "0"
+    }
+  ],
+  "UPMODULENAME": "系统管理"
+}

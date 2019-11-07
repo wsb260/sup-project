@@ -1,0 +1,64 @@
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  getData(state, payload) {
+    if (payload.worked == 'table') {
+      state.tableData = payload.data;
+    }
+  },
+  gettableById( state, payload){
+    state.tableByIdData = state.tableData.filter(item => item.ROLEID == payload)[0];
+  },
+  getByIdData(state, payload) {
+    payload.data.forEach((v,i) => {
+      v.key = v.MODULEID;
+      v.label = v.MODULENAME;
+      v.description = v.DESCRIPTION;
+    });
+    state.leftList = payload.data;
+    this.commit('roleandmodule/gettableById',payload.id);
+    state.byIdData.ROLENAME = state.tableByIdData.ROLENAME;
+    state.byIdData.DESCRIPTION = state.tableByIdData.DESCRIPTION;
+  },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  changeTotal(state, payload) {
+    state.total = payload;
+  },
+  changeCurrent(state, payload) {
+    if (payload && payload != state.current) {
+      state.current = payload;
+    }
+  },
+  changePageSize(state, payload) {
+    if (payload && payload != state.page_size) {
+      state.page_size = payload;
+    }
+  },
+  changeSearchType(state, payload) {
+    state.searchType = payload;
+  },
+  clearSearchData(state, payload) {
+    state.searchType = false;
+    state.searchData = {
+      rolename:"",
+      description:""
+    };
+    state.quickSearchData = {
+      rolename:""
+    }
+  },
+  isNewData(state,payload) {
+    state.byIdData = {
+
+    }
+  }
+};

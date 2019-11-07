@@ -1,0 +1,125 @@
+<template>
+  <div class="pageTab">
+    <div class="leftBox iconBox" @click="changeLeft(200)">
+      <Icon type="ios-arrow-back" />
+    </div>
+    <div class="centerBox" ref="centerBox">
+      <ul :style="{left: left + 'px'}" ref="centerUl">
+        <li :ref="item.name" v-for="( item , i ) in tabs" :key="i" :class="item.cur ? 'cur' : ''" @click="changePage(item, $event)">
+          <span class="title">{{item.title}}</span>
+          <span class="ivu-icon ivu-icon-ios-close" @click="delPage(item,i)" v-if="item.name!='home'"></span>
+        </li>
+      </ul>
+    </div>
+    <div class="rightBox iconBox" @click="changeLeft(-200)">
+      <Icon type="ios-arrow-forward" />
+    </div>
+    <div class="closeBox iconBox">
+      <Dropdown :transfer="Boolean(0)" @on-click="closeTags" placement="bottom-end">
+        <Icon :size="16" type="ios-close-circle-outline" />
+        <DropdownMenu slot="list">
+          <DropdownItem name="close-all">关闭所有</DropdownItem>
+          <DropdownItem name="close-others">关闭其他</DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    </div>
+  </div>
+</template>
+
+<script>
+import "./pageTab.scss"
+export default {
+  data() {
+    return {
+      left: 3
+    };
+  },
+  props: {
+    
+  },
+  created() {
+    
+  },
+  computed: {
+    tabs() {
+      return this.$store.state.pageTab.tabs;
+    }
+  },
+  watch: {
+    tabs: {
+      handler: function(val, oldVal) {
+        this.$nextTick(() => {
+          var l = 3;
+          var thisTab = 0;
+          val.eltForEach((v,i) => {
+            thisTab = v.cur ? this.$refs[v.name][0].offsetWidth : 0;
+            if( v.cur ){
+              return v.cur;
+            }
+            l -= this.$refs[v.name][0].offsetWidth;
+            if( i < val.length - 2 ){
+              l -= 3;
+            }
+          });
+          if( this.left <= l ){
+            //当前标签额在左侧没显示全
+            this.left = l;
+          }else if( this.left > (l - thisTab + document.getElementsByClassName("centerBox")[0].offsetWidth) ){
+            //当前标签在右边没显示全
+            this.left = l - thisTab + document.getElementsByClassName("centerBox")[0].offsetWidth - 9;
+          }
+          this.left = this.left > 3 ? 3 : this.left;
+        });
+      },
+      deep: true
+    }
+  },
+  mounted() {
+    //this.$store.commit('pageTab/reset');
+  },
+  methods: {
+    changePage(item,e) {
+      if( !e || e.target.className != "ivu-icon ivu-icon-ios-close" ){
+        this.$store.commit('pageTab/changeTabs',item.name);
+        this.$store.commit("mainMenu/clickMenu", item.name);
+        this.$router.push(item.path);
+      }
+    },
+    delPage(item,i) {
+      this.$store.commit('pageTab/removeTabs',item);
+      if( item.cur ){
+        this.changePage(this.tabs[i+1] || this.tabs[i-1] || this.tabs[0]);
+      }
+    },
+    changeLeft(width) {
+      var maxLeft = this.$refs.centerBox.offsetWidth - 6 - this.$refs.centerUl.offsetWidth;
+      if( maxLeft < 0 ){
+        this.left = Math.min( (Math.max((this.left + width),maxLeft)) ,3);
+      }else{
+        this.left = 3;
+      }
+    },
+    closeTags(type) {
+      if( type == 'close-all' ){
+        this.$store.commit('pageTab/reset');
+        this.$store.commit('mainMenu/clearAll');
+        this.$router.push('/');
+      }else{
+        //close-others
+        this.$store.commit('pageTab/closeOther');
+      }
+    }
+  }
+};
+</script>
+
+<style lang="scss">
+.closeBox .ivu-dropdown{
+  width: 100%;
+  .ivu-select-dropdown{
+    width: auto;
+    margin-right: 4px;
+  }
+}
+</style>
+

@@ -1,0 +1,155 @@
+<template>
+  <Modal v-model="showArea" :mask-closable="!1" draggable :transfer="!1" @on-visible-change="visibleChange" :closable="!popupLoading" :class-name="(id ? 'yellow' : 'green') + (popupLoading ? ' popupLoading' : '')" width="850">
+    <p slot="header">
+      <span class="fa fa-edit" v-if="id"></span>
+      <Icon type="ios-add-circle-outline" v-else></Icon>
+      <span>{{(id ? '添加' : '编辑') + '指定地区运费'}}</span>
+    </p>
+    <Form :model="byIdData" :label-width="100" :rules="ruleValidate" ref="editForm" >
+      <Row>
+        <i-col span="12">
+          <FormItem label="首重：" prop="FIRST_WEIGHT">
+            <i-input v-model="byIdData.FIRST_WEIGHT" placeholder="请填写首重"></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="首费：" prop="FIRST_WEIGHT_PRICE">
+            <i-input v-model="byIdData.FIRST_WEIGHT_PRICE" placeholder="请填写首费"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="12">
+          <FormItem label="续重：" prop="CONTINUE_WEIGHT">
+            <i-input v-model="byIdData.CONTINUE_WEIGHT" placeholder="请填写续重"></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="续费：" prop="CONTINUE_WEIGHT_PRICE">
+            <i-input v-model="byIdData.CONTINUE_WEIGHT_PRICE" placeholder="请填写续费"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="12">
+          <Form-item label="支持货到付款：" prop="IS_SUPPORT_COD">
+            <RadioGroup v-model="byIdData.IS_SUPPORT_COD">
+              <Radio label="Y">
+                <span>是</span>
+              </Radio>
+              <Radio label="N">
+                <span>否</span>
+              </Radio>
+            </RadioGroup>
+          </Form-item>
+        </i-col>
+      </Row>
+    </Form>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+import { eltValidators } from "tool/eltValidators.js";
+export default {
+  data() {
+    return {
+      id: false,
+      ruleValidate: {
+        FIRST_WEIGHT: [
+          { required: true, message: "请填写首重！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "number", message: "", info: "" }
+            ]
+          }
+        ],
+        FIRST_WEIGHT_PRICE: [
+          { required: true, message: "请填写首费！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "number", message: "", info: "" }
+            ]
+          }
+        ],
+        CONTINUE_WEIGHT:[
+          { required: true, message: "请填写续重！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "number", message: "", info: "" }
+            ]
+          }
+        ],
+        CONTINUE_WEIGHT_PRICE: [
+          { required: true, message: "请填写续费！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "number", message: "", info: "" }
+            ]
+          }
+        ],
+        IS_SUPPORT_COD:[{ required: true, message:"请选择是否支持货到付款"}]
+      }
+    }
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.deliverymanage.byIdData;
+    },
+    DELIVERY_LOGISTICS_COMPANY_ID() {
+      return this.$store.state.selectData.DELIVERY_LOGISTICS_COMPANY_ID;
+    },
+    showArea: {
+      get: function() {
+        return this.$store.state.deliverymanage.showArea;
+      },
+      set: function(val) {
+        this.$store.commit("deliverymanage/changeShowArea", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.deliverymanage.popupLoading;
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    open(id) {
+      this.id = id || false;
+      this.result();
+      if (this.id) {
+        this.$store.dispatch({ type: "deliverymanage/getByIdData", id: this.id });
+      } else {
+        this.$store.commit({ type: "deliverymanage/isNewData" });
+      }
+      this.$store.commit("deliverymanage/changeShowArea", true);
+    },
+    result() {
+      this.$refs["editForm"].resetFields();
+    },
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch({ type: "deliverymanage/saveData", id: this.id });
+        }
+      });
+    },
+    onCancel() {
+      this.$store.commit("deliverymanage/changeShowArea", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("deliverymanage/changePageWait", val);
+    }
+  }
+};
+</script>

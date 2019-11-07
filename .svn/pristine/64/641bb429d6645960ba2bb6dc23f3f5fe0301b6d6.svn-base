@@ -1,0 +1,87 @@
+<template>
+  <Modal v-model="show" :mask-closable="!1" className="red" width="300">
+    <p slot="header">
+      <Icon type="ios-add-circle-outline"></Icon>
+      <span>拒收</span>
+    </p>
+    <Form :model="rejectionData" :label-width="100" :rules="ruleValidate" ref="editForm">
+      <Row>
+        <i-col span="24">
+          <FormItem label="拒收原因：" prop="rejectionTypes">
+            <Select v-model="rejectionData.rejectionTypes" placeholder="请选择拒收原因">
+              <Option v-for="item in rejectionTypes" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="24">
+          <FormItem label="请详细描述：" prop="remarkString">
+            <i-input type="textarea" :row=8 v-model="rejectionData.remarkString" placeholder="请详细描述拒绝理由"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+
+    </Form>
+    <div slot="footer">
+      <Button type="success" @click="onOk">确定</Button>
+      <Button type="error" @click="onCancel">取消</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      id: false,
+      show: false,
+      type: "",
+      ruleValidate: {
+        rejectionTypes: [{ required: true, message: "请选择拒收原因！" }],
+        remarkString: [{ required: true, message: "请输入拒收理由！" }]
+      }
+    };
+  },
+  mounted() {},
+  computed: {
+    rejectionData() {
+      return this.$store.state.delStock.rejectionData;
+    },
+    rejectionTypes() {
+      return this.$store.state.selectData.rejectionTypes;
+    }
+  },
+  methods: {
+    open(id, type) {
+      this.id = id;
+      this.type = type;
+      this.$refs["editForm"].validate(valid => {
+        if (this.type == "二次分派") {
+          this.show = false;
+          this.$store.commit({
+            type: "notice/noticeError",
+            title: "二次分派不可以进行拒收操作"
+          });
+        } else {
+          this.show = true;
+        }
+      });
+      this.$store.commit("delStock/clearrejData");
+    },
+    onOk() {
+      this.$store.dispatch({
+        type: "delStock/rejectionData",
+        id: this.id,
+        data: this.rejectionData
+      });
+      this.show = false;
+      this.$store.commit("delStock/clearrejData");
+      this.$store.dispatch("delStock/refreshData");
+    },
+    onCancel() {
+      this.show = false;
+    }
+  }
+};
+</script>
+

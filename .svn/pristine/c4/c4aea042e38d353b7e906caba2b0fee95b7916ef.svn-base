@@ -1,0 +1,30 @@
+import mutations from './mutations.js';
+import actions from './actions.js';
+import getters from './getters.js';
+export default {
+  namespaced: true,
+  state: {
+    popupLoading: false,
+    showEdit: false,
+    pageWait: false,
+    byIdData: {},
+    tableData:[],
+    tableLoading:false,
+    total: 0,
+    current: 1,
+    page_size: 50,
+    searchType: false,
+    searchData: {
+      applyname: "",
+      abnormal_type: "",
+      apply_start_data:"",
+      apply_end_data:""
+    },
+    quickSearchData:{
+      orderno:""
+    }
+  },
+  mutations: mutations,//mutations END
+  actions: actions,//action END
+  getters: getters
+};

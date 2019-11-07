@@ -1,0 +1,111 @@
+<template>
+  <div class="popupBody" id="freight">
+    <div class="layout-page-tool">
+      <Button type="success" @click="add">
+        <Icon type="md-add" />指定地区设置运费
+      </Button>
+    </div>
+    <div class="layout-page-content">
+      <Table border stripe :loading="tableLoading" :height="table.height" :columns="table.columns" :data="tableData" :highlight-row="true">
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page :total="tableData.length" :current="current" :page-size="page_size" :page-size-opts="page.page_sizepts" @on-change="page_change" @on-page-size-change="page_size_change" show-sizer show-elevator show-total size="small">
+      </Page>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      table: {
+        height: 300,
+        columns: [
+          { type: "index", width: 50, align: "center"},
+          { title: "运送到", key: "ZONENMS", align: "center" },
+          { title: "首重(kg)", key: "FIRST_WEIGHT", align: "center", width: 70 },
+          { title: "首费(元)", key: "FIRST_WEIGHT_PRICE", align: "center", width: 70 },
+          { title: "续重(kg)", key: "CONTINUE_WEIGHT", align: "center", width: 70 },
+          { title: "续费(元)", key: "CONTINUE_WEIGHT_PRICE", align: "center", width: 70 },
+          { title: "货到付款", key: "IS_SUPPORT_COD", align: "center", width: 70,
+            render: (h,params) => {
+              return h("div",[h("span",params.row.IS_SUPPORT_COD == "Y" ? "是": "否")])
+            }
+          },
+          {
+            title: "操作",
+            key: "action",
+            width: 70,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "编辑内容" },
+                  class: "tableBtn fa warning fa-edit",
+                  on: {
+                    click: () => {
+                      this.$emit('p3_open', params.row.id);
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "删除" },
+                  class: "tableBtn fa error fa-remove",
+                  on: {
+                    click: () => {
+                      this.$emit('p3_del', params.row.id);
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+  computed: {
+    tableLoading() {
+      return this.$store.state.deliverymanage.freight.tableLoading;
+    },
+    tableData() {
+      return this.$store.state.deliverymanage.freight.tableData;
+    },
+    current() {
+      return this.$store.state.deliverymanage.freight.current;
+    },
+    page_size() {
+      return this.$store.state.deliverymanage.freight.page_size;
+    },
+    total() {
+      return this.$store.state.deliverymanage.freight.total;
+    }
+  },
+  methods: {
+    add(id){
+      this.$emit('p3_open');
+    },
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "deliverymanage/freight/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "deliverymanage/freight/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    }
+  }
+}
+</script>

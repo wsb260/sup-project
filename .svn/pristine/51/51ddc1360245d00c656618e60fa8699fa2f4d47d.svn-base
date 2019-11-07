@@ -1,0 +1,164 @@
+<template>
+  <Modal v-model="showRole" :mask-closable="!1" draggable :transfer="!1" :closable="!popupLoading" @on-visible-change="visibleChange" width="840">
+    <div class="layout-page-tool">
+      <Button type="success" @click="add">
+        <Icon type="md-add" /> 模块配置
+      </Button>
+    </div>
+    <Form  :label-width="100" ref="editForm">
+      <Table border stripe :loading="tableLoading" :columns="table.columns" :data="tableData" :highlight-row="true">
+      </Table>
+    </Form>
+    <div class="layout-page-page">
+      <Page :total="total" :current="current" :page-size="page_size" :page-size-opts="page.page_sizepts" @on-change="page_change" @on-page-size-change="page_size_change" show-sizer show-elevator show-total size="small">
+      </Page>
+    </div>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">取消</Button>
+    </div>
+    <popup-delete ref="popupDelete"></popup-delete>
+    <popup-roleEdit ref="popupRoleEdit"></popup-roleEdit>
+  </Modal>
+</template>
+<script>
+import popupDelete from "components/situation/popup-delete";
+import popupRoleEdit from "./popup-roleEdit";
+import { eltValidators } from "tool/eltValidators.js";
+import { getTableHeight } from "tool/tool.js";
+export default {
+  data() {
+    return {
+      id:false,
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center"},
+          { title: "角色名称", key: "ROLENAME", align: "center" },
+          { title: "角色描述", key: "DESCRIPTION", align: "center"},
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "删除" },
+                  class: "tableBtn fa error fa-remove",
+                  on: {
+                    click: () => {
+                      this.$refs.popupDelete.open(params.row.keyword, "roleConfiguration/delete");
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+   components: {
+    popupDelete,
+    popupRoleEdit
+  },
+  computed: {
+    showRole: {
+
+      get: function() {
+        return this.$store.state.roleConfiguration.showRole;
+      },
+      set: function(val) {
+        this.$store.commit("roleConfiguration/changeshowRole", val);
+      }
+    },
+    byIdData() {
+      return this.$store.state.roleConfiguration.byIdData;
+    },
+    popupLoading() {
+      return this.$store.state.roleConfiguration.popupLoading;
+    },
+    tableData() {
+      return this.$store.state.roleConfiguration.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.roleConfiguration.tableLoading;
+    },
+    current() {
+      return this.$store.state.roleConfiguration.current;
+    },
+    page_size() {
+      return this.$store.state.roleConfiguration.page_size;
+    },
+    total() {
+      return this.$store.state.roleConfiguration.total;
+    },
+    pageWait() {
+      return this.$store.state.roleConfiguration.pageWait;
+    }
+  },
+  // activated() {
+  //   if (this.$store.getters["pageTab/pageInTab"]("roleConfiguration")) {
+  //     this.$store.dispatch({ type: "roleConfiguration/refreshData" });
+  //   }
+  // },
+   mounted() {
+    this.table.height = getTableHeight();
+    console.log(this.tableData)
+   },
+  methods: {
+    open() {
+      this.result();
+      this.$store.commit("roleConfiguration/changeshowRole", true);
+    },
+    result() {
+      this.$refs["editForm"].resetFields();
+    },
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "roleConfiguration/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "roleConfiguration/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    add() {
+      this.$refs.popupRoleEdit.open();
+    },
+    pollings() {
+      this.visible = false;
+    },
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch({ type: "roleConfiguration/saveData", id: this.id });
+        }
+      });
+    },
+    onCancel() {
+      this.$store.commit("roleConfiguration/changeshowRole", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("roleConfiguration/changePageWait", val);
+    }
+  }
+}
+</script>
+<style scoped>
+.isEdit {
+  background: #ccc;
+}
+</style>

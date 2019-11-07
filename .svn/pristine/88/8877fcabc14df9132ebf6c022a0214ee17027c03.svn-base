@@ -1,0 +1,242 @@
+<template>
+  <div
+    :class="'pageBody' + (pageWait ? ' wait' : '')"
+    id="orderquery"
+  >
+    <div class="layout-page-tool">
+      <Button
+        type="warning"
+        @click="upload"
+      >
+        <Icon type="md-add" /> 导出
+      </Button>
+      <div class="quickSearch" v-if="showQuickSearch">
+        <span class="title">订单号：</span>
+        <span class="info">
+          <i-input v-model="quickSearchData.clientorderno" placeholder="订单号" clearable></i-input>
+        </span>
+        <Button type="info" @click="search()">
+          <Icon type="ios-search" /> 快速查询
+        </Button>
+      </div>
+      <search-box ref="searchBox"></search-box>
+    </div>
+    <div class="layout-page-content">
+      <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      >
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page
+        :total="total"
+        :current="current"
+        :page-size="page_size"
+        :page-size-opts="page.page_sizepts"
+        @on-change="page_change"
+        @on-page-size-change="page_size_change"
+        show-sizer
+        show-elevator
+        show-total
+        size="small"
+      >
+      </Page>
+    </div>
+    <popup-delete ref="popupDelete"></popup-delete>
+    <popup-upload ref="popupUpload" :option="option"></popup-upload>
+    <popup-end ref="popupEnd"></popup-end>
+  </div>
+</template>
+<script>
+import searchBox from "./components/searchBox.vue";
+import popupEnd from "./components/popup-end"
+import popupDelete from "components/situation/popup-delete";
+import popupUpload from "components/situation/popup-upload";
+import api from "controller/api/api.js";
+import { getTableHeight } from "tool/tool.js";
+export default {
+  name: "orderquery",
+  data() {
+    return {
+      showQuickSearch: false,
+      delModel: {},
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "订单号", key: "TXLOGISTICID", align: "center" },
+          { title: "状态", key: "STATUS", align: "center",
+            render: (h,params) => {
+              let status = ""
+              if(params.row.STATUS == "10"){
+                status = "计划";
+              }else if(params.row.STATUS == "20"){
+                status = "可执行";
+              }else if(params.row.STATUS == "30"){
+                status = "可分派";
+              }else if(params.row.STATUS == "40"){
+                status = "已分派";
+              }else if(params.row.STATUS == "50"){
+                status = "已完成";
+              }else{
+                status = "";
+              }
+              return h("span",status);
+            }
+          },
+          { title: "任务单类型", key: "TYPE", align: "center",
+            render: (h,params) => {
+              let type = "";
+              if(params.row.TYPE == "10"){
+                type = "直配";
+              }else if(params.row.TYPE == "20"){
+                type = "二次分派";
+              }else{
+                type = "";
+              }
+              return h("span",type);
+            }
+          },
+          { title: "历经机构", key: "STARTORGNAME", align: "center" },
+          { title: "收件人地址", key: "RECEIVER_ADDRESS", align: "center" },
+          { title: "支付方式", key: "PAYWAY", align: "center",
+            render: (h,params) =>{
+              let payway = "";
+              if(params.row.PAYWAY == "1"){
+                payway = "货到付款";
+              }else if(params.row.PAYWAY == "2"){
+                payway = "现金支付";
+              }else{
+                payway = "";
+              }
+              return h("span",payway);
+            }
+          },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "结束" },
+                  class: "tableBtn fa warning fa-stop",
+                  on: {
+                    click: () => {
+                      this.$refs.popupEnd.open(params.row.ID,"orderquery/delete");
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "删除" },
+                  class: (params.row.STATUS==10||params.row.STATUS==20)?"tableBtn fa error fa-remove":"tableBtn fa gray fa-remove ",
+                  on: {
+                    click: () => {
+                      (params.row.STATUS==10||params.row.STATUS==20)?this.$refs.popupDelete.open(
+                        params.row.ID,
+                        "orderquery/delete"
+                      ):""
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      },
+       option: {
+        downLoadUrl: api.OrderManagement.orderquery.filedown.url,
+        upLoadUrl: api.OrderManagement.orderquery.fileUpLoad.url,
+        pageWait: "orderquery/changePageWait",
+        text: []
+      }
+    };
+  },
+  components: {
+    popupDelete,
+    searchBox,
+    popupEnd,
+    popupUpload
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.orderquery.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.orderquery.tableLoading;
+    },
+    current() {
+      return this.$store.state.orderquery.current;
+    },
+    page_size() {
+      return this.$store.state.orderquery.page_size;
+    },
+    total() {
+      return this.$store.state.orderquery.total;
+    },
+    pageWait() {
+      return this.$store.state.orderquery.pageWait;
+    },
+    quickSearchData(){
+      return this.$store.state.orderquery.quickSearchData;
+    }
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("orderquery")) {
+      this.$store.dispatch({ type: "orderquery/refreshData" });
+      this.$store.dispatch({ type: "selectData/getData",name:"status_orderquery" });
+    }
+  },
+  mounted() {
+    this.$store.commit("orderquery/clearSearchData");
+    this.showQuickSearch = true;
+    this.table.height = getTableHeight();
+  },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "orderquery/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "orderquery/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    search() {
+      this.$store.dispatch({
+        type: 'orderquery/refreshData',
+        searchType: this.quickSearchData.clientorderno,
+        current: 1
+      });
+    },
+    upload() {
+      this.$refs.popupUpload.open();
+    }
+  }
+};
+</script>
+
+<style >
+.gray{
+  color:#ccc;
+  cursor: default;
+}
+</style>

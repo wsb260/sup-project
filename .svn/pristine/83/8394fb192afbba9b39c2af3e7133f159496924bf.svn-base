@@ -1,0 +1,11 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/dailyShipments/getList.json"
+  },
+  fileUpLoad: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/dailyShipments/delete.json"
+  },
+};

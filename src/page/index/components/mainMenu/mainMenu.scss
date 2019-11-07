@@ -1,0 +1,92 @@
+$bacColor: #48abff;
+$hoverBacColor: rgba(255, 255, 255, 0.2);
+$selectBacColor: #666;
+$textColor: #fff;
+$hoverTextColor: #f40;
+$selectTextColor: #fff;
+
+/* 皮肤 */
+$bacColor: #333;
+$hoverBacColor: rgba(255, 255, 255, 0.2);
+$selectBacColor: #666;
+$textColor: #fff;
+$hoverTextColor: #f40;
+$selectTextColor: #fff;
+
+.mainMenu {
+  position: relative;
+  display: inline-block;
+  font-size: 12px;
+  vertical-align: middle;
+  user-select: none;
+  z-index: 1000;
+  .menu {
+    position: relative;
+    display: inline-block;
+    min-width: 50px;
+    cursor: pointer;
+    .menuTitle {
+      width: 100%;
+      // padding: 10px 10px 0;
+      padding: 0 10px;
+      box-sizing: border-box;
+      color: $textColor;
+      text-align: center;
+      white-space: nowrap;
+      line-height: 34px;
+      border-radius: 3px 3px 0 0;
+      z-index: 10;
+      .textSpan {
+        //padding-top: 8px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      &.cur,
+      &:hover {
+        color: $hoverTextColor;
+        background-color: $hoverBacColor;
+      }
+    }
+    .menuSelect {
+      display: none;
+      .selectLi {
+        margin: 0;
+        line-height: normal;
+        padding: 7px 16px;
+        color: $hoverTextColor;
+        white-space: nowrap;
+        list-style: none;
+        clear: both;
+        cursor: pointer;
+        &.cur {
+          color: $textColor;
+          background-color: $bacColor;
+        }
+        &:hover {
+          color: $selectTextColor;
+          background-color: $selectBacColor;
+        }
+      }
+    }
+    &:hover {
+      .menuTitle {
+        position: relative;
+        background-color: $hoverBacColor;
+        color: $hoverTextColor;
+        // box-shadow: 0 -2px 1px rgba(0,0,0,0.4);
+        // border-radius: 3px 3px 0 0;
+        // z-index: 10;
+      }
+      .menuSelect {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        display: inline-block;
+        background-color: $hoverBacColor;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+        border-radius: 0 3px 3px 3px;
+        z-index: 9;
+      }
+    }
+  }
+}

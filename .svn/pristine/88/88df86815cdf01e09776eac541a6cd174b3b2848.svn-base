@@ -1,0 +1,97 @@
+<template>
+  <div class="loginBox">
+    <div class="container">
+      <div class="login">
+        <img class="logeImage" src="../../assets/images/logo.png" />
+        <div class="header">{{projectOption.title}}</div>
+        <div class="bodyer">
+          <Form ref="formData" :model="formData" :rules="formDataValidate">
+            <h3 class="form-title"> </h3>
+            <FormItem prop="phone">
+              <i-input v-model="formData.phone" :maxlength="11" placeholder="请输入账号" @keyup.enter.native="login" icon="ios-person-outline"></i-input>
+            </FormItem>
+            <FormItem prop="password">
+              <i-input v-model="formData.password" :maxlength="16" type="password" placeholder="请输入密码" @keyup.enter.native="login" icon="ios-lock-outline"></i-input>
+            </FormItem>
+            <FormItem prop="coding">
+              <i-input v-model="formData.coding" :maxlength="4" type="text" placeholder="请输入验证码" @keyup.enter.native="login" class="codingText" icon="ios-keypad-outline"></i-input>
+              <span class="codingImgBox" @click="changeCodingImg">
+                <img :src="'/validationCodeServlet?'+loginNumber">
+              </span>
+            </FormItem>
+          </Form>
+          <Button type="primary" class="login-btn" long :loading="loading" @click="login">
+            <span v-if="!loading" class="loginBtn">登<span class="n">空</span>录</span>
+            <span v-else class="load">登录中...</span>
+          </Button>
+        </div>
+        <div class="footer">{{projectOption.projectText}}</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import "./login.scss";
+import projectOption from "controller/projectOption.js";
+import { makeAjaxUrl } from "tool/tool.js";
+
+export default {
+  data() {
+    return {
+      projectOption: projectOption,
+      loginNumber: 0,
+      loading: false,
+      formData: {
+        phone: "",
+        password: "",
+        coding: ""
+      },
+      formDataValidate: {
+        phone: [{ required: true, message: "请输入账号" }],
+        password: [{ required: true, message: "请输入密码" }],
+        coding: [{ required: true, message: "请输入验证码" }]
+      },
+      userinfo: {
+        id: 1
+      }
+    };
+  },
+  created() {
+    this.changeCodingImg();
+  },
+  methods: {
+    login() {
+      this.$refs.formData.validate(valid => {
+        if (valid) {
+          this.$store.dispatch({
+            type: "login/login",
+            data: {
+              phone: this.formData.phone,
+              password: this.formData.password,
+              coding: this.formData.coding
+            }
+          })
+          .then(type => {
+            if (type) {
+              this.changeCodingImg();
+              this.$Message.success("登录成功");
+              this.formData = { phone: "", password: "", coding: "" };
+              this.$refs["formData"].resetFields();
+              this.$router.push("/");
+            } else {
+              this.$Message.error("登录失败");
+              this.changeCodingImg();
+            }
+          });
+        } else {
+          this.$Message.error("请重新输入");
+        }
+      });
+    },
+    changeCodingImg() {
+      this.loginNumber++;
+    }
+  }
+};
+</script>

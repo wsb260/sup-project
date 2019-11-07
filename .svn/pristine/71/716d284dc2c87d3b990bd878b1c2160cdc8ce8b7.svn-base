@@ -1,0 +1,17 @@
+//1测试环境，2生产环境，3 219测试环境
+var type = 2;
+var allOptions = {
+  base: () => {
+    switch(type) {
+      case 1: return "/static/testAjax";
+      case 2: return "";
+      case 3: return "http://192.168.18.219/bigdata";
+    }
+  },
+  imgUrl: type == 1 ? "" : "/ytscms" //ytscms
+}
+export default {
+  type: type,
+  base: allOptions.base(),
+  imgUrl: allOptions.imgUrl
+}

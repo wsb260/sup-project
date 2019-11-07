@@ -1,0 +1,116 @@
+import mutations from './mutations.js';
+import actions from './actions.js';
+import getters from './getters.js';
+export default {
+  namespaced: true,
+  state: {
+    ORGNAME: [],
+    CAROWNER_NM: [],
+    CARDTYPE: [],
+    CARTYPE: [],
+    ORGTYPE: [],
+    UPORGNAME: [],
+    ORGAREA: [],
+    CRMTRADE: [],
+    DELIVERY_LOGISTICS_COMPANY_ID:[
+      { value: "1", label: "易同送" },
+      { value: "2", label: "顺丰快递" },
+      { value: "3", label: "申通快递" },
+      { value: "4", label: "EMS快递" },
+      { value: "5", label: "圆通快递" },
+      { value: "6", label: "汇通快递" },
+      { value: "7", label: "UPS快递" },
+      { value: "8", label: "宅急送" },
+      { value: "9", label: "韵达快递" },
+      { value: "10", label: "天天快递" },
+      { value: "11", label: "中通快递" },
+      { value: "12", label: "联邦快递" },
+      { value: "13", label: "中国邮政" },
+      { value: "14", label: "优速快递" },
+      { value: "15", label: "国内小包" }
+    ],
+    ordercmc: [],
+    SETTLEMENT:[
+      { value: "10", label: "包年" },
+      { value: "20", label: "包月" }
+    ],
+    BLCTYPE:[
+      { value: "10", label: "普通车辆隶属" },
+      { value: "20", label: "社会车辆隶属" }
+    ],
+    BLCSTATUS:[
+      { value: "10", label: "正常" },
+      { value: "20", label: "冻结" },
+      { value: "30", label: "注销" }
+    ],
+    status_flag: [
+      { value: "1", label: "未获取" },
+      { value: "2", label: "获取成功" },
+      { value: "3", label: "获取失败" }
+    ],
+    ABNORMAL_TYPE:[
+      { value: "1", label: "整单货物丢失" },
+      { value: "2", label: "部分货物丢失" },
+      { value: "3", label: "整单货物损坏" },
+      { value: "4", label: "部分货物损坏" },
+      { value: "5", label: "收货人信息错误" },
+      { value: "6", label: "联系不上" },
+      { value: "7", label: "货物潮湿" },
+      { value: "8", label: "货物太晚到达" },
+      { value: "9", label: "其他" },
+
+
+    ],
+    OPERTYPE: [
+      { value: "10", label: "管理员" },
+      { value: "20", label: "操作员" },
+      { value: "30", label: "揽收员" },
+      { value: "40", label: "配送员" },
+      { value: "50", label: "揽配员" }
+    ],
+    BLCNAME: [
+      { value: "0", label: "社会承运商" },
+      { value: "1", label: "普通承运商" }
+    ],
+    CRMSTATUS: [
+      {value: "10", label: "潜在客户"},
+      {value: "20", label: "意向客户"},
+      {value: "30", label: "成交客户"},
+      {value: "40", label: "失败客户"},
+      {value: "50", label: "已流失客户"},
+    ],
+    CRMSTAYSS: [
+      {value: "10", label: "潜在客户"},
+      {value: "20", label: "意向客户"},
+      {value: "30", label: "成交客户"},
+      {value: "40", label: "失败客户"}
+    ],
+    CRMTYPE: [
+      {value: "10", label: "普通用户"},
+      {value: "20", label: "VIP用户"}
+    ],
+    TYPE: [
+      {value: "10", label: "直配"},
+      {value: "20", label: "二次分派"}
+    ],
+    CRMGRADE: [
+      {value: "10", label: "钻石级"},
+      {value: "20", label: "黄金级"},
+      {value: "30", label: "普通级"}
+    ],
+    CRMSOURCE: [
+      {value: "10", label: "注册用户"},
+      {value: "20", label: "手工导入"},
+      {value: "30", label: "客户介绍"}
+    ],
+    STATUS: [
+      {value: "10", label: "可分派"},
+      {value: "20", label: "已分派"},
+      {value: "30", label: "已发货"},
+      {value: "40", label: "完成"},
+    ],
+  },
+  mutations: mutations,//mutations END
+  actions: actions,//action END
+  getters: getters
+};

@@ -1,0 +1,25 @@
+{
+  "result": [{
+    "EDITORGTYPE": "",
+    "UPDATE_DATE": "2018-12-20 14:30:37.0",
+    "SETTLENAME": "",
+    "UPDATE_BY": "83",
+    "EDITORNAME": "xjgly",
+    "EDITORGID": "2",
+    "BLC_NM": "普通承运商",
+    "FLAG": "0",
+    "BLC_ID": "8",
+    "SETTLEID": "",
+    "NOTES": "",
+    "CREATE_DATE": "2018-12-20 14:30:37.0",
+    "EDITOR": "83",
+    "SETTLEDATE": "",
+    "EDITORGNAME": "小金网点",
+    "CREATE_BY": "83",
+    "SETTLEFLAG": "10",
+    "ID": "10",
+    "CARFEE": ""
+  }],
+  "total": 1,
+  "totalPage": 1
+}

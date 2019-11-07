@@ -1,0 +1,96 @@
+<template>
+  <ul class="eltTree-ul" :ref="'eltTree-ul'+ids" v-if="treeData.length > 0">
+    <li :class="'eltTree-li' + (info.children.length > 0 ? ' hasChildren' : '') + (info.open ? ' open' : ' close')" v-for="(info, i) in treeData" :key="i">
+      <span class="arrow">
+        <Icon type="ios-arrow-down" v-if="info.children.length > 0" @click="arrow(i)" />
+      </span>
+      <span class="check" v-if="check"></span>
+      <span class="icon" v-if="icon"></span>
+      <span :class="'name' + ( onChange ? ' hasActions' : '' )" @click="onChange(info) || (() =>{})">{{info[name||"name"]}}</span>
+      <span class="actionBtnBox">
+        <span
+          :class="'actionBtn add' + ((onAdd && (info.onAdd == undefined || info.onAdd)) ? ' success' : ' noBtn')"
+          @click="onAdd && (info.onAdd == undefined || info.onAdd) ? onAdd(info) : ''"
+          v-if="onAdd"
+        >
+          <Icon type="ios-add-circle-outline"/>
+        </span>
+        <span
+          :class="'actionBtn edit' + ((onEdit && (info.onEdit == undefined || info.onEdit)) ? ' warning' : ' noBtn')"
+          @click="onEdit && (info.onEdit == undefined || info.onEdit) ? onEdit(info) : ''"
+          v-if="onEdit"
+        >
+          <Icon type="ios-create-outline"/>
+        </span>
+        <span
+          :class="'actionBtn del' + ((onDel && (info.onDel == undefined || info.onDel)) ? ' error' : ' noBtn')"
+          @click="onDel && (info.onDel == undefined || info.onDel) ? onDel(info) : ''"
+          v-if="onDel"
+        >
+          <Icon type="ios-trash-outline"/>
+        </span>
+      </span>
+      <div class="ulBox" :ref="'ulBox'+ids+'-'+i">
+        <Etree v-if="info.children.length > 0" :ref="'eltTree-ul-'+ids+'-'+i" :lv="lv+1" :ids="ids+1" :treeData="info.children" :onChange="onChange" :onAdd="onAdd" :onEdit="onEdit" :onDel="onDel" :expand="expand" :name="name" :id="id" :check="check" :icon="icon"></Etree>
+      </div>
+    </li>
+  </ul>
+</template>
+
+<script>
+import Etree from "./tree.vue";
+export default {
+  name: "Etree",
+  data: function() {
+    return {
+      height: "",
+      iconOpen: true
+    };
+  },
+  props: {
+    ids: [String, Number],
+    lv: Number,
+    treeData: Array,
+    onChange: [Function, Boolean],
+    onAdd: [Function, Boolean],
+    onEdit: [Function, Boolean],
+    onDel: [Function, Boolean],
+    expand: Boolean,
+    name: String,
+    id: String,
+    check: Boolean,
+    icon: Boolean
+  },
+  watch: {
+    treeData: {
+      handler: function(val, oldVal) {
+        this.treeData.forEach((v,i) => {
+          setTimeout(() => {
+            this.$refs['ulBox'+this.ids+'-'+i][0].style.height = v.open ? "auto" : "0";
+          }, 200);
+        });
+      },
+      deep: true
+    }
+  },
+  components: {
+    Etree
+  },
+  methods: {
+    arrow(i) {
+      this.treeData[i].open = !this.treeData[i].open;
+      this.$set(this.treeData, i, this.treeData[i]);
+      this.$refs['ulBox'+this.ids+'-'+i][0].style.height = this.$refs["eltTree-ul-" + this.ids + "-" + i][0].$refs["eltTree-ul"+(this.ids+1)].offsetHeight + "px";
+      this.$nextTick(() => {
+        if( !this.treeData[i].open ){
+          this.$refs['ulBox'+this.ids+'-'+i][0].style.height = 0;
+        }else{
+          setTimeout(() => {
+            this.$refs['ulBox'+this.ids+'-'+i][0].style.height = "auto";
+          }, 200);
+        }
+      });
+    }
+  }
+};
+</script>

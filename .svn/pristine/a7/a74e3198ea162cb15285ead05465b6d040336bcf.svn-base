@@ -1,0 +1,16 @@
+{
+  "suceess":"true",
+    "result": [{
+        "value": "1",
+        "label": "中通"
+      },
+      {
+        "value": "2",
+        "label": "邮政"
+      },
+      {
+        "value": "3",
+        "label": "顺丰"
+      }
+    ]
+  }

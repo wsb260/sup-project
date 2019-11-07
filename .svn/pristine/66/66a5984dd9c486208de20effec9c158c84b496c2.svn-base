@@ -1,0 +1,13 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/abnormalcargoexamine/listpage.json"
+  },
+
+  // 审批
+  approval: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/abnormalcargoexamine/updateAbnormalCargoExamine.json"
+  }
+};

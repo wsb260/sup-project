@@ -1,0 +1,16 @@
+{
+    "code": 200,
+    "data": [
+        {
+            "name": "游艇",
+            "price": "9999",
+            "screen": ""
+        },
+        {
+            "name": "跑车",
+            "price": "6666",
+            "screen": ""
+        }
+    ],
+    "total": 2
+}

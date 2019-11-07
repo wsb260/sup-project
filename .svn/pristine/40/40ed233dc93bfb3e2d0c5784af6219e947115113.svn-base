@@ -1,0 +1,41 @@
+{
+  "total": 2,
+  "result": [{
+    "UPDATE_DATE": "2018-06-14",
+    "LOGINID": "xjsj",
+    "CREATE_BY": "83",
+    "OPENID": "",
+    "ORGID": "2",
+    "OPERTYPE": "揽配员",
+    "DEPLOY": "<a  style='color:#46A3FF' href='javascript:OperAndRoleEdit(85,&#39;xjsj&#39;,&#39;小金网点&#39;,&#39;50&#39;,&#39;13856788765&#39;)'>角色配置</a>",
+    "CLIENTID": "cd55d66e4d5b349b4f35b168832154b0",
+    "UPDATE_BY": "83",
+    "TEL": "13856788765",
+    "CREATE_DATE": "2018-06-14",
+    "OPERNAME": "xjsj",
+    "PASSWORD": "96e79218965eb72c92a549dd5a330112",
+    "FLAG": "0",
+    "ORGNAME": "小金网点",
+    "NOTES": "",
+    "OPERID": "85"
+  }, {
+    "UPDATE_DATE": "2018-06-14",
+    "LOGINID": "xjgly",
+    "CREATE_BY": "1",
+    "OPENID": "",
+    "ORGID": "2",
+    "OPERTYPE": "管理员",
+    "DEPLOY": "<a  style='color:#46A3FF' href='javascript:OperAndRoleEdit(83,&#39;xjgly&#39;,&#39;小金网点&#39;,&#39;10&#39;,&#39;13856788765&#39;)'>角色配置</a>",
+    "CLIENTID": "",
+    "UPDATE_BY": "1",
+    "TEL": "13856788765",
+    "CREATE_DATE": "2018-06-14",
+    "OPERNAME": "xjgly",
+    "PASSWORD": "96e79218965eb72c92a549dd5a330112",
+    "FLAG": "0",
+    "ORGNAME": "小金网点",
+    "NOTES": "",
+    "OPERID": "83"
+  }],
+  "totalPage": 1
+}

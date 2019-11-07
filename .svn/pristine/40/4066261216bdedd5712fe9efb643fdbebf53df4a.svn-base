@@ -1,0 +1,184 @@
+<template>
+  <div :class="'pageBody' + (pageWait ? ' wait' : '')" id="orderassign">
+    <div class="layout-page-tool">
+      <search-box ref="searchBox"></search-box>
+    </div>
+    <div class="layout-page-content">
+      <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      >
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page
+        :total="total"
+        :current="current"
+        :page-size="page_size"
+        :page-size-opts="page.page_sizepts"
+        @on-change="page_change"
+        @on-page-size-change="page_size_change"
+        show-sizer
+        show-elevator
+        show-total
+        size="small"
+      >
+      </Page>
+    </div>
+    <popup-check ref="popupCheck"></popup-check>
+    <popup-edit ref="popupEdit"></popup-edit>
+    <popup-revoke ref="popupRevoke"></popup-revoke>
+    <popup-delete ref="popupDelete"></popup-delete>
+  </div>
+</template>
+<script>
+import popupCheck from "./components/popup-check";
+import popupEdit from "./components/popup-edit";
+import popupRevoke from "./components/popup-revoke";
+import searchBox from "./components/searchBox.vue";
+import popupDelete from "components/situation/popup-delete";
+import { getTableHeight } from "tool/tool.js";
+export default {
+  name: "orderassign",
+  data() {
+    return {
+      delModel: {},
+      editData:"",
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "派送单号", key: "ID", align: "center" },
+          { title: "派送单类型", key: "TYPE", align: "center" },
+          { title: "派送单状态", key: "STATUS", align: "center" },
+          { title: "总件数", key: "TOTALQTY", align: "center" },
+          { title: "总金额", key: "TOTALVOLUME", align: "center" },
+          { title: "应收款项", key: "ACCOUNTSPRICE", align: "center" },
+          { title: "代收款项", key: "CARLENGTH", align: "center" },
+          { title: "制单时间", key: "CREATE_DATE", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 120,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "分派" },
+                  class: params.row.STATUS == "可分派" ? "tableBtn fa success fa-hand-stop-o" : "",
+                  on: {
+                    click: () => {
+                      this.$refs.popupEdit.open(params.row.ID);
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "撤销" },
+                  class: params.row.STATUS == "已分派" ? "tableBtn fa warning fa-hand-lizard-o" : "",
+                  on: {
+                    click: () => {
+                      this.$refs.popupRevoke.open(params.row.ID,"orderassign/revoke");
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "详细" },
+                  class: "tableBtn fa info fa-file-text-o",
+                  on: {
+                    click: () => {
+                      this.$refs.popupCheck.open(params.row.ID);
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+  components: {
+    popupCheck,
+    popupDelete,
+    searchBox,
+    popupEdit,
+    popupRevoke
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.orderassign.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.orderassign.tableLoading;
+    },
+    current() {
+      return this.$store.state.orderassign.current;
+    },
+    page_size() {
+      return this.$store.state.orderassign.page_size;
+    },
+    total() {
+      return this.$store.state.orderassign.total;
+    },
+    pageWait() {
+      return this.$store.state.orderassign.pageWait;
+    }
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("orderassign")) {
+      this.$store.dispatch({ type: "orderassign/refreshData" });
+      this.$store.dispatch({
+        type: "selectData/getData",
+        name: "carnolist",
+      });
+      this.$store.dispatch({
+        type: "selectData/getData",
+        name: "STATUS",
+      });
+      this.$store.dispatch({
+        type: "selectData/getData",
+        name: "type",
+      });
+    }
+  },
+  mounted() {
+    this.table.height = getTableHeight();
+  },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "orderassign/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "orderassign/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    add() {
+      this.$refs.popupEdit.open();
+    }
+  }
+};
+</script>
+
+<style>
+.show{
+  display: none;
+}
+</style>

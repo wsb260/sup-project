@@ -1,0 +1,41 @@
+import axios from 'axios';
+export default {
+  isNew({ dispatch, commit, state, rootState }, option) {
+    commit("isNew");
+    dispatch({
+      type: "getData",
+      province: true
+    });
+  }, 
+  getData({ dispatch, commit, state, rootState }, option) {
+    return new Promise((resolve, reject) => {
+      var _this = this;
+      var urlList = [
+        ( option.province ? axios(this.getters['address/getData'](9)) : { data: {} } ),
+        ( option.city ? axios(this.getters['address/getData'](option.city)) : { data: {} } ),
+        ( option.county ? axios(this.getters['address/getData'](option.county)) : { data: {} } )
+      ];
+      axios.all(urlList)
+      .then(axios.spread(function (req1, req2, req3) {
+        var addressInfo = {};
+        if (req1 && req1.data && req1.data.result) {
+          addressInfo.province = req1.data.result;
+        }
+        // else {
+        //   _this.commit("notice/dataError", req1.data.mag);
+        // }
+        if (req2 && req2.data && req2.data.result) {
+          addressInfo.city = req2.data.result;
+        }
+        if (req3 && req3.data && req3.data.result) {
+          addressInfo.county = req3.data.result;
+        }
+        commit("getData", addressInfo);
+        resolve();
+      }))
+      .catch((error) => {
+        _this.commit("notice/dataError", error);
+      });
+    });
+  }
+};

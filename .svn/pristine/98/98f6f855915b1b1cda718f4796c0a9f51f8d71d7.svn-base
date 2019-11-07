@@ -1,0 +1,20 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/orderquery/listpage.json"
+  },
+  //删除
+  delete: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orderquery/delete.json"
+  },
+  filedown: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orderquery/delete.json"
+  },
+  fileUpLoad: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orderquery/delete.json"
+  },
+};

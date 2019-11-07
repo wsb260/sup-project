@@ -1,0 +1,187 @@
+<template>
+ <div :class="'pageBody' + (pageWait ? ' wait' : '')" id="delStock">
+    <div class="layout-page-tool">
+      <Button type="warning" @click="back">
+        <Icon type="md-arrow-back" /> 返回
+      </Button>
+    <search-box ref="searchBox"></search-box>
+    </div>
+    <div class="layout-page-content">
+      <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      >
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page
+        :total="total"
+        :current="current"
+        :page-size="page_size"
+        :page-size-opts="page.page_sizepts"
+        @on-change="page_change"
+        @on-page-size-change="page_size_change"
+        show-sizer
+        show-elevator
+        show-total
+        size="small"
+      >
+      </Page>
+    </div>
+    <popup-plan ref="popupPlan"></popup-plan>
+    <popup-sign ref="popupSign"></popup-sign>
+    <popup-rejection ref="popupRejection"></popup-rejection>
+  </div>
+</template>
+<script>
+import popupRejection from "./components/popup-rejection";
+import popupPlan from "./components/popup-plan";
+import popupSign from "./components/popup-sign";
+import searchBox from "./components/searchBox"
+import { getTableHeight } from "tool/tool.js";
+export default {
+  name: "delStock",
+  data() {
+    return {
+      delModel: {},
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "订单号", key: "ORDERNO", align: "center" },
+          { title: "件数", key: "QTY", align: "center" },
+          { title: "重量", key: "WEIGHT", align: "center" },
+          { title: "类型", key: "TYPE", align: "center" },
+          { title: "寄件人", key: "SENDER_NAME", align: "center" },
+          { title: "收件人", key: "RECEIVER_NAME", align: "center" },
+          { title: "收件人电话", key: "RECEIVER_MOBILE", align: "center" },
+          { title: "收件人地址", key: "RECEIVER_ADDRESS", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "计划" },
+                  class: "tableBtn fa warning fa-pencil",
+                  on: {
+                    click: () => {
+                      this.$refs.popupPlan.open(
+                        params.row.ID
+                      );
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "签收" },
+                  class: "tableBtn fa success fa-check",
+                  on: {
+                    click: () => {
+                      this.$refs.popupSign.open(
+                        params.row.ID,
+                        params.row.TYPE
+                      );
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "拒收" },
+                  class: "tableBtn fa error fa-remove",
+                  on: {
+                    click: () => {
+                      this.$refs.popupRejection.open(
+                        params.row.ID,
+                        params.row.TYPE
+                      );
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+  components: {
+    popupPlan,
+    popupSign,
+    searchBox,
+    popupRejection
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.delStock.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.delStock.tableLoading;
+    },
+    current() {
+      return this.$store.state.delStock.current;
+    },
+    page_size() {
+      return this.$store.state.delStock.page_size;
+    },
+    total() {
+      return this.$store.state.delStock.total;
+    },
+    pageWait() {
+      return this.$store.state.delStock.pageWait;
+    }
+  },
+  // activated() {
+  //   if (this.$store.getters["pageTab/pageInTab"]("delStock")) {
+  //     this.$store.dispatch({ type: "delStock/refreshData" });
+  //   }
+  // },
+  mounted() {
+    this.$store.dispatch({ type: "delStock/refreshData" });
+      this.$store.dispatch({ type: "selectData/getData", name: "rejectionTypes" });
+    this.table.height = getTableHeight();
+  },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "delStock/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "delStock/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    back() {
+      this.$router.push('/orderplan')
+    },
+    pollings() {
+      this.visible = false;
+    },
+    reset() {
+      this.searchData = {};
+    },
+    onCancel() {
+      this.visible = !this.visible;
+    }
+  }
+};
+</script>
+
+<style>
+</style>

@@ -1,0 +1,10 @@
+{
+    "result": [{
+        "TXLOGISTICID" : "订单号",
+        "STATUS":"状态",
+        "SENDER_NAME":"寄件人",
+        "SENDER_MOBILE":"寄件人电话",
+        "SENDER_ADDRESS":"寄件人地址",
+        "RECEIVER_ADDRESS":"收件人地址"
+    }]
+}

@@ -1,0 +1,16 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/operandrole/listpage.json"
+  },
+  getByIdData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/operandrole/add.json"
+  },
+  saveNew: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/operandrole/save.json"
+  },
+
+};

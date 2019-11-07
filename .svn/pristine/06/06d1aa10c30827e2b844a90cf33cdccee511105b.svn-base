@@ -1,0 +1,86 @@
+<template>
+  <Modal v-model="showEdit" :mask-closable="!1" draggable :transfer="!1" @on-visible-change="visibleChange" :closable="!popupLoading" :class-name="'green' + (popupLoading ? ' popupLoading' : '')" width="400">
+    <p slot="header">
+      <Icon type="tableBtn fa success fa-hand-stop-o" ></Icon>
+      <span>车源栏</span>
+    </p>
+    <Form :model="byIdData" :label-width="100" ref="editForm">
+        <FormItem label="车牌号：" prop="CARNO">
+            <Select v-model="byIdData.CARNO" placeholder="请选择车牌号">
+                <Option v-for="item in carnolist" :value="item.value" :key="item.value">{{item.label}}</Option>
+            </Select>
+        </FormItem>
+        <FormItem label="车主电话：" prop="CAROWNER_TEL">
+            <i-input v-model="byIdData.CAROWNER_TEL" placeholder="请输入车主电话"></i-input>
+        </FormItem>
+        <FormItem label="司机费用：" prop="CAR_FEE">
+            <i-input v-model="byIdData.CAR_FEE" placeholder="请输入司机费用"></i-input>
+        </FormItem>
+    </Form>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      id: false,
+    };
+  },
+  props:["editData"],
+  computed: {
+    byIdData() {
+      return this.$store.state.orderassign.byIdData;
+    },
+    carnolist() {
+      return this.$store.state.selectData.carnolist;
+    },
+    showEdit: {
+      get: function() {
+        return this.$store.state.orderassign.showEdit;
+      },
+      set: function(val) {
+        this.$store.commit("orderassign/changeShowEdit", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.orderassign.popupLoading;
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    open(id) {
+      this.id = id || false;
+      this.result();
+      this.$store.dispatch({ type: "orderassign/getByIdData", id: this.id });
+      this.$store.commit("orderassign/changeShowEdit", true);
+    },
+    result() {
+      this.$refs["editForm"].resetFields();
+    },
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch({ type: "orderassign/saveData", id: this.id });
+        }
+      });
+      let status = this.$store.state.orderassign.tableData;
+			status.forEach((v,i) => {
+        if(v.ID == this.id){
+          v.STATUS = "已分派";
+				} 
+      })
+    },
+    onCancel() {
+      this.$store.commit("orderassign/changeShowEdit", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("orderassign/changePageWait", val);
+    }
+  }
+};
+</script>

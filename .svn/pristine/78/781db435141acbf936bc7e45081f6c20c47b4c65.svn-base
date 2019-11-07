@@ -1,0 +1,278 @@
+<template>
+  <div :class="'pageBody orderlogistics' + (pageWait ? ' wait' : '' )">
+    <Row>
+      <i-col span="12" style="margin:1vw">
+        <Card class="h100 left">
+          <Form :model="byIdData" :label-width="100" ref="editForm">
+            <!-- :rules="ruleValidate" -->
+            <Row>
+              <i-col span="12">
+                <FormItem label="客户：" prop="crmnameId">
+                  <Select v-model="byIdData.crmnameId" placeholder="请选择客户">
+                    <Option v-for="item in crmnameId" :value="item.value" :key="item.value">{{item.label}}</Option>
+                  </Select>
+                </FormItem>
+              </i-col>
+              <i-col span="12">
+                <FormItem label="原订单号：" prop="original_orderno">
+                  <i-input v-model="byIdData.original_orderno" placeholder="请输入原订单号"></i-input>
+                </FormItem>
+              </i-col>
+            </Row>
+            <Row>
+              <i-col span="12">
+                <FormItem label="寄件人名字：" prop="sendername">
+                  <i-input v-model="byIdData.sendername" placeholder="请输入寄件人名字"></i-input>
+                </FormItem>
+              </i-col>
+              <i-col span="12">
+                <FormItem label="寄件人电话：" prop="sendermobile">
+                  <i-input v-model="byIdData.sendermobile" placeholder="请输入寄件人电话"></i-input>
+                </FormItem>
+              </i-col>
+            </Row>
+            <Row>
+              <i-col span="12">
+                <FormItem label="收件人名字：" prop="receivername">
+                  <i-input v-model="byIdData.receivername" placeholder="请输入收件人名字"></i-input>
+                </FormItem>
+              </i-col>
+              <i-col span="12">
+                <FormItem label="收件人电话：" prop="receivermobile">
+                  <i-input v-model="byIdData.receivermobile" placeholder="请输入收件人电话"></i-input>
+                </FormItem>
+              </i-col>
+            </Row>
+            <Row>
+              <i-col span="8">
+                <FormItem label="所属省份：" prop="receiver_prov">
+                  <Select ref="receiver_prov" v-model="byIdData.receiver_prov" placeholder="请选择所属省份" @on-change="changeSelect('city')">
+                    <Option v-for="(item,i) in provinceData" :value="item.value" :key="i">{{item.label}}</Option>
+                  </Select>
+                </FormItem>
+              </i-col>
+              <i-col span="8">
+                <FormItem label="所属市：" prop="receiver_city" v-if="citys">
+                  <i-input placeholder="请选择所属城市" disabled></i-input>
+                </FormItem>
+                <FormItem label="所属市：" prop="receiver_city" v-if="!citys">
+                  <Select ref="receiver_city" v-model="byIdData.receiver_city" clearable placeholder="请选择所属城市" @on-change="changeSelect('county')">
+                    <Option v-for="(item,i) in cityData" :value="item.value" :key="i">{{item.label}}</Option>
+                  </Select>
+                </FormItem>
+              </i-col>
+              <i-col span="8">
+                <FormItem label="区/县：" prop="receiver_county" v-if="countys">
+                  <i-input placeholder="请选择所属区/县" disabled></i-input>
+                </FormItem>
+                <FormItem label="区/县：" prop="receiver_county" v-if="!countys">
+                  <Select ref="receiver_county" v-model="byIdData.receiver_county" clearable placeholder="请选择所属区/县">
+                    <Option v-for="(item,i) in countyData" :value="item.value" :key="i">{{item.label}}</Option>
+                  </Select>
+                </FormItem>
+              </i-col>
+            </Row>
+            <FormItem label="收件人地址：" prop="receiver_address">
+              <i-input v-model="byIdData.receiver_address" placeholder="请输入收件人地址"></i-input>
+            </FormItem>
+            <Row>
+              <i-col span="12">
+                <FormItem label="匹配机构：" prop="marryName">
+                  <i-input v-model="byIdData.marryName" placeholder="请输入匹配机构"></i-input>
+                </FormItem>
+              </i-col>
+              <i-col span="12">
+                <FormItem label="代收款：" prop="itemsvalue">
+                  <i-input v-model="byIdData.itemsvalue" placeholder="请输入代收款金额"></i-input>
+                </FormItem>
+              </i-col>
+            </Row>
+            <Row>
+              <i-col span="12">
+                <FormItem label="运费：" prop="totaldiversity">
+                  <i-input v-model="byIdData.totaldiversity" placeholder="请输入运费"></i-input>
+                </FormItem>
+              </i-col>
+              <i-col span="12">
+                <FormItem label="配送方式：" prop="delivery_way">
+                  <Select v-model="byIdData.delivery_way" placeholder="请选择配送方式">
+                    <Option v-for="item in delivery_way" :value="item.value" :key="item.value">{{item.label}}</Option>
+                  </Select>
+                </FormItem>
+              </i-col>
+            </Row>
+            <Row>
+              <i-col span="12">
+                <FormItem label="支付方式：" prop="pays">
+                  <RadioGroup v-model="byIdData.pays">
+                    <Radio label="0">货到付款</Radio>
+                    <Radio label="1">现金支付</Radio>
+                  </RadioGroup>
+                </FormItem>
+              </i-col>
+            </Row>
+          </Form>
+        </Card>
+      </i-col>
+      <i-col span="11" style="margin:1vw; margin-left:0">
+        <Card class="right">
+          <div class="layout-page-content">
+            <Table border stripe :loading="tableLoading" :height="table.height" :columns="table.columns" :data="tableData" :highlight-row="true">
+            </Table>
+          </div>
+        </Card>
+      </i-col>
+    </Row>
+    <div class="btns" style="text-align:center; ">
+      <Button style="margin:5px; width:10vw" type="success" @click="onOk" :loading="popupLoading">保存</Button>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      id: false,
+      citys: true,
+      countys: true,
+      table: {
+        height: 463,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "商品名称", key: "itemname", align: "center" },
+          { title: "商品数量", key: "itemnum", align: "center" },
+          { title: "商品重量", key: "wt", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "编辑内容" },
+                  class: "tableBtn fa warning fa-add",
+                  on: {
+                    click: () => {
+                      this.$refs.popupEdit.open(params.row.ID);
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "删除" },
+                  class: "tableBtn fa error fa-remove",
+                  on: {
+                    click: () => {
+                      this.$refs.popupDelete.open(
+                        params.row.ID,
+                        "orderlogistics/delete"
+                      );
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      }
+    };
+  },
+  created(){
+     this.$store.commit({ type: "orderlogistics/isNewData" });
+  },
+  mounted() {
+    this.$store.dispatch({ type: "selectData/getData", name: "crmnameId" });
+    this.$store.dispatch({ type: "selectData/getData", name: "delivery_way" });
+    this.$store.dispatch({
+      type: "address/getData",
+      province: true,
+      city: false,
+      county: false
+    });
+  },
+  computed: {
+    crmnameId() {
+      return this.$store.state.selectData.crmnameId;
+    },
+    delivery_way() {
+      return this.$store.state.selectData.delivery_way;
+    },
+    pageWait() {
+      return this.$store.state.orderlogistics.pageWait;
+    },
+    byIdData() {
+      return this.$store.state.orderlogistics.byIdData;
+    },
+    tableData() {
+      return this.$store.state.orderlogistics.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.orderlogistics.tableLoading;
+    },
+    current() {
+      return this.$store.state.orderlogistics.current;
+    },
+    page_size() {
+      return this.$store.state.orderlogistics.page_size;
+    },
+    total() {
+      return this.$store.state.orderlogistics.total;
+    },
+    popupLoading() {
+      return this.$store.state.orderlogistics.popupLoading;
+    },
+    provinceData() {
+      return this.$store.state.address.province;
+    },
+    cityData() {
+      return this.$store.state.address.city;
+    },
+    countyData() {
+      return this.$store.state.address.county;
+    }
+  },
+  methods: {
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch({
+            type: "orderlogistics/saveData",
+            id: this.id
+          });
+        }
+      });
+    },
+    changeSelect(val) {
+      if (val == "city") {
+        this.citys = true;
+        // this.countys = true;
+      } else if (val == "county") {
+        this.countys = true;
+      }
+      this.$store
+        .dispatch({
+          type: "address/getData",
+          province: false,
+          city: val == "city" ? this.byIdData.receiver_prov : false,
+          county: val == "county" ? this.byIdData.receiver_city : false
+        })
+        .then(() => {
+          if (val == "city") {
+            this.citys = false;
+            this.$nextTick(() => {
+              this.$refs.receiver_city.clearSingleSelect();
+            });
+          } else if (val == "county") {
+            this.countys = false;
+            this.$nextTick(() => {
+              this.$refs.receiver_county.clearSingleSelect();
+            });
+          }
+        });
+    },
+    visibleChange(val) {
+      this.$store.commit("orderlogistics/changePageWait", val);
+    }
+  }
+};
+</script>

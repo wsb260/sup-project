@@ -1,0 +1,117 @@
+@charset "UTF-8";
+* {
+  margin: 0;
+  padding: 0;
+  border: 0 none;
+  list-style: none;
+}
+
+body {
+  color: #333;
+  font-size: 14px;
+}
+
+/* 公共样式 */
+html,
+body,
+.wh100 {
+  width: 100%;
+  height: 100%;
+}
+
+.h100 {
+  height: 100%;
+}
+
+.pageBody {
+  position: relative;
+  height: 100%;
+}
+
+.pageBody .layout-page-tool {
+  padding-bottom: 4px;
+}
+
+.pageBody .layout-page-tool:empty {
+  display: none;
+}
+
+.pageBody.rowBox {
+  padding: 4px;
+}
+
+.pageBody.wait .layout-page-tool,
+.pageBody.wait .layout-page-content,
+.pageBody.wait .layout-page-page {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.pageBody.wait:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+  z-index: 7;
+}
+
+.pos_maxAll {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+/* 查询中Form的样式 */
+.forms {
+  margin: 0 10px 0 0;
+}
+
+/* 主要用在顶部条，按钮旁边的提示文字 */
+.errorText {
+  color: #ed4014;
+  vertical-align: middle;
+}
+
+/* 顶部条的input框，主要是作为快速搜索 */
+.quickSearch {
+  display: inline-block;
+  padding: 0 4px;
+}
+
+.quickSearch .title {
+  font-size: 12px;
+}
+
+.quickSearch .info {
+  display: inline-block;
+  width: 200px;
+}
+
+.quickSearch .info .ivu-input {
+  height: 24px;
+}
+
+.quickSearch .info .ivu-input-icon {
+  height: 24px;
+  line-height: 24px;
+}
+
+.quickSearch .info .ivu-select-single .ivu-select-selection {
+  height: 24px;
+}
+
+.quickSearch .info .ivu-select-single .ivu-select-selection .ivu-select-placeholder,
+.quickSearch .info .ivu-select-single .ivu-select-selection .ivu-select-selected-value {
+  height: 24px;
+  line-height: 22px;
+}
+/*# sourceMappingURL=main.css.map */

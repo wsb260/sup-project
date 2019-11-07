@@ -1,0 +1,275 @@
+<template>
+  <div
+    :class="'pageBody' + (pageWait ? ' wait' : '')"
+    id="ordercrm"
+  >
+    <div class="layout-page-tool">
+      <Button
+        type="success"
+        @click="add"
+      >
+        <Icon type="md-add" /> 新增
+      </Button>
+      <div class="quickSearch" v-if="showQuickSearch">
+        <span class="title">客户名称 ：</span>
+        <span class="info">
+          <i-input v-model="quickSearchData.crmname" placeholder="客户名称" clearable></i-input>
+        </span>
+        <Button type="info" @click="search()">
+          <Icon type="ios-search" /> 快速查询
+        </Button>
+      </div>
+      <search-box ref="searchBox"></search-box>
+    </div>
+    <div class="layout-page-content">
+      <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      >
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page
+        :total="total"
+        :current="current"
+        :page-size="page_size"
+        :page-size-opts="page.page_sizepts"
+        @on-change="page_change"
+        @on-page-size-change="page_size_change"
+        show-sizer
+        show-elevator
+        show-total
+        size="small"
+      >
+      </Page>
+    </div>
+    <popup-edit ref="popupEdit"></popup-edit>
+    <popup-delete ref="popupDelete"></popup-delete>
+  </div>
+</template>
+<script>
+import popupEdit from "./components/popup-edit";
+import searchBox from "./components/searchBox.vue";
+import popupDelete from "components/situation/popup-delete";
+import { getTableHeight } from "tool/tool.js";
+export default {
+  name: "ordercrm",
+  data() {
+    return {
+      showQuickSearch:false,
+      delModel: {},
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "客户名称", key: "CRMNAME", align: "center" },
+          { title: "客户邮编", key: "CRMPOSTCODE", align: "center" },
+          { title: "详细地址", key: "CRMADDRESSS", align: "center" },
+          { title: "客户座机", key: "CRMTEL", align: "center" },
+          {
+            title: "客户等级",
+            key: "CRMGRADE",
+            align: "center",
+            render: (h, params) => {
+              let crmgrade = "";
+              if (params.row.CRMGRADE == "10") {
+                crmgrade = "钻石级";
+              } else if (params.row.CRMGRADE == "20") {
+                crmgrade = "黄金级";
+              } else if (params.row.CRMGRADE == "30") {
+                crmgrade = "普通级";
+              } else {
+                crmgrade = "";
+              }
+              return h("span", crmgrade);
+            }
+          },
+          {
+            title: "客户行业类型",
+            key: "CRMTRADE",
+            align: "center",
+            render: (h, params) => {
+              let crmtrade = "";
+              if (params.row.CRMTRADE == "10") {
+                crmtrade = "机械及行业设备";
+              } else if (params.row.CRMTRADE == "20") {
+                crmtrade = "个人经营";
+              } else if (params.row.CRMTRADE == "30") {
+                crmtrade = "建筑业";
+              } else if (params.row.CRMTRADE == "40") {
+                crmtrade = "交通运输、仓储";
+              } else if (params.row.CRMTRADE == "50") {
+                crmtrade = "信息传输";
+              } else if (params.row.CRMTRADE == "60") {
+                crmtrade = "批发和零售业";
+              } else {
+                crmtrade = "";
+              }
+              return h("span", crmtrade);
+            }
+          },
+          {
+            title: "客户状态",
+            key: "CRMSTATUS",
+            align: "center",
+            render: (h, params) => {
+              let crmstatus = "";
+              if (params.row.CRMSTATUS == "10") {
+                crmstatus = "潜在客户";
+              } else if (params.row.CRMSTATUS == "20") {
+                crmstatus = "意向客户";
+              } else if (params.row.CRMSTATUS == "30") {
+                crmstatus = "成交客户";
+              } else if (params.row.CRMGRADE == "40") {
+                crmtrade = "失败客户";
+              } else if (params.row.CRMGRADE == "50") {
+                crmtrade = "已流失客户";
+              } else {
+                crmstatus = "";
+              }
+              return h("span", crmstatus);
+            }
+          },
+          { title: "客户类别", key: "CRMTYPE", align: "center",
+             render: (h, params) => {
+              return h("span", params.row.CRMTYPE == "10" ? "普通用户" : "VIP用户");
+            }
+          },
+          {
+            title: "客户来源",
+            key: "CRMSOURCE",
+            align: "center",
+            render: (h, params) => {
+              let crmsource = "";
+              if (params.row.CRMSOURCE == "10") {
+                crmsource = "注册用户";
+              } else if (params.row.CRMSOURCE == "20") {
+                crmsource = "手工导入";
+              } else if (params.row.CRMSOURCE == "30") {
+                crmsource = "客户介绍";
+              } else {
+                crmsource = "";
+              }
+              return h("span", crmsource);
+            }
+          },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "编辑内容" },
+                  class: "tableBtn fa warning fa-edit",
+                  on: {
+                    click: () => {
+                      this.$refs.popupEdit.open(params.row.ID);
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "删除" },
+                  class: "tableBtn fa error fa-remove",
+                  on: {
+                    click: () => {
+                      this.$refs.popupDelete.open(
+                        params.row.ID,
+                        "ordercrm/delete"
+                      );
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+  components: {
+    popupEdit,
+    popupDelete,
+    searchBox
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.ordercrm.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.ordercrm.tableLoading;
+    },
+    current() {
+      return this.$store.state.ordercrm.current;
+    },
+    page_size() {
+      return this.$store.state.ordercrm.page_size;
+    },
+    total() {
+      return this.$store.state.ordercrm.total;
+    },
+    pageWait() {
+      return this.$store.state.ordercrm.pageWait;
+    },
+    quickSearchData(){
+      return this.$store.state.ordercrm.quickSearchData;
+    }
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("ordercrm")) {
+      this.$store.dispatch({ type: "ordercrm/refreshData" });
+      this.$store.dispatch({ type: "selectData/getData", name: "crmtrade" });
+      this.$store.dispatch({ type: "selectData/getData", name: "crmstatus" });
+      this.$store.dispatch({ type: "selectData/getData", name: "crmtype" });
+      this.$store.dispatch({ type: "selectData/getData", name: "crmgrade" });
+      this.$store.dispatch({ type: "selectData/getData", name: "crmsource" });
+    }
+  },
+  mounted() {
+    this.$store.commit("ordercrm/clearSearchData");
+    this.showQuickSearch = true;
+    this.table.height = getTableHeight();
+  },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "ordercrm/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "ordercrm/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    search() {
+      this.$store.dispatch({
+        type: 'ordercrm/refreshData',
+        searchType: this.quickSearchData.crmname,
+        current: 1
+      });
+    },
+    add() {
+      this.$refs.popupEdit.open();
+    }
+  }
+};
+</script>
+
+<style>
+</style>

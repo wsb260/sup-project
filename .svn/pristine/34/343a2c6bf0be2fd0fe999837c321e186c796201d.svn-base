@@ -1,0 +1,55 @@
+<template>
+    <Transfer
+      :data="data3"
+      :target-keys="targetKeys3"
+      :list-style="listStyle"
+      :render-format="render3"
+      :operations="['左移','右移']"
+      filterable
+      @on-change="handleChange3"
+    >
+    </Transfer>
+</template>
+<script>
+import { eltValidators } from "tool/eltValidators.js";
+export default {
+  data() {
+    return {
+      data3: this.getMockData(),
+      targetKeys3: [],
+      listStyle: {
+        marginLeft:"40px",
+        marginTop:"30px",
+        width: "300px",
+        height: "300px"
+      }
+    };
+  },
+  methods: {
+    getMockData() {
+      let mockData = [];
+      for (let i = 1; i <= 20; i++) {
+        mockData.push({
+          key: i.toString(),
+          label: "Content " + i,
+          description: "The desc of content  " + i,
+          disabled: Math.random() * 3 < 1
+        });
+      }
+      return mockData;
+    },
+    handleChange3(newTargetKeys) {
+      this.targetKeys3 = newTargetKeys;
+    },
+    render3(item) {
+      return item.label + " - " + item.description;
+    },
+  }
+};
+</script>
+<style scoped>
+.isEdit {
+  background: #ccc;
+  margin:0,auto
+}
+</style>

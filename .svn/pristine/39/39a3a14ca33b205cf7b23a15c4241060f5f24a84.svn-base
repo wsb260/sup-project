@@ -1,0 +1,11 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/businessquantity/listpage.json"
+  },
+  fileDown: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/businessquantity/exportAll.json"
+  },
+};

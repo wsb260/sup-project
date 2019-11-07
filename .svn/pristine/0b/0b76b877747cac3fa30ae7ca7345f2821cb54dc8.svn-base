@@ -1,0 +1,196 @@
+<template>
+  <div
+    :class="'pageBody' + (pageWait ? ' wait' : '')"
+    id="orderproductquery"
+  >
+    <div class="layout-page-tool">
+      <Button
+        type="success"
+        @click="add"
+      >
+        <Icon type="md-add" /> 新增
+      </Button>
+      <search-box ref="searchBox"></search-box>
+    </div>
+    <div class="layout-page-content">
+      <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      >
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page
+        :total="total"
+        :current="current"
+        :page-size="page_size"
+        :page-size-opts="page.page_sizepts"
+        @on-change="page_change"
+        @on-page-size-change="page_size_change"
+        show-sizer
+        show-elevator
+        show-total
+        size="small"
+      >
+      </Page>
+    </div>
+    <popup-edit ref="popupEdit"></popup-edit>
+    <popup-delete ref="popupDelete"></popup-delete>
+  </div>
+</template>
+<script>
+import popupEdit from "./components/popup-edit";
+import searchBox from "./components/searchBox.vue";
+import popupDelete from "components/situation/popup-delete";
+import { getTableHeight } from "tool/tool.js";
+export default {
+  name: "orderproductquery",
+  data() {
+    return {
+      delModel: {},
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "订单流向", key: "UPANDDOWNSTATUS", align: "center",
+            render: (h,params) => {
+              return h("div",[
+                h("span",params.row.UPANDDOWNSTATUS = 10 ? "下行流向" : "混合流向")
+              ])
+            }
+          },
+          { title: "订单号", key: "TXLOGISTICID", align: "center" },
+          { title: "状态", key: "STATUS", align: "center" },
+          { title: "寄件人", key: "SENDER_NAME", align: "center" },
+          { title: "寄件人电话", key: "SENDER_MOBILE", align: "center" },
+          { title: "收件人", key: "RECEIVER_NAME", align: "center" },
+          { title: "收件人电话", key: "RECEIVER_MOBILE", align: "center" },
+          { title: "收件人地址", key: "RECEIVER_ADDRESS", align: "center" },
+          { title: "支付方式", key: "PAYWAY", align: "center" },
+          {
+            title: "操作",
+            key: "action",
+            width: 100,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h("span", {
+                  attrs: { title: "编辑内容" },
+                  class: "tableBtn fa warning fa-edit",
+                  on: {
+                    click: () => {
+                      this.$refs.popupEdit.open(params.row.ID);
+                    }
+                  }
+                }),
+                h("span", {
+                  attrs: { title: "删除" },
+                  class: "tableBtn fa error fa-remove",
+                  on: {
+                    click: () => {
+                      this.$refs.popupDelete.open(
+                        params.row.ID,
+                        "orderproductquery/delete"
+                      );
+                    }
+                  }
+                })
+              ]);
+            }
+          }
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      }
+    };
+  },
+  components: {
+    popupEdit,
+    popupDelete,
+    searchBox
+  },
+  computed: {
+    tableData() {
+      return this.$store.state.orderproductquery.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.orderproductquery.tableLoading;
+    },
+    current() {
+      return this.$store.state.orderproductquery.current;
+    },
+    page_size() {
+      return this.$store.state.orderproductquery.page_size;
+    },
+    total() {
+      return this.$store.state.orderproductquery.total;
+    },
+    pageWait() {
+      return this.$store.state.orderproductquery.pageWait;
+    }
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("orderproductquery")) {
+      this.$store.dispatch({ type: "orderproductquery/refreshData" });
+      this.$store.dispatch({
+        type: "selectData/getData",
+        name: "CAROWNER_NM",
+        worked: "select"
+      });
+      this.$store.dispatch({
+        type: "selectData/getData",
+        name: "CARTYPE",
+        worked: "select"
+      });
+      this.$store.dispatch({
+        type: "selectData/getData",
+        name: "CARDTYPE",
+        worked: "select"
+      });
+    }
+  },
+  mounted() {
+    this.table.height = getTableHeight();
+  },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "orderproductquery/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "orderproductquery/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    add() {
+      this.$refs.popupEdit.open();
+    },
+    pollings() {
+      this.visible = false;
+    },
+    reset() {
+      this.searchData = {};
+    },
+    onCancel() {
+      this.visible = !this.visible;
+    }
+  }
+};
+</script>
+
+<style>
+</style>

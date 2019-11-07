@@ -1,0 +1,114 @@
+<template>
+  <Modal
+    v-model="showCheck1"
+    :mask-closable="!1"
+    draggable
+    :transfer="!1"
+    @on-visible-change="visibleChange"
+    :closable="!popupLoading"
+    :class-name="(popupLoading ? 'blue popupLoading' : 'blue')"
+    width="600"
+  >
+    <p slot="header">
+      <span class="fa warning fa-google-wallet"></span>
+      <span>轨迹信息</span>
+    </p>
+    <Form :model="trajectoryData" :label-width="100">
+      <Row>
+        <i-col span="12">
+          <FormItem label="订单编号：">
+            <i-input v-model="trajectoryData.orderNum" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="收货人：">
+            <i-input v-model="trajectoryData.receiverName" readonly></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="12">
+          <FormItem label="手机/电话：">
+            <i-input v-model="trajectoryData.receiveTel" readonly></i-input>
+          </FormItem>
+        </i-col>
+        <i-col span="12">
+          <FormItem label="收货地址：">
+            <i-input v-model="trajectoryData.receiveAddress" readonly></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+    </Form>
+     <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      ></Table>
+    <div slot="footer">
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      table: {
+        height: 300,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "处理时间", key: "TXLOGISTICID", align: "center" },
+          { title: "处理信息", key: "ITEMNAME", align: "center" },
+          { title: "操作人", key: "ITEMNUMBER", align: "center" }
+        ]
+      },
+    };
+  },
+  computed: {
+   trajectoryData() {
+      return this.$store.state.orderproductquery.trajectoryData;
+    },
+    tableData() {
+      return this.$store.state.orderproductquery.tableData2;
+    },
+    tableLoading() {
+      return this.$store.state.orderproductquery.tableLoading;
+    },
+    current() {
+      return this.$store.state.orderproductquery.current;
+    },
+    total() {
+      return this.$store.state.orderproductquery.total;
+    },
+    showCheck1: {
+      get: function () {
+        return this.$store.state.orderproductquery.showCheck1;
+      },
+      set: function (val) {
+        this.$store.commit("orderproductquery/changeShowCheck1", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.orderproductquery.popupLoading;
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    open(id) {
+      this.$store.dispatch({ type: "orderproductquery/getTrajectoryData", id: id });
+      this.$store.commit("orderproductquery/changeShowCheck1", true);
+    },
+    onCancel() {
+      this.$store.commit("orderproductquery/changeShowCheck1", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("orderproductquery/changePageWait", val);
+    }
+  }
+};
+</script>

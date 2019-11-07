@@ -1,0 +1,405 @@
+{
+    "code": 1000,
+    "data": [
+        {
+            "id": 1,
+            "code": "XTSY",
+            "name": "系统首页",
+            "level": 1,
+            "status": 1,
+            "menuUrl": "/home",
+            "superId": 0,
+            "sort": 3,
+            "icon": "ivu-icon ivu-icon-ios-home",
+            "frontUrl": "1",
+            "childSysMenuEntities": [
+                {
+                    "id": 12,
+                    "superId": 12,
+                    "code": "WZSJTJ",
+                    "name": "网站数据统计",
+                    "frontUrl": "websiteDataStatistics"
+                },
+                {
+                    "id": 13,
+                    "superId": 13,
+                    "code": "XTRZ",
+                    "name": "系统日志",
+                    "frontUrl": "systemLog"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "code": "ZBGL",
+            "name": "直播管理",
+            "level": 1,
+            "status": 1,
+            "menuUrl": "/liveBroadcastManagement",
+            "superId": 0,
+            "sort": 4,
+            "icon": "fa fa-clipboard",
+            "frontUrl": "2",
+            "childSysMenuEntities": [
+                {
+                    "id": 21,
+                    "superId": 21,
+                    "code": "FLGL",
+                    "name": "分类管理",
+                    "frontUrl": "classifiedManagement"
+                },
+                {
+                    "id": 22,
+                    "superId": 22,
+                    "code": "ZZZBLB",
+                    "name": "正在直播列表",
+                    "frontUrl": "liveListInProgress"
+                },
+                {
+                    "id": 23,
+                    "superId": 23,
+                    "code": "JK",
+                    "name": "监控",
+                    "frontUrl": "monitor"
+                },
+                {
+                    "id": 24,
+                    "superId": 24,
+                    "code": "HBLB",
+                    "name": "回播列表",
+                    "frontUrl": "rebroadcastList"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "code": "YHGL",
+            "name": "用户管理",
+            "level": 1,
+            "status": 1,
+            "menuUrl": "/userManagement",
+            "superId": 0,
+            "sort": 4,
+            "icon": "fa fa-clipboard",
+            "frontUrl": "2",
+            "childSysMenuEntities": [
+                {
+                    "id": 31,
+                    "superId": 31,
+                    "code": "PTYH",
+                    "name": "普通用户",
+                    "frontUrl": "normalUser"
+                },
+                {
+                    "id": 32,
+                    "superId": 32,
+                    "code": "ZBGL",
+                    "name": "主播管理",
+                    "frontUrl": "anchorManagement"
+                },
+                {
+                    "id": 33,
+                    "superId": 33,
+                    "code": "YQGL",
+                    "name": "邀请管理",
+                    "frontUrl": "invitationManagement"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "code": "SPGL",
+            "name": "视频管理",
+            "level": 1,
+            "status": 1,
+            "menuUrl": "/videoManagement",
+            "superId": 0,
+            "sort": 4,
+            "icon": "fa fa-clipboard",
+            "frontUrl": "2",
+            "childSysMenuEntities": [
+                {
+                    "id": 41,
+                    "superId": 41,
+                    "code": "XSPLB",
+                    "name": "小视频列表",
+                    "frontUrl": "smallVideoList"
+                },
+                {
+                    "id": 42,
+                    "superId": 42,
+                    "code": "PLLB",
+                    "name": "评论列表",
+                    "frontUrl": "commentList"
+                },
+                {
+                    "id": 43,
+                    "superId": 43,
+                    "code": "SPSHLB",
+                    "name": "视频审核列表",
+                    "frontUrl": "videoAuditList"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "code": "KF",
+            "name": "客服",
+            "level": 1,
+            "status": 1,
+            "menuUrl": "/customerService",
+            "superId": 0,
+            "sort": 4,
+            "icon": "fa fa-clipboard",
+            "frontUrl": "2",
+            "childSysMenuEntities": [
+                {
+                    "id": 51,
+                    "superId": 51,
+                    "code": "DCLXXLB",
+                    "name": "待处理消息列表",
+                    "frontUrl": "listOfMessages"
+                },
+                {
+                    "id": 52,
+                    "superId": 52,
+                    "code": "WZTPBJ",
+                    "name": "文字图片编辑",
+                    "frontUrl": "textAndPictureEditing"
+                },
+                {
+                    "id": 53,
+                    "superId": 53,
+                    "code": "XXJL",
+                    "name": "消息记录",
+                    "frontUrl": "messageRecord"
+                },
+                {
+                    "id": 54,
+                    "superId": 54,
+                    "code": "CKYHXX",
+                    "name": "查看用户信息",
+                    "frontUrl": "viewUserInformation"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "code": "IMJL",
+            "name": "im记录",
+            "level": 1,
+            "status": 1,
+            "menuUrl": "/records",
+            "superId": 0,
+            "sort": 4,
+            "icon": "fa fa-clipboard",
+            "frontUrl": "2",
+            "childSysMenuEntities": [
+                {
+                    "id": 61,
+                    "superId": 61,
+                    "code": "IMJL",
+                    "name": "im记录",
+                    "frontUrl": "record"
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "code": "DXGL",
+            "name": "短信管理",
+            "level": 1,
+            "status": 1,
+            "menuUrl": "/SMSManagement",
+            "superId": 0,
+            "sort": 4,
+            "icon": "fa fa-clipboard",
+            "frontUrl": "2",
+            "childSysMenuEntities": [
+                {
+                    "id": 71,
+                    "superId": 71,
+                    "code": "DXJKLB",
+                    "name": "短信接口列表",
+                    "frontUrl": "shortMessageList"
+                },
+                {
+                    "id": 72,
+                    "superId": 72,
+                    "code": "XTXXLB",
+                    "name": "系统消息列表",
+                    "frontUrl": "systemMessageList"
+                },
+                {
+                    "id": 73,
+                    "superId": 73,
+                    "code": "YWDLLB",
+                    "name": "业务队列列表",
+                    "frontUrl": "businessQueueList"
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "code": "DJGL",
+            "name": "道具管理",
+            "level": 1,
+            "status": 1,
+            "menuUrl": "/propertyMaster",
+            "superId": 0,
+            "sort": 4,
+            "icon": "fa fa-clipboard",
+            "frontUrl": "2",
+            "childSysMenuEntities": [
+                {
+                    "id": 81,
+                    "superId": 81,
+                    "code": "LWLB",
+                    "name": "礼物列表",
+                    "frontUrl": "giftList"
+                },
+                {
+                    "id": 82,
+                    "superId": 82,
+                    "code": "XHTJ",
+                    "name": "消耗统计",
+                    "frontUrl": "consumptionStatistics"
+                },
+                {
+                    "id": 83,
+                    "superId": 83,
+                    "code": "LHGL",
+                    "name": "靓号管理",
+                    "frontUrl": "lhmanagement"
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "code": "JBGL",
+            "name": "举报管理",
+            "level": 1,
+            "status": 1,
+            "menuUrl": "/reportingManagement",
+            "superId": 0,
+            "sort": 4,
+            "icon": "fa fa-clipboard",
+            "frontUrl": "2",
+            "childSysMenuEntities": [
+                {
+                    "id": 91,
+                    "superId": 91,
+                    "code": "JBLB",
+                    "name": "举报列表",
+                    "frontUrl": "reportingList"
+                },
+                {
+                    "id": 92,
+                    "superId": 92,
+                    "code": "JBLXGL",
+                    "name": "举报类型管理",
+                    "frontUrl": "reportTypeManagement"
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "code": "RZGL",
+            "name": "认证管理",
+            "level": 1,
+            "status": 1,
+            "menuUrl": "/authenticationManagement",
+            "superId": 0,
+            "sort": 4,
+            "icon": "fa fa-clipboard",
+            "frontUrl": "2",
+            "childSysMenuEntities": [
+                {
+                    "id": 101,
+                    "superId": 101,
+                    "code": "RZLB",
+                    "name": "认证列表",
+                    "frontUrl": "authenticationList"
+                }
+            ]
+        },
+        {
+            "id": 11,
+            "code": "ZJGL",
+            "name": "资金管理",
+            "level": 1,
+            "status": 1,
+            "menuUrl": "/fundManagement",
+            "superId": 0,
+            "sort": 4,
+            "icon": "fa fa-clipboard",
+            "frontUrl": "2",
+            "childSysMenuEntities": [
+                {
+                    "id": 111,
+                    "superId": 111,
+                    "code": "TJTB",
+                    "name": "统计图表",
+                    "frontUrl": "statisticalChart"
+                },
+                {
+                    "id": 112,
+                    "superId": 112,
+                    "code": "TXGL",
+                    "name": "提现管理",
+                    "frontUrl": "cashManagement"
+                },
+                {
+                    "id": 113,
+                    "superId": 113,
+                    "code": "CZJL",
+                    "name": "充值记录",
+                    "frontUrl": "rechargeRecord"
+                },
+                {
+                    "id": 114,
+                    "superId": 114,
+                    "code": "JKGL",
+                    "name": "接口管理",
+                    "frontUrl": "interfaceManagement"
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "code": "XTSZ",
+            "name": "系统设置",
+            "level": 1,
+            "status": 1,
+            "menuUrl": "/systemSetup",
+            "superId": 0,
+            "sort": 4,
+            "icon": "fa fa-clipboard",
+            "frontUrl": "2",
+            "childSysMenuEntities": [
+                {
+                    "id": 121,
+                    "superId": 121,
+                    "code": "XTSZ",
+                    "name": "系统设置",
+                    "frontUrl": "systemSetup"
+                },
+                {
+                    "id": 122,
+                    "superId": 122,
+                    "code": "YDPTSZ",
+                    "name": "移动平台设置",
+                    "frontUrl": "mobilePlatformSettings"
+                },
+                {
+                    "id": 123,
+                    "superId": 123,
+                    "code": "XTGLY",
+                    "name": "系统管理员",
+                    "frontUrl": "systemAdministrator"
+                }
+            ]
+        }
+    ],
+    "message": "操作成功"
+}

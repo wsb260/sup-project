@@ -1,0 +1,41 @@
+<template>
+  <div class="layout-page-page">
+    <Form :model="orderInfo" :label-width="100">
+      <Row>
+        <i-col span="8">
+          <FormItem label="总件数：">{{orderInfo.allNumber || 0}} 件</FormItem>
+        </i-col>
+        <i-col span="8">
+          <FormItem label="总重量：">{{orderInfo.allWeight || 0}} kg</FormItem>
+        </i-col>
+        <i-col span="8">
+          <FormItem label="运费：">{{orderInfo.totalfee || 0}} 元</FormItem>
+        </i-col>
+      </Row>
+      <Row>
+        <i-col span="8">
+          <FormItem label="代收款：">{{orderInfo.itemsvalues || 0}} 元</FormItem>
+        </i-col>
+        <i-col span="8">
+          <FormItem label="运费差额：">{{orderInfo.totalfee1 || 0}} 元</FormItem>
+        </i-col>
+        <i-col span="8">
+          <FormItem label="收取费用：">{{orderInfo.accountfees || 0}} 元</FormItem>
+        </i-col>
+      </Row>
+    </Form>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {};
+  },
+  computed: {
+    orderInfo() {
+      //右下的数据
+      return this.$store.state.orderlogistics.orderInfo;
+    },
+  }
+}
+</script>

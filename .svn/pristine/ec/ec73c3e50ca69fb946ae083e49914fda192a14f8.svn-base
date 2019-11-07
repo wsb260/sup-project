@@ -1,0 +1,54 @@
+import {
+  makeAjaxUrl,
+  timeText,
+  makeGetAjaxUrl,
+  forEachToJson
+} from "tool/tool.js";
+import api from "controller/api/api.js";
+const apiInfo = api.statisticalManagement.driveraccount;
+export default {
+  getData: (state, getters, rootState, rootGetters) => (option) => {
+    var ajaxData = {
+      "rows": option && option.page_size ? option.page_size : (state.page_size || 50),
+      "page": option && option.current ? option.current : (state.current || 1)
+    };
+    if (state.searchType) {
+      forEachToJson(state.searchData, (key, v) => {
+        if (v != "" || typeof (v) == "number") {
+          if (key == "editordate") {
+            ajaxData.editordate = timeText(state.searchData.editordate)
+          } else if (key == "senddate") {
+            ajaxData.senddate = timeText(state.searchData.senddate)
+          } else {
+            ajaxData[key] = v;
+          }
+        }
+      });
+    }
+    if( state.searchType ){
+      var quickSearch = {};
+      forEachToJson(state.quickSearchData, (key, v) => {
+        if( v != "" || typeof(v) == "number" ){
+          quickSearch[key] = v;
+        }
+      });
+    }
+    return {
+      method: apiInfo.getData.method,
+      url: apiInfo.getData.url + makeGetAjaxUrl(quickSearch),
+      data: makeAjaxUrl(ajaxData)
+    };
+  },
+  billGen: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.billGen.method,
+      url: apiInfo.billGen.url,
+      data: makeAjaxUrl({
+        sheetlist: state.billData.data.ID,
+        blcId:state.billData.data.BLCID,
+        blcName:state.billData.data.BLCNAME
+
+      })
+    };
+  }
+};

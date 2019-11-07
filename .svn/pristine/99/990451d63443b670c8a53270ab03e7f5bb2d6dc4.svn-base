@@ -1,0 +1,44 @@
+import axios from 'axios';
+export default {
+  getByIdData({ dispatch, commit, state }, option) {
+    var _this = this;
+    commit('isNewData');
+    commit('changePopupLoading', true);
+    axios(this.getters['orderlogistics/getByIdData'](option))
+    .then((req1) => {
+      _this.dispatch("login/errorLogin", req1.data ).then((type) => {
+        if( req1 && req1.data.result && req1.data.result!="false" ){
+          option.data = req1.data;
+          commit("getByIdData",option);
+        }else {
+          _this.commit("notice/dataError", req1.data.msg);
+        }
+        commit('changePopupLoading', false);
+      }).catch((error) => {});
+    })
+    .catch((error) => {
+      _this.commit("notice/dataError", error);
+      commit('changePopupLoading', false);
+    });
+  },
+  saveData({ dispatch, commit, state }, option) {
+    var _this = this;
+    commit('changePopupLoading', true);
+    axios(this.getters['orderlogistics/saveNew']())
+    .then((req1) => {
+      _this.dispatch("login/errorLogin", req1.data ).then((type) => {
+        if (req1.data.success && req1.data.success!="false") {
+          _this.commit("notice/saveSuccess");
+          commit('changeShowEdit', false);
+        } else {
+          _this.commit("notice/saveError", req1.data.msg);
+        }
+        commit('changePopupLoading', false);
+      }).catch((error) => {});
+    })
+    .catch(function (error) {
+      _this.commit("notice/saveError", error);
+      commit('changePopupLoading', false);
+    });
+  },
+};

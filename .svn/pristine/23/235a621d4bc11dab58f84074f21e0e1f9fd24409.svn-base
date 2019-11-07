@@ -1,0 +1,104 @@
+<template>
+  <div :class="'pageBody orderlogistics' + (pageWait ? ' wait' : '' )">
+    <Card class="h100" style="width: 740px; height:auto; margin: auto;">
+      <h2 style="text-align:center; ">电话下单录入</h2>
+    </Card>
+    <Card class="h100" style="width: 740px; height:auto; margin: auto;">
+      <Form :model="byIdData" :label-width="100" :rules="ruleValidate" ref="editForm">
+        <Row>
+          <i-col span="12">
+            <FormItem label="客户：" prop="crmnameId">
+              <Select v-model="byIdData.crmnameId" placeholder="请选择客户">
+                <Option v-for="item in crmnameId" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="原订单号：" prop="original_orderno">
+              <i-input v-model="byIdData.original_orderno"  placeholder="请填写原订单号" ></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+         <i-col span="12">
+            <FormItem label="寄件人：" prop="senderName">
+              <i-input v-model="byIdData.senderName" placeholder="请填写寄件人"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="寄件人电话：" prop="senderMobile">
+              <i-input v-model="byIdData.senderMobile" placeholder="请填写寄件人电话"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+            <FormItem label="寄件人地址：" prop="senderAddress">
+              <i-input v-model="byIdData.senderAddress" placeholder="请填写寄件人地址"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="收件人地址：" prop="receiverAddress">
+              <i-input v-model="byIdData.receiverAddress" placeholder="请填写收件人地址"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+      </Form>
+      <div style="text-align:center; ">
+        <Button type="success" @click="onOk">保存</Button>
+        <Button type="error" @click="onCancel">重置</Button>
+      </div>
+    </Card>
+  </div>
+</template>
+<script>
+import { eltValidators } from "tool/eltValidators.js";
+export default {
+  data() {
+    return {
+       ruleValidate: {
+        crmnameId: [{ required: true, message: "请选择客户！" }],
+        original_orderno: [{ required: true, message: "请填写原订单号！" }],
+        senderName: [{ required: true, message: "请填写寄件人！" }],
+        senderMobile: [
+          { required: true, message: "请填写电话号码！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "mobilephone", message: "请输入正确格式的11位手机号码！", info: "" },
+              ]
+          }],
+        senderAddress: [{ required: true, message: "请填写寄件人地址！" }],
+        receiverAddress: [{ required: true, message: "请填写收件人地址！" }],
+      }
+
+    };
+  },
+  computed: {
+    crmnameId(){
+      return this.$store.state.selectData.crmnameId;
+    },
+    pageWait() {
+      return this.$store.state.orderteladd.pageWait;
+    },
+    byIdData() {
+      return this.$store.state.orderteladd.byIdData;
+    },
+  },
+  methods:{
+      onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch({ type: "orderteladd/saveData", id: this.id });
+        }else{
+          this.$store.commit("orderteladd/isNewData");
+        }
+      });
+    },
+    onCancel() {
+      this.$store.commit("orderteladd/isNewData");
+    },
+  }
+};
+</script>

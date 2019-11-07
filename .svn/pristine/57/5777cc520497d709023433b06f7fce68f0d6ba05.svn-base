@@ -1,0 +1,65 @@
+<template>
+  <Modal v-model="showTagEdit" :mask-closable="!1" draggable :transfer="!1" @on-visible-change="visibleChange" :closable="!popupLoading" :class-name="('green') + (popupLoading ? ' popupLoading' : '')" width="340">
+    <p slot="header">
+      <!-- <span class="fa fa-edit" v-if="id"></span> -->
+      <Icon type="ios-add-circle-outline"></Icon>
+      <span>添加关键字</span>
+    </p>
+    <Form :model="byIdData" :label-width="100" :rules="ruleValidate" ref="editForm">
+      <Row>
+        <i-col span="24">
+          <FormItem label="关键字：">
+            <i-input v-model="byIdData.keyword" placeholder="请填写机构名称"></i-input>
+          </FormItem>
+        </i-col>
+      </Row>
+    </Form>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+import { eltValidators } from "tool/eltValidators.js";
+export default {
+  data() {
+    return {
+      ruleValidate: {
+        keyword: [{ required: true, message: "请添加关键字" }],
+      }
+    };
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.orgKey.byIdData;
+    },
+    showTagEdit: {
+      get: function() {
+        return this.$store.state.orgKey.showTagEdit;
+      },
+      set: function(val) {
+        this.$store.commit("orgKey/changeShowTagEdit", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.orgKey.popupLoading;
+    }
+  },
+  methods: {
+    open() {
+      this.$store.commit("orgKey/isNewData");
+      this.$store.commit("orgKey/changeShowTagEdit", true);
+    },
+    onOk() {
+      this.$store.dispatch({ type: "orgKey/saveData" });
+    },
+    onCancel() {
+      this.$store.commit("orgKey/changeShowTagEdit", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("orgKey/changePageWait", val);
+    }
+  }
+};
+</script>

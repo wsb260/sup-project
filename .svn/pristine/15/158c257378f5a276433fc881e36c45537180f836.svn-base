@@ -1,0 +1,15 @@
+{
+  "total": 1,
+  "success":"true",
+  "result": [{
+    "TXLOGISTICID": "1",
+    "STATUS": "2",
+    "SENDER_NAME": "3",
+    "SENDER_MOBILE": "4",
+    "SENDER_ADDRESS": "5",
+    "RECEIVER_ADDRESS": "6",
+    "BELONGMARRY": "7",
+    "SURNAMEMARRY": "8"
+  }],
+  "totalPage": 1
+}

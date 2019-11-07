@@ -1,0 +1,19 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/orderassign/listpage.json"
+  },
+  getByIdData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/orderassign/queryCarInfo.json"
+  },
+  saveEdit: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orderassign/assignSave.json"
+  },
+  revoke: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/orderassign/assignRepeal.json"
+  }
+};

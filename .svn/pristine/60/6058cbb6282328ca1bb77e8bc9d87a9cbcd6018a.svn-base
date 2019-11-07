@@ -1,0 +1,24 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/driveraccount/listpage.json"
+  },
+  getByIdData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/driveraccount/listpage.json"
+  },
+   //新增
+   saveNew: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/driveraccount/save.json"
+  },
+  getPlanData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/driveraccount/settlelistpage.json"
+  },
+  delete: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/driveraccount/delete.json"
+  },
+};

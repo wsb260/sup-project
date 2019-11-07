@@ -1,0 +1,40 @@
+<template>
+  <Modal v-model="show" :mask-closable="!1" className="yellow" width="300">
+      <p slot="header">
+      <Icon type="ios-add-circle-outline" ></Icon>
+      <span>确定结束</span>
+    </p>
+    <p>您确定结束此条任务单信息吗？</p>
+    <div slot="footer">
+      <Button type="success" @click="onOk" >确定</Button>
+      <Button type="error" @click="onCancel" >取消</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      id: false,
+      show: false
+    };
+  },
+  mounted() {
+  },
+  methods: {
+    open(id) {
+      this.show = true;
+      this.id  = id;
+    },
+    onOk() {
+      this.$store.dispatch({ type: "orderquery/endData",id:this.id });
+      this.show = false;
+      
+    },
+    onCancel() {
+     this.show = false;
+    }
+  }
+};
+</script>
+

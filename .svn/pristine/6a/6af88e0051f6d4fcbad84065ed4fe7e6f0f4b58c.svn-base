@@ -1,0 +1,127 @@
+<template>
+  <div>
+    <Card style="margin-bottom:10px;width:50%;margin:0 auto;padding:10px; ">
+      <p>请先下载导入模板：
+        <Button type="primary" @click="downLoad" class="downLoad">
+          <Icon type="md-arrow-round-down" /> 下载模板
+        </Button>
+      </p>
+      <Form :model="byIdData" :label-width="60" :rules="ruleValidate" ref="editForm" style="margin-top:20px;width:25%;display:inline-block;">
+        <FormItem label="客户：" prop="crmnameId">
+          <Select v-model="byIdData.crmnameId" placeholder="请选择客户" @on-change="change" clearable>
+            <Option v-for="item in crmnameId" :value="item.value" :key="item.value">{{item.label}}</Option>
+          </Select>
+        </FormItem>
+      </Form>
+      <p style="margin:10px 0">使用说明：</p>
+      <div v-if="!text.length">
+        <p>1. 文件格式必须与模板完全一致，不支持导入加密文件！</p>
+        <p>2. 单位名称和往来单位编号不允许重复，不允许为空！</p>
+        <p>3. 往来单位和期初导入说明：</p>
+        <p> 1) 如果导入的数据中往来单位名称和往来单位编号在系统中不存在，则会更新系统中的数据</p>
+        <p> 2) 请按下载的模板格式导入期初往来单位</p>
+        <p> 3) 开账后，将不能进行期初数据导入。</p>
+      </div>
+      <div v-else>
+        <p v-for="(v,i) in text" :key="i">{{i}}.{{v}}</p>
+      </div>
+    </Card>
+    <!-- method="post" enctype="multipart/form-data" -->
+    <Upload ref="upload" multiple type="drag" :action="upLoadUrl" :on-success="handleSuccess" :on-error="handleError" :format="['xlsx','xls']" :on-format-error="handleFormatError" :before-upload="beforeup" style=" width:50%;margin:0 auto;">
+      <div style="padding: 20px 0;">
+        <Icon type="md-cloud-upload" size="52" style="color: #3399ff"></Icon>
+        <p>请选择要上传文件（
+          <span style="color:red">只支持Excel文件上传
+          </span>）(点击或拖拽上传)</p>
+      </div>
+    </Upload>
+  </div>
+
+</template>
+<script>
+import { eltValidators } from "tool/eltValidators.js";
+import api from "controller/api/api.js";
+export default {
+  data() {
+    return {
+      upLoadUrl: "", //上传地址
+      show: false,
+      byIdData: {},
+      text: [], //显示的文字
+      option: {
+        downLoadUrl: api.OrderManagement.orderentry.filedown.url,
+        // upLoadUrl: api.OrderManagement.orderentry.fileUpLoad.url+ "?crmnameId=" + (this.byIdData.crmnameId) || ""
+        upLoadUrl: api.OrderManagement.orderentry.fileUpLoad.url
+      },
+      ruleValidate: {
+        crmnameId: [{ required: true, message: "请选择客户！" }]
+      }
+    };
+  },
+  computed: {
+    crmnameId() {
+      return this.$store.state.selectData.crmnameId;
+    }
+  },
+  created() {},
+  mounted() {
+    this.$store.dispatch({ type: "selectData/getData", name: "crmnameId" });
+  },
+  methods: {
+    downLoad() {
+      window.open(this.option.downLoadUrl);
+    },
+    handleSuccess(response, file, fileList) {
+      this.$refs["editForm"].validate(valid => {
+        if (response.flag == "成功") {
+          this.$emit("refresh");
+          this.$Notice.success({ title: "文件上传成功！" });
+        } else {
+          this.$Notice.error({
+            title: "文件上传失败！",
+            desc: response.errorlist[0].errorMag
+          });
+        }
+      });
+    },
+    handleError(error, file, fileList) {
+      this.$Notice.error({ title: "文件上传失败！" });
+    },
+    handleFormatError(file, fileList) {
+      this.$Notice.error({
+        title: "上传的文件格式不正确!",
+        desc: "请先下载模板。"
+      });
+    },
+    change() {
+      this.upLoadUrl =
+        this.option.downLoadUrl + "?crmnameId=" + this.byIdData.crmnameId || "";
+    },
+    beforeup(){
+      if(this.byIdData.crmnameId !=undefined&&this.byIdData.crmnameId !=" "){
+        return true
+      }else{
+        this.$store.commit({
+					type: "notice/noticeError",
+					title: "上传失败!",
+					desc: "清先选择客户"
+				});
+      return false;
+      }
+      
+    }
+  }
+};
+</script>
+<style>
+  .upload1{
+    background: #fff;
+    border: 1px dashed #dcdee2;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .2s ease;
+  }
+</style>

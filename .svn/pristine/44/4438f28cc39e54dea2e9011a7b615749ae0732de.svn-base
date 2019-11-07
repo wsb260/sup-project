@@ -1,0 +1,113 @@
+<template>
+  <Modal v-model="showEdit" :mask-closable="!1" draggable :transfer="!1" :closable="!popupLoading"  width="740">
+    <p slot="header">
+      <span>模块配置</span>
+    </p>
+      <Form :model="byIdData" :label-width="100"  ref="editForm">
+        <Row>
+          <i-col span="8">
+            <FormItem label="人员名称：">
+              <i-input v-model="tableData.OPERNAME" readonly ></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="8">
+            <FormItem label="机构名称：">
+              <i-input v-model="tableData.ORGNAME" readonly ></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="8">
+            <FormItem label="电话号码：">
+              <i-input v-model="tableData.TEL" readonly ></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="24">
+            <Transfer :data="leftList" :titles="titles" :target-keys="targetKeys" :list-style="listStyle" :render-format="renderFormat" :operations="['向左移','向右移']" filterable  @on-change="handleChange">
+            </Transfer>
+          </i-col>
+        </Row>
+      </Form>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">取消</Button>
+    </div>
+    <popup-delete ref="popupDelete"></popup-delete>
+  </Modal>
+</template>
+<script>
+import popupDelete from "components/situation/popup-delete";
+import { eltValidators } from "tool/eltValidators.js";
+import { getTableHeight } from "tool/tool.js";
+export default {
+  data() {
+    return {
+      id:false,
+      table: {
+        height: 500,
+      },
+      tableData: {
+        OPERNAME:"",
+        ORGNAME:"",
+        TEL:""
+      },
+      titles:['未选择角色信息列表','已选择角色信息列表'],
+      targetKeys: [],
+      listStyle: {
+        width: "300px",
+        height: "300px"
+      },
+      ruleValidate: {}
+    }
+  },
+   components: {
+    popupDelete,
+  },
+  computed: {
+    showEdit: {
+      get: function() {
+        return this.$store.state.operandrole.showEdit;
+      },
+      set: function(val) {
+        this.$store.commit("operandrole/changeShowEdit", val);
+      }
+    },
+    byIdData() {
+      return this.$store.state.operandrole.byIdData;
+    },
+    popupLoading() {
+      return this.$store.state.operandrole.popupLoading;
+    },
+    leftList() {
+      return this.$store.state.operandrole.leftList;
+    }
+  },
+  mounted() {
+    console.log(this.$store.state.operandrole.byIdData)
+  },
+  methods: {
+    handleChange(newTargetKeys) {
+      this.targetKeys = newTargetKeys;
+    },
+    renderFormat(item) {
+      return item.label + " - " + item.description;
+    },
+    open(id,OPERNAME,ORGNAME,TEL) {
+      this.id = id || false;
+      this.tableData.OPERNAME = OPERNAME;
+      this.tableData.ORGNAME = ORGNAME;
+      this.tableData.TEL = TEL;
+      if(this.id){
+        this.$store.dispatch({type:"operandrole/getByIdData",id:this.id})
+      }
+      this.$store.commit("operandrole/changeShowEdit", true);
+    },
+    onOk() {
+      this.$store.dispatch({ type: "operandrole/saveData", id: this.id });
+    },
+    onCancel() {
+      this.$store.commit("operandrole/changeShowEdit", false);
+    },
+  }
+}
+</script>

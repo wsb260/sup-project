@@ -1,0 +1,122 @@
+import axios from 'axios';
+export default {
+  getData({ dispatch, commit, state }, option) {
+    var _this = this;
+    axios(this.getters['ordermenu/getData']())
+      .then((req1) => {
+        _this.dispatch("login/errorLogin", req1.data).then((type) => {
+          if (req1 && req1.data.result && req1.data.result != "false") {
+            option.data = req1.data.result;
+            commit('getData', option);
+          } else {
+            _this.commit("notice/dataError", req1.data.msg);
+          }
+        }).catch((error) => { });
+      })
+      .catch((error) => {
+        _this.commit("notice/dataError", error);
+      });
+  },
+  getByIdData({ dispatch, commit, state }, option) {
+    var _this = this;
+    commit('isNewData');
+    commit('changePopupLoading', true);
+    axios(this.getters['ordermenu/getByIdData'](option))
+      .then((req1) => {
+        _this.dispatch("login/errorLogin", req1.data).then((type) => {
+          if (req1 && req1.data.result && req1.data.result != "false") {
+            commit('getByIdData', req1.data);
+          } else {
+            _this.commit("notice/dataError", req1.data.msg);
+          }
+          commit('changePopupLoading', false);
+        }).catch((error) => { });
+      })
+      .catch((error) => {
+        _this.commit("notice/dataError", error);
+        commit('changePopupLoading', false);
+      });
+  },
+  saveNew({ dispatch, commit, state }, option) {
+    var _this = this;
+    axios(this.getters['ordermenu/saveNew'](option))
+      .then((req1) => {
+        _this.dispatch("login/errorLogin", req1.data).then((type) => {
+          if (req1.data.success && req1.data.success != "false") {
+            _this.commit("notice/saveSuccess");
+            dispatch({ type: "getData" });
+            commit('changeShowEdit', false);
+          } else {
+            _this.commit("notice/saveError", req1.data.msg);
+          }
+          commit('changePopupLoading', false);
+
+        }).catch((error) => { });
+      })
+      .catch(function (error) {
+        _this.commit("notice/saveError", error);
+        commit('changePopupLoading', false);
+      });
+  },
+  saveEdit({ dispatch, commit, state }, option) {
+    var _this = this;
+    axios(this.getters['ordermenu/saveEdit'](option))
+      .then((req1) => {
+        _this.dispatch("login/errorLogin", req1.data).then((type) => {
+          if (req1.data.success && req1.data.success != "false") {
+            _this.commit("notice/saveSuccess");
+            dispatch({ type: "getData" });
+            commit('changeShowEdit', false);
+          } else {
+            _this.commit("notice/saveError", req1.data.msg);
+          }
+          commit('changePopupLoading', false);
+
+        }).catch((error) => { });
+      })
+      .catch(function (error) {
+        _this.commit("notice/saveError", error);
+        commit('changePopupLoading', false);
+      });
+  },
+  // saveData({ dispatch, commit, state }, option) {
+  //   var _this = this;
+  //   commit('changePopupLoading', true);
+  //   console.log(option)
+  //   axios(this.getters[option.id ? 'ordermenu/saveEdit' : 'ordermenu/saveNew']())
+  //   .then((req1) => {
+  //     _this.dispatch("login/errorLogin", req1.data ).then((type) => {
+  //       if (req1.data.success && req1.data.success!="false") {
+  //         _this.commit("notice/saveSuccess");
+  //         dispatch({ type: "refreshData" });
+  //         commit('changeShowEdit', false);
+  //       } else {
+  //         _this.commit("notice/saveError", req1.data.msg);
+  //       }
+  //       commit('changePopupLoading', false);
+
+  //     }).catch((error) => {});
+  //   })
+  //   .catch(function (error) {
+  //     _this.commit("notice/saveError", error);
+  //     commit('changePopupLoading', false);
+  //   });
+  // },
+  delete({ dispatch, commit, state }, option) {
+    var _this = this;
+    axios(this.getters['ordermenu/delete'](option))
+      .then((req1) => {
+        _this.dispatch("login/errorLogin", req1.data).then((type) => {
+          if (req1.data.success && req1.data.success != "false") {
+            _this.commit("notice/delSuccess");
+            dispatch({ type: "getData" });
+          } else {
+            _this.commit("notice/delError", req1.data.msg);
+          }
+        }).catch((error) => { });
+      })
+      .catch(function (error) {
+        _this.commit("notice/delError", error);
+      });
+  }
+};

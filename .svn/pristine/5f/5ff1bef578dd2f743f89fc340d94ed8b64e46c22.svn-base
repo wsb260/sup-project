@@ -1,0 +1,106 @@
+.loginBox {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  position: relative;
+  background-image: url("./login.jpg");
+  background-image: url("./bac.jpg");
+  background-repeat: no-repeat;
+  display: table;
+  *{
+    transition: all .4s ease-in-out;
+  }
+  .container {
+    display: table-cell;
+    vertical-align: middle;
+    .login{
+      margin: auto;
+      width: 360px;
+      .logeImage {
+        margin: 0 auto;
+        width: 100%;
+        margin-bottom: 25px;
+      }
+      .header {
+        text-align: center;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+      }
+      .bodyer {
+        // background: #ccc;
+        width: 360px;
+        margin-top: 20px;
+        padding: 30px;
+        border-radius: 5px;
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+        background-color: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255,255,255,0.3);
+        border-width: 1px 0 0 1px;
+        &:hover{
+          box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+          background-color: rgba(255, 255, 255, 0.3);
+        }
+        input{
+          border: 1px solid #9bb8d6;
+        }
+        .ivu-form-item-content{
+          white-space: nowrap;
+        }
+        .ivu-form-item-error .ivu-input {
+          border: 1px solid #ed4014;
+        }
+        .form-title {
+          font-weight: 300;
+          margin-bottom: 25px;
+          color: #eee;
+          font-size: 24.5px;
+        }
+        .codingText{
+          width: 153px;
+        }
+        .codingImgBox {
+          height: 30px;
+          display: inline-block;
+          vertical-align: middle;
+          border-radius: 3px;
+          border: 1px solid #fff;
+          background-color: #fff;
+          overflow: hidden;
+          img{
+            max-width: 100%;
+            max-height: 100%;
+          }
+        }
+        .ivu-input-icon{
+          font-weight: bold;
+        }
+        button{
+          padding: 4px 6px 7px;
+          box-shadow: 1px 1px 1px rgba(255,255,255,0.5) inset;
+          background-color: #2d8cf0;
+          &:hover{
+            box-shadow: -1px -1px 1px rgba(0,0,0,0.2) inset;
+          }
+          .loginBtn{
+            height: 16px;
+            font-size: 16px;
+            .n{
+              opacity: 0;
+            }
+          }
+        }
+      }
+      .footer {
+        clear: both;
+        margin-top: 20px;
+        text-align: center;
+        color: #fff;
+        font-size: 14px;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+}

@@ -1,0 +1,97 @@
+<template>
+  <Dropdown trigger="custom" :transfer="!1" placement="bottom-start" :visible="visible">
+    <Button type="info" @click="changeVisible(true)">
+      <Icon type="ios-search" /> 精确查询
+    </Button>
+    <DropdownMenu slot="list" class="searchBox">
+      <Form :model="searchData" :label-width="90" ref="editForm" class="forms">
+        <Row>
+          <i-col span="12">
+            <FormItem label="人员名称：">
+              <i-input v-model="searchData.OPERNAME" clearable placeholder="请填写人员名称"></i-input>
+            </FormItem>
+          </i-col>
+          <i-col span="12">
+            <Form-item label="机构名称：">
+              <Select v-model="searchData.ORGNAME" clearable placeholder="请选择机构名称">
+                <Option v-for="item in ORGNAME" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </Form-item>
+          </i-col>
+        </Row>
+        <Row>
+          <i-col span="12">
+            <Form-item label="人员类型：">
+              <Select v-model="searchData.OPERTYPE" clearable placeholder="请选择人员类型">
+                <Option v-for="item in OPERTYPE" :value="item.value" :key="item.value">{{item.label}}</Option>
+              </Select>
+            </Form-item>
+          </i-col>
+          <i-col span="12">
+            <FormItem label="电话号码：">
+              <i-input v-model="searchData.TEL" clearable placeholder="请填写角色描述"></i-input>
+            </FormItem>
+          </i-col>
+        </Row>
+      </Form>
+      <div style="text-align:center;">
+        <Button type="info" @click="search">
+          <Icon type="md-search" /> 查询
+        </Button>
+        <Button type="success" @click="reset">
+          <span class="fa fa-refresh"></span> 重置
+        </Button>
+        <Button type="error" @click="changeVisible(false)">
+          <span class="fa fa-remove"></span> 关闭
+        </Button>
+      </div>
+    </DropdownMenu>
+  </Dropdown>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      visible: false
+    };
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.operandrole.operandrole.byIdData;
+    },
+    ORGNAME() {
+      return this.$store.state.selectData.ORGNAME;
+    },
+    OPERTYPE() {
+      return this.$store.state.selectData.OPERTYPE;
+    },
+    searchData() {
+      return this.$store.state.operandrole.operandrole.searchData;
+    },
+    searchType() {
+      return this.$store.state.operandrole.operandrole.searchType;
+    }
+  },
+  deactivated() {
+    this.visible = false;
+  },
+  methods: {
+    search() {
+      this.$store.dispatch({ type: 'operandrole/operandrole/refreshData', searchType: true, current: 1 });
+      this.visible = false;
+    },
+    reset() {
+      this.$store.commit("operandrole/operandrole/clearSearchData");
+      this.$store.dispatch({ type: 'operandrole/operandrole/refreshData', searchType: false, current: 1 });
+    },
+    changeVisible(type) {
+      this.visible = type;
+    }
+  }
+};
+</script>
+<style>
+.forms{
+margin:0 10px 0 0;
+}
+</style>

@@ -1,0 +1,15 @@
+import e from "controller/index.js"
+export default {
+  getData: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/roleandmodule/listpage.json"
+  },
+  getByIdData: {
+    method: e.type == 1 ? "GET" : "POST",
+    url: e.base + "/roleandmodule/add.json"
+  },
+  saveEdit: {
+    method: e.type == 1 ? "POST" : "POST",
+    url: e.base + "/roleandmodule/save.json"
+  },
+};

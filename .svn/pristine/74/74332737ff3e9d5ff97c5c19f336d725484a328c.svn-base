@@ -1,0 +1,44 @@
+<template>
+  <Modal
+    v-model="showEdit"
+    :mask-closable="!1"
+    draggable
+    :transfer="!1"
+    @on-visible-change="visibleChange"
+    :closable="!popupLoading"
+    :class-name="(id ? 'yellow' : 'green') + (popupLoading ? ' popupLoading' : '')"
+    width="640"
+  >
+    <p slot="header">
+      <span class="fa fa-edit" v-if="id"></span>
+      <Icon type="ios-add-circle-outline" v-else></Icon>
+      <span>{{'淘宝订单信息' + (id ? '修改' : '新增')}}</span>
+    </p>
+    <Form :model="byIdData" :label-width="130" :rules="ruleValidate" ref="editForm">
+      <Row :gutter="4">
+        <i-col span="24">
+          <Form-item label="商品名称：" prop="PRODUCT_NAME">
+            <i-input v-model="byIdData.PRODUCT_NAME" placeholder="请输入商品名称" :disabled="!!id"></i-input>
+          </Form-item>
+        </i-col>
+      </Row>
+    </Form>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">取消</Button>
+    </div>
+  </Modal>
+</template>
+<script>
+export default {
+  data() {
+    return {
+
+    };
+  },
+  modules: {
+
+  }
+}
+</script>
+

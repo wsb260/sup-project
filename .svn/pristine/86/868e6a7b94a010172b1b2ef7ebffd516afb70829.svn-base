@@ -1,0 +1,68 @@
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changeShowCheck(state, payload) {
+    state.showCheck = payload;
+  },  
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  getData(state, payload) {
+    if (payload.worked == 'table') {
+      state.tableData = payload.data;
+    }
+  },
+  getByIdData(state, payload) {
+    let arr = [];
+    arr.push({'TXLOGISTICID':payload.data.TXLOGISTICID,'QTY':payload.data.QTY,'TOTALFEE':payload.data.TOTALFEE,'ITEMSVALUE':payload.data.ITEMSVALUE,'GOODSVALUE':payload.data.GOODSVALUE,'RECEIVER_ADDRESS':payload.data.RECEIVER_ADDRESS})
+    state.tableData1 = arr;
+    state.byIdData = payload.data;
+  },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  changeTotal(state, payload) {
+    state.total = payload;
+  },
+  changeCurrent(state, payload) {
+    if (payload && payload != state.current) {
+      state.current = payload;
+    }
+  },
+  changePageSize(state, payload) {
+    if (payload && payload != state.page_size) {
+      state.page_size = payload;
+    }
+  },
+  changeSearchType(state, payload) {
+    state.searchType = payload;
+  },
+  clearSearchData(state, payload) {
+    state.searchType = false;
+    state.searchData = {
+      create_date: "",
+      update_date: "",
+      status: "",
+      type: "",
+    };
+  },
+  isNewData(state, payload) {
+    state.byIdData = {
+      CAROWNER_NM: "",
+      CARTYPE: "",
+      CARDTYPE: "",
+      CAROWNER_TEL: "",
+      CAROWNER_CARDNO: "",
+      SERVNAME:"",
+      CARNO:"",
+      CARLENGTH:"",
+      TOTALWEIGHT:"",
+      FACTORYDATE:"",
+      WORKDATE:""
+    };
+  }
+};

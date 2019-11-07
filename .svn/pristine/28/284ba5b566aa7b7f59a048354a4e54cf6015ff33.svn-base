@@ -1,0 +1,65 @@
+import {
+  makeSelectOptions,
+  makeTreeInfo
+} from "tool/tool.js";
+export default {
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  getData(state, payload) {
+    if (payload.worked == 'table') {
+      state.tableData = payload.data;
+    }
+  },
+  saveTableData(state, payload) {
+    state.byIdData.area = payload.data;
+    if( state.byIdData.id ){
+      //修改
+      state.tableData.eltForEach((v,i) => {
+        if( v.id == state.byIdData.id ){
+          state.tableData[i] = state.byIdData;
+          return true;
+        }
+      });
+    }else{
+      //新增
+      state.byIdData.id = state.tableData[0] ? state.tableData[0].id + 1 : 0;
+      state.tableData.push(Object.assign({}, state.byIdData));
+    }
+  },
+  delTableData(state, payload) {
+    state.tableData = state.tableData.filter(item => item.id != payload);
+  },
+  getByIdData(state, payload) {
+    state.byIdData = state.tableData.filter(item => item.id != payload.id);
+  },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  changeTotal(state, payload) {
+    state.total = payload;
+  },
+  changeCurrent(state, payload) {
+    if (payload && payload != state.current) {
+      state.current = payload;
+    }
+  },
+  changePageSize(state, payload) {
+    if (payload && payload != state.page_size) {
+      state.page_size = payload;
+    }
+  },
+  isNewData(state, payload) {
+    state.byIdData = {
+      DELIVERY_RULE_ID: "",
+      FIRST_WEIGHT: "0",
+      FIRST_WEIGHT_PRICE: "0",
+      CONTINUE_WEIGHT: "0",
+      CONTINUE_WEIGHT_PRICE: "0",
+      IS_ZONE: "",
+      DELIVERY_WAY_ID: "",
+      ZONENMS: "",
+      zoneIds: []
+    };
+  }
+};

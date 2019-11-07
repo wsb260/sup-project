@@ -1,0 +1,115 @@
+.eltTree-ul{
+  transition: all .2s ease-in-out;
+  padding-left:18px;
+  height: auto;
+  overflow: overlay;
+  overflow-y:hidden;
+  .open{
+    //height: 0px !important;
+    overflow:inherit;
+  }
+  .close{
+    //height: 0px !important;
+    overflow:hidden;
+  }
+  .eltTree-li{
+    padding: 1px 0;
+    &.hasChildren{
+      position: relative;
+      &.open{
+        &:before,&:after{
+          content: "";
+          transition: all .2s ease-in-out;
+          position: absolute;
+          display: block;
+          margin: auto;
+          z-index: 0;
+        }
+        &:before{
+          left: 7px;
+          bottom: 8px;
+          width: 18px;
+          height: 1px;
+          border-bottom: 1px dashed #ccc;
+        }
+        &:after{
+          top: 21px;
+          left: 7px;
+          bottom: 10px;
+          width: 1px;
+          border-right: 1px dashed #ccc;
+        }
+        &:hover:before,
+        &:hover:after{
+          border-color: #333;
+        }
+      }
+      &.close .arrow .ivu-icon{
+        transform: rotate(-90deg);
+      }
+    }
+    & > span{
+      vertical-align: middle;
+      line-height: 18px;
+      display: inline-block;
+    }
+    .arrow{
+      min-width: 12px;
+      .ivu-icon{
+        transition: all .2s ease-in-out;
+      }
+    }
+    .check{
+
+    }
+    .icon{
+
+    }
+    .name{
+      font-size: 12px;
+      &.hasActions{
+        cursor: pointer;
+      }
+    }
+    .actionBtn{
+      float: right;
+      line-height: 18px;
+      width: 22px;
+      border-radius: 3px;
+      margin: 0 2px;
+      text-align: center;
+      box-sizing: border-box;
+      cursor: pointer;
+      i{
+        line-height: 18px;
+        font-weight: bold;
+      }
+      $successColor: #19be6b;
+      $warningColor: #f90;
+      $errorColor: #ed4014;
+      &.success{
+        color: $successColor;
+      }
+      &.warning{
+        color: $warningColor;
+      }
+      &.error{
+        color: $errorColor;
+      }
+      &:hover{
+        &.success{
+          border: 1px solid $successColor;
+          box-shadow: 0 0 2px $successColor;
+        }
+        &.warning{
+          border: 1px solid $warningColor;
+          box-shadow: 0 0 2px $warningColor;
+        }
+        &.error{
+          border: 1px solid $errorColor;
+          box-shadow: 0 0 2px $errorColor;
+        }
+      }
+    }
+  }
+}

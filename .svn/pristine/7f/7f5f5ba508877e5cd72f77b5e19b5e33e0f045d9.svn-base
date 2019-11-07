@@ -1,0 +1,77 @@
+import {
+  makeSelectOptions,
+  makeTreeInfo
+} from "tool/tool.js";
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changeShowArea(state, payload) {
+    state.showArea = payload;
+  },
+  changeShowCheck(state, payload) {
+    state.showCheck = payload;
+  },
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  getData(state, payload) {
+    if (payload.worked == 'table') {
+      state.tableData = payload.data;
+    }
+  },
+  getByIdData(state, payload) {
+    state.byIdData = payload.data;;
+  },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  changeTotal(state, payload) {
+    state.total = payload;
+  },
+  changeCurrent(state, payload) {
+    if (payload && payload != state.current) {
+      state.current = payload;
+    }
+  },
+  changePageSize(state, payload) {
+    if (payload && payload != state.page_size) {
+      state.page_size = payload;
+    }
+  },
+  changeSearchType(state, payload) {
+    state.searchType = payload;
+  },
+  clearSearchData(state, payload) {
+    state.searchType = false;
+    state.searchData = {
+
+    };
+  },
+  isNewData(state, payload) {
+    state.byIdData = {
+      DELIVERY_LOGISTICS_COMPANY_ID: "",
+      IS_ENABLE: "",
+      POSITION: "",
+      RULE_NM: "",
+      SYS_ORG_ID: "",
+      CONTINUE_WEIGHT: "",
+      CONTINUE_WEIGHT_PRICE: "",
+      DELIVERY_WAY_ID: "",
+      DESCR: null,
+      FIRST_WEIGHT:"",
+      FIRST_WEIGHT_PRICE: "",
+      IS_SUPPORT_COD: "",
+      IS_ZONE: "",
+      DELIVERY_RULE_ZONE_RELATIONSHIPS: [{
+      DELIVERY_RULE_ZONE_REL_ID: "",
+      DELIVERY_RULE_ID: "",
+      ZONE_ID: ""
+    }],
+      ZONENMS: ""
+    };
+  }
+};

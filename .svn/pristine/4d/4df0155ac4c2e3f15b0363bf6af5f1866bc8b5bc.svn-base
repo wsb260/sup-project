@@ -1,0 +1,33 @@
+import mutations from './mutations.js';
+import actions from './actions.js';
+import getters from './getters.js';
+export default {
+  namespaced: true,
+  state: {
+    ORGNAME: [],
+    status_flag: [
+      { value: "1", label: "未获取" },
+      { value: "2", label: "获取成功" },
+      { value: "3", label: "获取失败" }
+    ],
+    OPERTYPE: [
+      { value: "10", label: "管理员" },
+      { value: "20", label: "操作员" },
+      { value: "30", label: "揽收员" },
+      { value: "40", label: "配送员" },
+      { value: "50", label: "揽配员" }
+    ],
+    shopType: [
+      { value: "0", label: "上行业务" },
+      { value: "1", label: "下行业务" }
+    ],
+    TRAINRESULT: [
+      {value: "0", label: "无"},
+      {value: "1", label: "就业"},
+      {value: "2", label: "创业"}
+    ]
+  },
+  mutations: mutations,//mutations END
+  actions: actions,//action END
+  getters: getters
+};

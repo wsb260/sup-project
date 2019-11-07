@@ -1,0 +1,108 @@
+<template>
+  <div class="controlmap">
+    <div class="layout-page-tool">
+      <div class="buttons">
+        <Button type="info">全屏</Button>
+        <Button type="success">播放</Button>
+        <Button type="error">暂停</Button>
+        <Button type="warning">重置</Button>
+        <Checkbox>画面跟随</Checkbox>
+      </div>
+      <div class="text">
+          <div class="carModule">
+          <span>车牌号：</span>
+            <Select v-model="CARS" style="width:200px">
+                <Option v-for="item in CARS" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            </Select>
+          </div>
+          <DatePicker type="datetime" placeholder="结束时间 > 开始时间" style="width: 200px"></DatePicker>
+          <DatePicker type="datetime" placeholder="结束时间 > 开始时间" style="width: 200px"></DatePicker>
+      </div>
+        <Button type="info">查询</Button>
+    </div>
+    <div class="map" id="allmap">
+      <baidu-map @ready="handler" :scroll-wheel-zoom="true" map-type="BMAP_HYBRID_MAP" :zoom="13">
+      </baidu-map>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      CARS:[
+          {value:1,label:"黑A5784"},
+          {value:2,label:"黑A3574"},
+          {value:3,label:"黑A6741"},
+          {value:4,label:"黑A8710"},
+          {value:5,label:"黑A5785"}
+      ]
+    };
+  },
+  mounted(){
+  },
+  methods: {
+    baiduMap() {
+      var map = new BMap.Map("allmap");
+      var point = new BMap.Point(126.592695,45.694494); // 创建点坐标
+      map.centerAndZoom(point, 15);
+      map.enableScrollWheelZoom();
+      map.addControl(
+        new BMap.OverviewMapControl({
+          isOpen: false,
+          anchor: BMAP_ANCHOR_BOTTOM_RIGHT
+        })
+      );
+      map.addControl(new BMap.NavigationControl());
+      map.addControl(new BMap.ScaleControl());
+      var icon = new BMap.Icon(
+        "../../static/img/p.png",
+        new BMap.Size(100, 100)
+      );
+      var marker = new BMap.Marker(new BMap.Point(126.592695,45.694494), {
+        icon: icon
+      });
+      map.addOverlay(marker);
+    },
+    handler({ BMap, map }) {
+      this.baiduMap();
+    }
+  }
+};
+</script>
+<style lang="scss">
+.controlmap {
+  width: 100%;
+  height:100%;
+  margin: 0 auto;
+  font-size: 16px;
+  color: gray;
+  .map {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ccc;
+  }
+  .layout-page-tool{
+    padding-bottom:5px;
+    margin-bottom: 5px;
+    .buttons{
+      float: left;
+    }
+    .text{
+      float: left;
+      color:red;
+      .carModule,.ivu-date-picker{
+          float: left;
+          margin-right: 5px;
+      }
+      .timer{
+        color:#aaa;
+        span{
+          color:red;
+        }
+      }
+    }
+  }
+}
+</style>
+

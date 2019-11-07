@@ -1,0 +1,158 @@
+<template>
+  <Modal
+    v-model="showEdit"
+    :mask-closable="!1"
+    draggable
+    :transfer="!1"
+    @on-visible-change="visibleChange"
+    :closable="!popupLoading"
+    :class-name="(id ? 'yellow' : 'green') + (popupLoading ? ' popupLoading' : '')"
+    width="800"
+  >
+    <p slot="header">
+      <span class="fa fa-edit" v-if="id"></span>
+      <Icon type="ios-add-circle-outline" v-else></Icon>
+      <span>{{(id ? '修改' : '新增') + '配送信息'}}</span>
+    </p>
+    <div class="popupBody">
+      <Form :model="byIdData" :label-width="100" :rules="ruleValidate" ref="editForm" >
+        <Tabs type="card" v-model="showTab" >
+          <TabPane label="基本信息" name="name1" >
+            <basics ref="basics"></basics>
+          </TabPane>
+          <TabPane label="费用规则" name="name2" >
+            <cost ref="cost" :byIdData="byIdData"></cost>
+          </TabPane>
+          <TabPane label="指定地区运费" name="name3" >
+            <freight ref="freight" @p3_open="p3_open" @p3_del="p3_del" ></freight>
+          </TabPane>
+        </Tabs>
+      </Form>
+    </div>
+    <div slot="footer">
+      <Button type="success" @click="onOk" :loading="popupLoading">保存</Button>
+      <Button type="error" @click="onCancel" :loading="popupLoading">关闭</Button>
+    </div>
+    <popup-delete ref="popupDelete"></popup-delete>
+  </Modal>
+</template>
+<script>
+import popupDelete from "components/situation/popup-delete";
+import basics from "./popupEditTabs/basics";
+import cost from "./popupEditTabs/cost";
+import freight from "./popupEditTabs/freight";
+import { eltValidators } from "tool/eltValidators.js";
+export default {
+  data() {
+    return {
+      showTab: "name1",
+      id: false,
+      ruleValidate: {
+        RULE_NM: [{ required: true, message: "请填写名称！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "maxLength", message: "输入内容最大20位", info: "20" }
+            ]
+          }
+        ],
+        POSITION: [{ required: true, message: "请填写排序！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "number", message: "", info: "" }
+            ]
+          }
+        ],
+        DELIVERY_LOGISTICS_COMPANY_ID:[{ required: true, message: "请选择物流公司！" }],
+        DESCR: [{ required: true, message: "请填写描述！" },
+          {
+            validator: eltValidators,
+            notEmpty: true,
+            rules: [
+              { name: "maxLength", message: "输入内容最大50位", info: "50" }
+            ]
+          }
+        ],
+        FIRST_WEIGHT: [
+          { required: true, message: "请填写首重！" },
+          { validator: eltValidators, notEmpty: true, rules: [{ name: "number", message: "", info: "" }]}
+        ],
+        FIRST_WEIGHT_PRICE: [
+          { required: true, message: "请填写首费！" },
+          { validator: eltValidators, notEmpty: true, rules: [{ name: "number", message: "", info: "" }]}
+        ],
+        CONTINUE_WEIGHT:[
+          { required: true, message: "请填写续重！" },
+          { validator: eltValidators, notEmpty: true, rules: [{ name: "number", message: "", info: "" }]}
+        ],
+        CONTINUE_WEIGHT_PRICE: [
+          { required: true, message: "请填写续费！" },
+          { validator: eltValidators, notEmpty: true, rules: [{ name: "number", message: "", info: "" }]}
+        ]
+      }
+    }
+  },
+  components: {
+    popupDelete,
+    basics,
+    cost,
+    freight
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.deliverymanage.byIdData;
+    },
+    showEdit: {
+      get: function() {
+        return this.$store.state.deliverymanage.showEdit;
+      },
+      set: function(val) {
+        this.$store.commit("deliverymanage/changeShowEdit", val);
+      }
+    },
+    popupLoading() {
+      return this.$store.state.deliverymanage.popupLoading;
+    }
+  },
+  mounted() {
+    console.log(this.$store.state.deliverymanage.byIdData)
+  },
+  methods: {
+    open(id) {
+      this.id = id || false;
+      this.result();
+      if (this.id) {
+        this.$store.dispatch({ type: "deliverymanage/getByIdData", id: this.id });
+      } else {
+        this.$store.commit({ type: "deliverymanage/isNewData"});
+      }
+      this.$store.commit("deliverymanage/changeShowEdit", true);
+    },
+    result() {
+      this.$refs["editForm"].resetFields();
+    },
+    onOk() {
+      this.$refs["editForm"].validate(valid => {
+        if (valid) {
+          this.$store.dispatch({ type: "deliverymanage/saveData", id: this.id });
+        }
+      });
+    },
+    onCancel() {
+      this.$store.commit("deliverymanage/changeShowEdit", false);
+    },
+    visibleChange(val) {
+      this.$store.commit("deliverymanage/changePageWait", val);
+    },
+    p3_open() {
+      this.$emit('p2_open');
+    },
+    p3_del(id) {
+      this.$refs.popupDelete.open(id, "deliverymanage/freight/deleteData");
+    }
+  }
+};
+</script>

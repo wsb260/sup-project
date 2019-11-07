@@ -1,0 +1,112 @@
+export default {
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changeShowMechanism(state, payload) {
+    state.showMechanism = payload;
+  },
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  changeTableLoading(state, payload) {
+    state.tableLoading = payload;
+  },
+  changeTotal(state, payload) {
+    state.total = payload;
+  },
+  changeCurrent(state, payload) {
+    if (payload && payload != state.current) {
+      state.current = payload;
+    }
+  },
+  changePageSize(state, payload) {
+    if (payload && payload != state.page_size) {
+      state.page_size = payload;
+    }
+  },
+  changeSearchType(state, payload) {
+    state.searchType = payload;
+  },
+  clearSearchData(state, payload) {
+    state.searchType = false;
+    state.searchData = {
+      SENDER_NAME: "",
+      SENDER_MOBILE: "",
+    };
+  },
+  getByIdData(state, payload) {
+    state.byIdData = Object.assign({}, state.tableData.filter(item => item.id == payload.id)[0]) || {};
+  },
+  totalfeeData(state, payload) {
+    state.orderData1.totalfee = payload.orderInfo;
+  },
+  getWares(state, payload) {
+    var _this = this;
+    state.orderInfo = {
+      accountfees: payload.accountfees,
+      itemsvalues: payload.itemsvalues,
+      totalfee: payload.totalfee,
+      allWeight: state.tableData.length == 1 ? state.tableData[0].weight : state.tableData.reduce((a, b) => (a.weight || a) + b.weight),
+      allNumber: state.tableData.length == 1 ? state.tableData[0].itemnum : state.tableData.reduce((a, b) => (a.itemnum || a) + b.itemnum)
+    };
+    this.commit("totalfeeData");
+     state.orderInfo.totalfee1 = state.orderData1.totalfee- state.orderInfo.totalfee
+
+  },
+  commitAddress(state, payload) {
+    // state.orgname = payload.ORGNAME;
+    state.orderData.marryName = payload.ORGNAME
+    state.orgid = payload.ORGID;
+  },
+  isNewData(state, payload) {
+    state.tableData = [];
+    state.orderInfo = {
+      accountfees: 0,
+      itemsvalues: 0,
+      totalfee: 0,
+      allWeight: 0,
+      allNumber: 0
+    }
+    state.orderData = {
+      crmnameId: "",
+      original_orderno: "",
+      sendername: "",
+      sendermobile: "",
+      receivername: "",
+      receivermobile: "",
+      receiver_prov: "",
+      receiver_city: "",
+      receiver_county: "",
+      receiver_address: "",
+      marryName: "",
+      itemsvalue: "0",
+      totaldiversity: "0",
+      delivery_way_id: "",
+      payway: "1"
+    };
+  },
+  add(state, payload) {
+    if (state.tableData.filter(item => item.id == state.byIdData.id).length > 0) {
+      state.tableData.eltForEach((v, i) => {
+        if (v.id == state.byIdData.id) {
+          state.tableData[i] = Object.assign({}, state.byIdData);
+          return true;
+        }
+      });
+    } else {
+      state.tableData.push(Object.assign({}, state.byIdData));
+    }
+  },
+  deleteData(state, payload) {
+    state.tableData = state.tableData.filter(item => item.id != payload);
+  },
+  newAddTable(state, payload) {
+    state.byIdData = {
+      id: state.tableData.length > 0 ? (state.tableData[state.tableData.length - 1].id + 1) : 0,
+      itemname: "",
+      itemnum: "",
+      weight: ""
+    };
+  },
+  
+};

@@ -1,0 +1,100 @@
+<template>
+  <div class="eltTree">
+    <Etree
+      v-if="treeData.length > 0"
+      :lv="lv"
+      :ids="ids"
+      ref="eltTree"
+      :treeData="treeData"
+      :onChange="d.onChange"
+      :onAdd="d.onAdd"
+      :onEdit="d.onEdit"
+      :onDel="d.onDel"
+      :expand="d.expand"
+      :name="d.name"
+      :id="d.id"
+      :check="d.check"
+      :icon="d.icon"
+    ></Etree>
+  </div>
+</template>
+
+<script>
+import "./eltTree.scss";
+import Etree from "./tree.vue";
+export default {
+  data: function() {
+    return {
+      lv: 1,
+      ids: 0,
+      d: {
+        treeData: [],
+        onChange: false,
+        onAdd: false,
+        onEdit: false,
+        onDel: false,
+        expand: true,
+        name: "name",
+        id: "id",
+        check: false,
+        icon: false
+      }
+    };
+  },
+  props: {
+    treeData: Array,
+    onChange: Function,
+    onAdd: Function,
+    onEdit: Function,
+    onDel: Function,
+    expand: Boolean,
+    name: String,
+    id: String,
+    check: Boolean,
+    icon: Boolean
+  },
+  computed: {
+  },
+  watch: {
+    treeData: {
+      handler: function(val, oldVal) {
+        if( val.length > 0 ){
+          //this.d.treeData = Object.assign([], val);
+          this.refreshData();
+        }
+      },
+      deep: true
+    }
+  },
+  components: {
+    Etree
+  },
+  created() {
+  },
+  mounted() {
+  },
+  methods: {
+    refreshData() {
+      this.d.onChange = this.onChange || false;
+      this.d.onAdd = this.onAdd || false;
+      this.d.onEdit = this.onEdit || false;
+      this.d.onDel = this.onDel || false;
+      this.d.expand = this.expand || true;
+      this.d.name = this.name || "name";
+      this.d.id = this.id || "id";
+      this.d.check = this.check || false;
+      this.d.icon = this.icon || false;
+      // this.makeOpen(this.d.treeData);
+      this.makeOpen(this.treeData);
+    },
+    makeOpen(item) {
+      item.forEach((v,i) => {
+        v.open = v.open != undefined ? v.open : true;
+        if( v.children && v.children.length > 0 ){
+          this.makeOpen(v.children);
+        }
+      });
+    }
+  }
+};
+</script>

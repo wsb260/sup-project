@@ -1,0 +1,102 @@
+<template>
+  <div class="popupBody area">
+    <Row :gutter="8">
+      <i-col span="12">
+        <Card style=" height: 40vh; margin: auto;">
+          <Tree :data="treeloader" ref="tree" show-checkbox multiple @on-check-change="onCheckChange"></Tree>
+        </Card>
+      </i-col>
+      <i-col span="12">
+        <Card style=" height: 40vh; margin: auto;">
+          <Tree :data="selectData"></Tree>
+        </Card>
+      </i-col>
+    </Row>
+  </div>
+</template>
+<script>
+import { makeTree } from "tool/tool.js";
+import eltTree from "components/situation/eltTree/index.vue";
+export default {
+  data() {
+    return {
+      selectData: [],
+      selectInfo: []
+    };
+  },
+  components: {
+    eltTree
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.deliverymanage.freight.byIdData;
+    },
+    treeloader() {
+      return this.$store.state.selectData.treeloader;
+    }
+  },
+  methods: {
+    onCheckChange(val) {
+      this.selectInfo = val || [];
+      var allSelect = [];
+      val.forEach((v,i) => {
+        allSelect.push({ title: v.title, id: v.id, parentId: v.parentId });
+        this.f(v,allSelect);
+      });
+      this.selectData = makeTree({
+        treeInfo: allSelect,
+        parent: "parentId",
+        expand: true,
+        rootId: this.treeloader[0].parentId
+      });
+    },
+    f(v,allSelect) {
+      if( v.parentId != 8 && allSelect.filter(item => item.id == v.parentId).length == 0 ){
+        var p = this.findParent(v.parentId);
+        allSelect.push(p);
+        this.f(p,allSelect);
+      }
+    },
+    findParent(parentId, list) {
+      list = list || this.treeloader;
+      var p = false;
+      if( parentId != 8 ){
+        var finded = false;
+        list.eltForEach((v,i) => {
+          if( p ){
+            return p;
+          }
+          if( v.id == parentId ){
+            p = { title: v.title, id: v.id, parentId: v.parentId };
+          }else if( v.children && v.children.length > 0 ){
+            p = this.findParent(parentId, v.children);
+          }
+          return p;
+        });
+      }
+      return p;
+    },
+    getInfo() {
+      return this.selectInfo;
+    },
+    clear() {
+      this.selectData = [];
+      this.listClear(this.treeloader);
+    },
+    listClear(list) {
+      list.forEach((v,i) => {
+        v.checked = false;
+        if( v.children && v.children.length > 0 ){
+          this.listClear(v.children);
+        }
+      });
+    }
+  }
+}
+</script>
+<style lang="scss">
+.area .ivu-card-body{
+  height: 100%;
+  overflow: auto;
+}
+</style>

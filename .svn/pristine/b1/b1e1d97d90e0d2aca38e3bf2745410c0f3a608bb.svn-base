@@ -1,0 +1,43 @@
+import e from "controller/index.js"
+export default {
+  orgtype: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/org/orgtype.json"
+  },
+  uporgname: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/org/uporgname.json"
+  },
+  orgarea: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/org/orgarea.json"
+  },
+  opertype: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/oper/opertype.json"
+  },
+  carowner_nm: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/deliveryresource/carowner_nm.json"
+  },
+  cartype: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/deliveryresource/cartype.json"
+  },
+  cardtype: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/deliveryresource/cardtype.json"
+  },
+  blcname: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/deliveryresource/blcname.json"
+  },
+  crmnameId: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/orderlogistics/crmnameId.json"
+  },
+  delivery_way: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/orderlogistics/delivery_way.json"
+  },
+}

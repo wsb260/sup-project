@@ -1,0 +1,48 @@
+import axios from 'axios';
+export default {
+  login({ dispatch, commit, state, rootState }, option) {
+    return new Promise((resolve, reject) => {
+      let _this = this;
+      axios(this.getters['login/getData'](option))
+      .then((req1) => {
+        if (req1 && req1.data.sucessed && req1.data.sucessed != "false") {
+          commit("logined", true)
+          _this.dispatch("mainMenu/getData");
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      })
+      .catch(function (error) {
+        log(error);
+        resolve(false);
+      });
+    });
+  },
+  loginOut({ dispatch, commit, state, rootState }, option) {
+    return new Promise((resolve, reject) => {
+      dispatch("clearLogin");
+      axios(this.getters['login/loginOut']())
+      .then((req1) => {})
+      .catch(function (error) {
+        log(error);
+      });
+      resolve();
+    });
+  },
+  clearLogin({ dispatch, commit, state, rootState }, option) {
+    commit("logined", false);
+    commit("changeUserInfo", {});
+    this.commit("mainMenu/changeMainMenu", []);
+  },
+  errorLogin({ dispatch, commit, state, rootState }, option) {
+    return new Promise((resolve, reject) => {
+      //{"success":"false","errorcode":10001,"errmsg":"非法的用户访问"}
+      if( option.errorcode == 10001 && option.success == "false" ){
+        dispatch("clearLogin");
+        reject();
+      }
+      resolve();
+    });
+  }
+};

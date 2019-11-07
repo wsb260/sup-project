@@ -1,0 +1,86 @@
+import {
+  makeAjaxUrl,
+  forEachToJson,
+  makeGetAjaxUrl
+} from "tool/tool.js";
+import api from "controller/api/api.js";
+const apiInfo = api.basicInformation.ordercrm;
+export default {
+  getData: (state, getters, rootState, rootGetters) => (option) => {
+    var ajaxData = {
+      "rows": option && option.page_size ? option.page_size : (state.page_size || 50),
+      "page": option && option.current ? option.current : (state.current || 1)
+    };
+    if( state.searchType ){
+      forEachToJson(state.searchData, (key, v) => {
+        if( Boolean(v) || typeof(v) == "number" ){
+            ajaxData[key] = v;
+        }
+      });
+      var quickSearch = {};
+      forEachToJson(state.quickSearchData, (key, v) => {
+        if( Boolean(v) || typeof(v) == "number" ){
+          quickSearch[key] = v;
+        }
+      });
+    }
+    return {
+      method: apiInfo.getData.method,
+      url: apiInfo.getData.url + (makeGetAjaxUrl(quickSearch) != "?" ? makeGetAjaxUrl(quickSearch) : ""),
+      data: makeAjaxUrl(ajaxData)
+    };
+  },
+  getByIdData: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.getByIdData.method,
+      url: apiInfo.getByIdData.url,
+      data: makeAjaxUrl({
+        id: option.id
+      })
+    };
+  },
+  saveNew: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.saveNew.method,
+      url: apiInfo.saveNew.url,
+      data: makeAjaxUrl({
+        crmname: state.byIdData.CRMNAME,
+        crmaddresss: state.byIdData.CRMADDRESSS,
+        crmpostcode: state.byIdData.CRMPOSTCODE,
+        crmtel: state.byIdData.CRMTEL,
+        crmtrade: state.byIdData.CRMTRADE,
+        crmstatus: state.byIdData.CRMSTATUS,
+        crmtype: state.byIdData.CRMTYPE,
+        crmgrade: state.byIdData.CRMGRADE,
+        crmsource: state.byIdData.CRMSOURCE
+      })
+    };
+  },
+  saveEdit: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.saveEdit.method,
+      url: apiInfo.saveEdit.url,
+      data: makeAjaxUrl({
+        id: state.byIdData.ID,
+        crmname: state.byIdData.CRMNAME,
+        crmaddresss: state.byIdData.CRMADDRESSS,
+        crmpostcode: state.byIdData.CRMPOSTCODE,
+        crmtel: state.byIdData.CRMTEL,
+        crmtrade: state.byIdData.CRMTRADE,
+        crmstatus: state.byIdData.CRMSTATUS,
+        crmtype: state.byIdData.CRMTYPE,
+        crmgrade: state.byIdData.CRMGRADE,
+        crmsource: state.byIdData.CRMSOURCE
+      })
+    };
+  },
+  delete: (state, getters, rootState, rootGetters) => (option) => {
+    return {
+      method: apiInfo.delete.method,
+      url: apiInfo.delete.url,
+      data: makeAjaxUrl({
+        ids: option.id
+      })
+    };
+  }
+};

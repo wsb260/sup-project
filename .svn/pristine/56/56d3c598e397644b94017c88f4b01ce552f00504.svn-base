@@ -1,0 +1,7 @@
+import e from "controller/index.js"
+export default {
+  saveNew: {
+    method: e.type == 1 ? "GET" : "GET",
+    url: e.base + "/orderteladd/save.json"
+  },
+};

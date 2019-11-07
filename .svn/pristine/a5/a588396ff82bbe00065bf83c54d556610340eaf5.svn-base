@@ -1,0 +1,10 @@
+import Vue from "vue";
+import EltInput from "./index.vue";
+
+const eltInput = {
+  install: function(Vue) {
+    Vue.component("eltInput", EltInput);
+  }
+};
+
+export default eltInput;

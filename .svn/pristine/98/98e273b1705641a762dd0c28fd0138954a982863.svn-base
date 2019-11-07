@@ -1,0 +1,60 @@
+<template>
+  <div class="popupBody">
+    <Row>
+      <i-col span="8">
+        <Form-item label="名称：" prop="RULE_NM">
+          <i-input v-model="byIdData.RULE_NM" placeholder="请填写名称"></i-input>
+        </Form-item>
+      </i-col>
+      <i-col span="8">
+        <Form-item label="物流公司：" prop="DELIVERY_LOGISTICS_COMPANY_ID">
+          <Select v-model="byIdData.DELIVERY_LOGISTICS_COMPANY_ID" placeholder="请选择物流公司">
+            <Option v-for="item in DELIVERY_LOGISTICS_COMPANY_ID" :value="item.value" :key="item.value">{{item.label}}</Option>
+          </Select>
+        </Form-item>
+      </i-col>
+      <i-col span="8">
+        <Form-item label="排序：" prop="POSITION">
+          <i-input v-model="byIdData.POSITION" placeholder="请填写排序"></i-input>
+        </Form-item>
+      </i-col>
+    </Row>
+    <Row>
+      <i-col span="24">
+        <Form-item label="描述：" prop="DESCR">
+          <i-input  v-model="byIdData.DESCR" type="textarea" :rows="2" placeholder="请填写描述"></i-input>
+        </Form-item>
+      </i-col>
+    </Row>
+    <Form-item label="是否启用：" prop="IS_ENABLE">
+      <RadioGroup v-model="byIdData.IS_ENABLE">
+        <Radio label="Y">
+          <span>是</span>
+        </Radio>
+        <Radio label="N">
+          <span>否</span>
+        </Radio>
+      </RadioGroup>
+    </Form-item>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+
+    };
+  },
+  computed: {
+    byIdData() {
+      return this.$store.state.deliverymanage.byIdData;
+    },
+    DELIVERY_LOGISTICS_COMPANY_ID() {
+      return this.$store.state.selectData.DELIVERY_LOGISTICS_COMPANY_ID;
+    }
+  },
+  methods: {
+
+  }
+}
+</script>

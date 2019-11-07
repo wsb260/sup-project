@@ -1,0 +1,66 @@
+const keepAliveOption = {
+  datareport: true
+};
+export default [
+  // 机构管理
+  {
+    name: 'org',
+    path: '/org',
+    meta: {
+      title: "机构管理",
+      keepAlive: keepAliveOption.org,
+      allPath: ["org"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/basicInformation/org/index.vue')
+  },
+  // 人员管理
+  {
+    name: 'oper',
+    path: '/oper',
+    meta: {
+      title: "人员管理",
+      keepAlive: keepAliveOption.oper,
+      allPath: ["oper"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/basicInformation/oper/index.vue')
+  },
+  //承运商管理
+  {
+    name: 'ordercmc',
+    path: '/ordercmc',
+    meta: {
+      title: "承运商管理",
+      keepAlive: keepAliveOption.ordercmc,
+      allPath: ["ordercmc"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/basicInformation/ordercmc/index.vue')
+  },
+  // 车辆管理
+  {
+    name: 'deliveryresource',
+    path: '/deliveryresource',
+    meta: {
+      title: "车辆管理",
+      keepAlive: keepAliveOption.deliveryresource,
+      allPath: ["deliveryresource"],
+      edit: { path: [], type: true },
+      check: { path: [], type: true },
+      pageWait: { path: [], type: true },
+      popupLoading: { path: [], type: true }
+    },
+    component: () => import ('page/basicInformation/deliveryresource/index.vue')
+  },
+
+];

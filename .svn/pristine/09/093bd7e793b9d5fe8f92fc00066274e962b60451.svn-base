@@ -1,0 +1,46 @@
+import {
+  makeSelectOptions,
+  makeTreeInfo
+} from "tool/tool.js";
+export default {
+  changePopupLoading(state, payload) {
+    state.popupLoading = payload;
+  },
+  changeShowEdit(state, payload) {
+    state.showEdit = payload;
+  },
+  changeShowCheck(state, payload) {
+    state.showCheck = payload;
+  },
+  changePageWait(state, payload) {
+    state.pageWait = payload;
+  },
+  getData(state, payload) {
+    if( payload.data[0] ){
+      payload.data[0].onAdd = true;
+      payload.data[0].onEdit = false;
+      payload.data[0].onDel = false;
+    }
+    state.treeData = payload.data;
+  },
+  getByIdData(state, payload) {
+    console.log(state.byIdData)
+    state.byIdData = payload.result[0];
+    state.byIdData.UPMODULENAME = payload.UPMODULENAME;
+
+  },
+  isNewData(state, payload) {
+    console.log(state.byIdData)
+
+    state.byIdData = {
+      id: payload ? payload.id : "",
+      UPMODULEID: payload ? payload.UPMODULEID : "",
+      UPMODULENAME: payload ? payload.UPMODULENAME : "",
+      FLAG:payload ? payload.FLAG: "",
+      MODULENAME: "",
+      URL: "",
+      ICON_FILE_ID: "",
+      SYS_TREE_NODE_POSITION: ""
+    };
+  },
+};

@@ -1,0 +1,173 @@
+<template>
+  <div :class="'pageBody' + (pageWait ? ' wait' : '')" id="businessquantity">
+    <div class="layout-page-tool">
+      <Button type="warning" @click="upload">
+        <Icon type="md-add" /> 导出报表
+      </Button>
+      <div class="quickSearch" v-if="showQuickSearch">
+        <span class="title">统计开始时间：</span>
+        <span class="info">
+          <DatePicker type="date" :options="options1" v-model="quickSearchData.startdate" placeholder="统计开始时间"  clearable></DatePicker>
+        </span>
+        <span class="title">统计结束时间：</span>
+        <span class="info">
+          <DatePicker type="date" :options="options1"  v-model="quickSearchData.enddate" placeholder="统计结束时间"  clearable></DatePicker>
+        </span>
+        <Button type="info" @click="search()">
+          <Icon type="ios-search" /> 快速查询
+        </Button>
+      </div>
+    </div>
+    <div class="layout-page-content">
+      <Table
+        border
+        stripe
+        :loading="tableLoading"
+        :height="table.height"
+        :columns="table.columns"
+        :data="tableData"
+        :highlight-row="true"
+      >
+      </Table>
+    </div>
+    <div class="layout-page-page">
+      <Page
+        :total="total"
+        :current="current"
+        :page-size="page_size"
+        :page-size-opts="page.page_sizepts"
+        @on-change="page_change"
+        @on-page-size-change="page_size_change"
+        show-sizer
+        show-elevator
+        show-total
+        size="small"
+      >
+      </Page>
+    </div>
+    <!-- <popup-upload ref="popupUpload" :option="option" v-on:refresh="refreshTable"></popup-upload> -->
+  </div>
+</template>
+<script>
+// import popupUpload from "components/situation/popup-upload";
+import api from "controller/api/api.js";
+import { getTableHeight,timeText } from "tool/tool.js";
+export default {
+  name: "businessquantity",
+  data() {
+    return {
+      showQuickSearch: false,
+      delModel: {},
+      options1:{
+        disabledDate(date){
+          return date && date.valueOf() > Date.now();
+        }
+      },
+      table: {
+        height: 500,
+        columns: [
+          { type: "index", width: 50, align: "center" },
+          { title: "隶属网点", key: "ORGNAME", align: "center" },
+          { title: "处理业务量", key: "BUSINESS_VOLUME", align: "center" },
+        ]
+      },
+      page: {
+        page_sizepts: [50, 100, 200]
+      },
+       option: {
+        upLoadUrl: api.statisticalManagement.businessquantity.fileDown.url,
+        pageWait: "businessquantity/changePageWait",
+        text: []
+      }
+    };
+  },
+  // components: {
+  //   popupUpload
+  // },
+  computed: {
+    tableData() {
+      return this.$store.state.businessquantity.tableData;
+    },
+    tableLoading() {
+      return this.$store.state.businessquantity.tableLoading;
+    },
+    current() {
+      return this.$store.state.businessquantity.current;
+    },
+    page_size() {
+      return this.$store.state.businessquantity.page_size;
+    },
+    total() {
+      return this.$store.state.businessquantity.total;
+    },
+    pageWait() {
+      return this.$store.state.businessquantity.pageWait;
+    },
+    quickSearchData() {
+      return this.$store.state.businessquantity.quickSearchData;
+    },
+  },
+  activated() {
+    if (this.$store.getters["pageTab/pageInTab"]("businessquantity")) {
+      this.$store.dispatch({ type: "businessquantity/refreshData" });
+    }
+  },
+  mounted() {
+    this.$store.commit("businessquantity/clearSearchData");
+    this.showQuickSearch = true;
+    this.table.height = getTableHeight();
+    this.getNewDate();
+  },
+  methods: {
+    page_change(newPage) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "businessquantity/refreshData",
+          current: newPage
+        });
+      }
+    },
+    page_size_change(newPageSiae) {
+      if (!this.tableLoading) {
+        this.$store.dispatch({
+          type: "businessquantity/refreshData",
+          current: 1,
+          page_size: newPageSiae
+        });
+      }
+    },
+    search() {
+      this.$store.dispatch({
+        type: 'businessquantity/refreshData',
+        searchType: this.quickSearchData.startdate || this.quickSearchData.enddate,
+        current: 1
+      });
+    },
+    upload() {
+      window.open(this.option.upLoadUrl + "?date=" + ( timeText(this.quickSearchData.startdate) || timeText(this.quickSearchData.enddate) || "" ));
+    },
+    // upload() {
+    //   this.$refs.popupUpload.open();
+    // },
+    refreshTable() {
+      this.$store.dispatch({ type: "businessquantity/refreshData" });
+    },
+    getNewDate(){
+      var date = new Date();
+      var Year = date.getFullYear();
+      var Month = date.getMonth();
+      if(Month < 10){
+        Month = "0" + (Month + 1);
+      }else{
+        Month = Month + 1;
+      }
+      var Day = date.getDate();
+      this.quickSearchData.startdate = Year + "-" + Month + "-" + Day;
+      this.quickSearchData.enddate = Year + "-" + Month + "-" + Day;
+    }
+  }
+};
+</script>
+
+<style>
+</style>
